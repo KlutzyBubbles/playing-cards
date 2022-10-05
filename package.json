@@ -1,0 +1,44 @@
+{
+  "name": "playing-cards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "scss": "sass sass/main.scss:css/main.css --verbose --trace",
+    "build": "webpack",
+    "dev": "webpack --watch",
+    "test": "echo Not implemented",
+    "start": "electron main.js",
+    "start:build": "npm run build && npm run start",
+    "lint": "ts-standard",
+    "format": "ts-standard --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "materialize-css": "^1.0.0",
+    "sass": "^1.55.0",
+    "typescript": "^4.8.4",
+    "webpack": "^5.74.0"
+  },
+  "dependencies": {
+    "@svgdotjs/svg.js": "^3.1.2",
+    "@types/jquery": "^3.5.14",
+    "@types/materialize-css": "^1.0.11",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "jquery": "^3.6.1",
+    "mini-css-extract-plugin": "^2.6.1",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "sass-loader": "^13.0.2",
+    "stream-browserify": "^3.0.0",
+    "style-loader": "^3.3.1",
+    "svg-inline-loader": "^0.8.2",
+    "svg-url-loader": "^8.0.0",
+    "terser-webpack-plugin": "^5.3.6",
+    "ts-loader": "^9.4.1",
+    "ts-standard": "^11.0.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
