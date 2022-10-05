@@ -8,6 +8,75 @@ import { SVG } from '@svgdotjs/svg.js'
 import clubsSvg from './svg/club.svg'
 import clubsSvgPath from './svg/club.path'
 
+type HexColor = `#${string}`;
+
+interface CornerPipSubSettings {
+    width: number
+    height?: number
+    paddingY: number
+    paddingX: number
+    color?: HexColor
+}
+
+enum CornerPipOrder {
+    NumberPip = 0,
+    PipNumber = 1,
+    Pip = 2,
+    Number = 3,
+    None = -1
+}
+
+interface CornerPipSettings {
+    enabled: boolean
+    order: CornerPipOrder
+    character?: CornerPipSubSettings
+    pip?: CornerPipSubSettings
+    color?: HexColor
+}
+
+interface CardSettings {
+    drawOutline: boolean
+    radius: number
+    backgroundColor: HexColor
+    spadeColor: HexColor
+    clubColor: HexColor
+    heartColor: HexColor
+    diamondColor: HexColor
+    topLeftCorner?: CornerPipSettings
+    topRightCorner?: CornerPipSettings
+    bottomLeftCorner?: CornerPipSettings
+    bottomRightCorner?: CornerPipSettings
+}
+
+var testSettings: CardSettings = {
+    drawOutline: false,
+    radius: 10,
+    backgroundColor: "#FFF",
+    spadeColor: "#000",
+    clubColor: "#000",
+    heartColor: "#F00",
+    diamondColor: "#F00",
+    topLeftCorner: {
+        enabled: true,
+        order: CornerPipOrder.NumberPip,
+        character: {
+            width: 3,
+            paddingY: 50,
+            paddingX: 15,
+            color: '#0F0'
+        },
+        pip: {
+            width: 3,
+            paddingY: 50,
+            paddingX: 15
+        }
+    }
+}
+
+const clubsOptions = [
+    'm 50.291466,22.698228 c 0,0 2.375,-1.9 2.375,-4.534 0,-1.542 -1.369,-4.102 -4.534,-4.102 -3.165,0 -4.534,2.561 -4.534,4.102 0,2.634 2.375,4.534 2.375,4.534 -2.638,-2.055 -7.341,-0.652 -7.341,3.455 0,2.056 1.68,4.318 4.318,4.318 3.165,0 4.534,-3.455 4.534,-3.455 0,0 0.402,3.938 -1.943,6.046 h 5.182 c -2.345,-2.107 -1.943,-6.046 -1.943,-6.046 0,0 1.369,3.455 4.534,3.455 2.639,0 4.318,-2.263 4.318,-4.318 0,-4.107 -4.703,-5.51 -7.341,-3.455 z'
+]
+
 $(() => {
     M.Collapsible.init($('.collapsible'), {});
 
@@ -15,11 +84,16 @@ $(() => {
 
     var clubsPath = 'm 50.291466,22.698228 c 0,0 2.375,-1.9 2.375,-4.534 0,-1.542 -1.369,-4.102 -4.534,-4.102 -3.165,0 -4.534,2.561 -4.534,4.102 0,2.634 2.375,4.534 2.375,4.534 -2.638,-2.055 -7.341,-0.652 -7.341,3.455 0,2.056 1.68,4.318 4.318,4.318 3.165,0 4.534,-3.455 4.534,-3.455 0,0 0.402,3.938 -1.943,6.046 h 5.182 c -2.345,-2.107 -1.943,-6.046 -1.943,-6.046 0,0 1.369,3.455 4.534,3.455 2.639,0 4.318,-2.263 4.318,-4.318 0,-4.107 -4.703,-5.51 -7.341,-3.455 z'
     var clubsGroup = '<g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1"><g id="use65" transform="matrix(0.27175119,0,0,0.27175128,126.77642,135.0577)"><path d="m 30,150 c 5,235 55,250 100,350 H -130 C -85,400 -35,385 -30,150 a 10,10 0 0 0 -20,0 210,210 0 1 1 -74,-201 10,10 0 0 0 14,-14 230,230 0 1 1 220,0 10,10 0 0 0 14,14 210,210 0 1 1 -74,201 10,10 0 0 0 -20,0 z" fill="#000000" id="path1024"></path></g></g>'
+    
+    var cardBackground = draw.rect(250, 350)
+    cardBackground.fill('#FFF')
+    cardBackground.radius(25)
+    
     var path = draw.path(clubsPath)
     path.fill('#000000')//.move(0, 0)
-    path.x(50)
+    path.x(15)
     path.y(50)
-    path.size('1', '1')
+    path.size(3, 3)
     console.log(path.transform())
     path.transform({
         rotate: 0,
