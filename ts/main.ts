@@ -155,6 +155,41 @@ var testSettings: CardSettings = {
                 paddingY: 50,
                 paddingX: 10,
             }
+        },
+        {
+            enabled: true,
+            location: CornerPipLocation.TopRight,
+            character: {
+                enabled: true,
+                fontSize: 25,
+                paddingY: 10,
+                paddingX: 22.5,
+                centerPadX: true,
+                color: '#0F0'
+            },
+            pip: {
+                enabled: true,
+                width: 25,
+                paddingY: 50,
+                paddingX: 10,
+            }
+        },
+        {
+            enabled: true,
+            location: CornerPipLocation.BottomLeft,
+            character: {
+                enabled: true,
+                fontSize: 25,
+                paddingY: 10,
+                paddingX: 22.5,
+                centerPadX: true
+            },
+            pip: {
+                enabled: true,
+                width: 25,
+                paddingY: 50,
+                paddingX: 10,
+            }
         }
     ]
 }
@@ -369,16 +404,17 @@ class CardSvg {
         const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
         const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
         const outlineAdjust = outlineAffectsPosition ?? false ? this.settings.background.outline?.width ?? 0 : 0
+        const xVal = xPad - xCenterAdjust + outlineAdjust
+        const yVal = yPad - yCenterAdjust + outlineAdjust
         if (location < CornerPipLocation.TopRight) {
             // Top Left - Bottom Right
-            item.move(xPad - xCenterAdjust + outlineAdjust, yPad - yCenterAdjust + outlineAdjust)
-            //pipObject.
-            console.log(item.bbox())
-            if (location == CornerPipLocation.BottomRight) {
-                item.rotate(180, this.cardSize.x / 2, this.cardSize.y / 2)
-            }
+            item.move(xVal, yVal)
         } else {
             // Top Right - Bottom Left
+            item.move(this.canvas.rbox().w - item.bbox().w - xVal, yVal)
+        }
+        if (location == CornerPipLocation.BottomLeft || location == CornerPipLocation.BottomRight) {
+            item.rotate(180, this.cardSize.x / 2, this.cardSize.y / 2)
         }
         return item
     }
