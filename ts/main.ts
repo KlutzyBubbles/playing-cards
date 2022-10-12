@@ -23,15 +23,29 @@ log.init({ cardClass: 'card_class', user: 'user' }, (level, tag, msg, params) =>
 
 type HexColor = `#${string}`;
 
-interface CornerPipSubSettings {
+interface CornerPipSubSettings extends CornerPipSubSettingsBase {
     width: number
     height?: number
+}
+
+interface CornerPipCharacterSettings extends CornerPipSubSettingsBase {
+    fontSize: number
+    font?: string
+}
+
+interface CornerPipSubSettingsBase {
+    enabled: boolean
     paddingY: number
     paddingX: number
+    centerPad?: boolean
+    centerPadX?: boolean
+    centerPadY?: boolean
+    outlineAffectsPosition?: boolean
     color?: HexColor
 }
 
 type PipType = 'club' | 'spade' | 'heart' | 'diamond'
+type LineCap = 'butt' | 'round' | 'square'
 
 enum CornerPipLocation {
     TopLeft = 0,
@@ -43,7 +57,8 @@ enum CornerPipLocation {
 interface CornerPipSettings {
     enabled: boolean
     location: CornerPipLocation
-    character?: CornerPipSubSettings
+    character?: CornerPipCharacterSettings
+    outlineAffectsPosition?: boolean
     pip?: CornerPipSubSettings
     color?: HexColor
 }
@@ -58,10 +73,25 @@ interface DefaultColors {
     default: HexColor
 }
 
+interface OutlineSettings {
+    enabled: boolean
+    color?: HexColor
+    opacity?: number
+    lineCap?: LineCap
+    dashArray?: string
+    dashOffset?: number
+    width: number
+}
+
+interface BackgroundSettings {
+    outline?: OutlineSettings
+    color: HexColor
+}
+
 interface CardSettings {
-    drawOutline: boolean
+    outlineAffectsPosition?: boolean
     radius?: number
-    backgroundColor: HexColor
+    background: BackgroundSettings
     defaultColors: DefaultColors
     cornerPips: CornerPipSettings[]
 }
@@ -72,9 +102,15 @@ interface XY {
 }
 
 var testSettings: CardSettings = {
-    drawOutline: false,
+    outlineAffectsPosition: true,
     radius: 12,
-    backgroundColor: "#FFF",
+    background: {
+        outline: {
+            enabled: true,
+            width: 10
+        },
+        color: "#FFF",
+    },
     defaultColors: {
         club: '#000',
         spade: '#000',
@@ -89,12 +125,32 @@ var testSettings: CardSettings = {
             enabled: true,
             location: CornerPipLocation.TopLeft,
             character: {
-                width: 3,
-                paddingY: 50,
-                paddingX: 10,
+                enabled: true,
+                fontSize: 25,
+                paddingY: 10,
+                paddingX: 22.5,
+                centerPadX: true,
                 color: '#0F0'
             },
             pip: {
+                enabled: true,
+                width: 25,
+                paddingY: 50,
+                paddingX: 10,
+            }
+        },
+        {
+            enabled: true,
+            location: CornerPipLocation.BottomRight,
+            character: {
+                enabled: true,
+                fontSize: 25,
+                paddingY: 10,
+                paddingX: 22.5,
+                centerPadX: true
+            },
+            pip: {
+                enabled: true,
                 width: 25,
                 paddingY: 50,
                 paddingX: 10,
@@ -165,7 +221,7 @@ class CardSvg {
     private canvas: Svg;
     private settings: CardSettings;
     private cardSize: XY;
-    
+
     private type: PipType;
     private typeIndex: number;
     private character: string;
@@ -227,9 +283,27 @@ class CardSvg {
         log.trace(tag.cardClass, 'processCornerPip 2 params')
         log.trace(tag.cardClass, cornerPipSettings)
         log.trace(tag.cardClass, paths)
+        log.trace(tag.cardClass, false ?? true)
+        if (!cornerPipSettings.enabled) {
+            return {}
+        }
         var cornerPip: Path | undefined = paths?.pip;
         var cornerCharacter: Text | undefined = paths?.character;
-        if (cornerPipSettings.pip !== undefined) {
+        var defaultColor = this.settings.defaultColors[this.type]
+        if (defaultColor === undefined) {
+            switch (this.type) {
+                case 'club':
+                case 'spade':
+                    defaultColor = this.settings.defaultColors['black']
+                case 'heart':
+                case 'diamond':
+                    defaultColor = this.settings.defaultColors['red']
+                default:
+                    defaultColor = this.settings.defaultColors.default
+            }
+            defaultColor = defaultColor ?? this.settings.defaultColors.default
+        }
+        if (cornerPipSettings.pip !== undefined && cornerPipSettings.pip.enabled) {
             log.trace(tag.cardClass, 'cornerPipSettings.pip not undefined')
             const pipSettings = cornerPipSettings.pip
             try {
@@ -242,23 +316,46 @@ class CardSvg {
                 log.trace(tag.cardClass, 'cornerPip undefined')
                 cornerPip = this.canvas.path(chosenPath)
             }
-            var defaultColor = this.settings.defaultColors[this.type]
-            if (defaultColor === undefined) {
-                switch (this.type) {
-                    case 'club':
-                    case 'spade':
-                        defaultColor = this.settings.defaultColors['black']
-                    case 'heart':
-                    case 'diamond':
-                        defaultColor = this.settings.defaultColors['red']
-                    default:
-                        defaultColor = this.settings.defaultColors.default
-                }
-                defaultColor = defaultColor ?? this.settings.defaultColors.default
-            }
             cornerPip.fill(pipSettings.color ?? cornerPipSettings.color ?? defaultColor)
             cornerPip.size(pipSettings.width, pipSettings.height)
-            cornerPip = this.positionCornerItem(cornerPip, pipSettings.paddingX, pipSettings.paddingY, cornerPipSettings.location) as Path
+            cornerPip = this.positionCornerItem(
+                cornerPip,
+                pipSettings.paddingX,
+                pipSettings.paddingY,
+                cornerPipSettings.location,
+                pipSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
+                pipSettings.centerPadX ?? pipSettings.centerPad,
+                pipSettings.centerPadY ?? pipSettings.centerPad
+            ) as Path
+        } else {
+            cornerPip = undefined
+        }
+        if (cornerPipSettings.character !== undefined && cornerPipSettings.character.enabled) {
+            log.trace(tag.cardClass, 'cornerPipSettings.character not undefined')
+            const characterSettings = cornerPipSettings.character
+            if (cornerCharacter === undefined) {
+                log.trace(tag.cardClass, 'cornerPip undefined')
+                cornerCharacter = this.canvas.text(this.character)
+            }
+            cornerCharacter.build(false)
+            cornerCharacter.plain(this.character)
+            cornerCharacter.font({
+                family: characterSettings.font ?? 'Helvetica',
+                size: characterSettings.fontSize,
+                anchor: 'middle',
+                // leading: '1.5em'
+            })
+            cornerCharacter.fill(characterSettings.color ?? cornerPipSettings.color ?? defaultColor)
+            //cornerCharacter.size(characterSettings.width, characterSettings.height)
+            cornerCharacter = this.positionCornerItem(
+                cornerCharacter,
+                characterSettings.paddingX,
+                characterSettings.paddingY,
+                cornerPipSettings.location,
+                characterSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
+                characterSettings.centerPadX ?? characterSettings.centerPad,
+                characterSettings.centerPadY ?? characterSettings.centerPad
+            ) as Text
         } else {
             cornerPip = undefined
         }
@@ -268,10 +365,13 @@ class CardSvg {
         }
     }
 
-    private positionCornerItem(item: Path | Text, xPad: number, yPad: number, location: CornerPipLocation): Path | Text {
+    private positionCornerItem(item: Path | Text, xPad: number, yPad: number, location: CornerPipLocation, outlineAffectsPosition?: boolean, centerPadX?: boolean, centerPadY?: boolean): Path | Text {
+        const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
+        const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
+        const outlineAdjust = outlineAffectsPosition ?? false ? this.settings.background.outline?.width ?? 0 : 0
         if (location < CornerPipLocation.TopRight) {
             // Top Left - Bottom Right
-            item.move(xPad, yPad)
+            item.move(xPad - xCenterAdjust + outlineAdjust, yPad - yCenterAdjust + outlineAdjust)
             //pipObject.
             console.log(item.bbox())
             if (location == CornerPipLocation.BottomRight) {
@@ -299,7 +399,23 @@ class CardSvg {
             this.cardBackground = this.canvas.rect(this.cardSize.x, this.cardSize.y)
         }
         this.cardBackground.move(0, 0)
-        this.cardBackground.fill(this.settings.backgroundColor)
+        this.cardBackground.fill(this.settings.background.color)
+        if (this.settings.background.outline !== undefined && this.settings.background.outline.enabled) {
+            const outlineSettings = this.settings.background.outline
+            const outlineAdjust = outlineSettings.width / 2
+            this.cardBackground.remove()
+            this.cardBackground = this.canvas.rect(this.cardSize.x - outlineSettings.width, this.cardSize.y - outlineSettings.width)
+            this.cardBackground.move(outlineAdjust, outlineAdjust)
+            this.cardBackground.fill(this.settings.background.color)
+            this.cardBackground.stroke({
+                color: outlineSettings.color ?? this.settings.defaultColors.default,
+                width: outlineSettings.width,
+                opacity: outlineSettings.opacity,
+                linecap: outlineSettings.lineCap,
+                dasharray: outlineSettings.dashArray,
+                dashoffset: outlineSettings.dashOffset
+            })
+        }
         this.cardBackground.radius(this.settings.radius ?? 0)
         return this.canvas
     }
