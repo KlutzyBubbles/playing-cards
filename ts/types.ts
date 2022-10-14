@@ -89,7 +89,9 @@ export interface Scale {
 
 export interface CenterPipSettings {
     enabled: boolean
-    scale: Scale | Scale[]
+    color?: HexColor
+    width?: number
+    height?: number
     location: PipLocationName
     locationScale: number
 }

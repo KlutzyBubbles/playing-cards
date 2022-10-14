@@ -22,7 +22,8 @@ import {
     CenterBackgroundSettings,
     CenterPipLayout,
     CenterPipSettings,
-    Scale
+    Scale,
+    RotatableXY
 } from "./types";
 
 const logger = {
@@ -42,7 +43,7 @@ var testSettings: CardSettings = {
     background: {
         enabled: true,
         outline: {
-            enabled: true,
+            enabled: false,
             width: 10
         },
         color: "#FFF",
@@ -74,9 +75,7 @@ var testSettings: CardSettings = {
         },
         pips: {
             enabled: true,
-            scale: {
-                width: 40
-            },
+            width: 50,
             location: PipLocationName.Standard,
             locationScale: 1
         }
@@ -89,13 +88,13 @@ var testSettings: CardSettings = {
                 enabled: true,
                 fontSize: 25,
                 paddingY: 10,
-                paddingX: 22.5,
-                centerPadX: true,
-                color: '#0F0'
+                paddingX: 21.5,
+                centerPadX: true
             },
             pip: {
                 enabled: true,
-                width: 25,
+                width: 23,
+                height: 30,
                 paddingY: 50,
                 paddingX: 10,
             }
@@ -107,18 +106,19 @@ var testSettings: CardSettings = {
                 enabled: true,
                 fontSize: 25,
                 paddingY: 10,
-                paddingX: 22.5,
+                paddingX: 21.5,
                 centerPadX: true
             },
             pip: {
                 enabled: true,
-                width: 25,
+                width: 23,
+                height: 30,
                 paddingY: 50,
                 paddingX: 10,
             }
         },
         {
-            enabled: true,
+            enabled: false,
             location: CornerPipLocation.TopRight,
             character: {
                 enabled: true,
@@ -136,7 +136,7 @@ var testSettings: CardSettings = {
             }
         },
         {
-            enabled: true,
+            enabled: false,
             location: CornerPipLocation.BottomLeft,
             character: {
                 enabled: true,
@@ -173,305 +173,6 @@ const pipOptions = {
 const pipLocations: CenterPipLayout[] = [
     standardPipLocations
 ]
-/** 
-const pipLocations = {
-    '1': [
-        {
-            x: 0,
-            y: 0,
-            rotation: 0
-        }
-    ],
-    '2': [
-        {
-            x: 0,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 0,
-            y: -150,
-            rotation: 180
-        }
-    ],
-    '3': [
-        {
-            x: 0,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 0,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 0,
-            y: -150,
-            rotation: 180
-        }
-    ],
-    '4': [
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 1800
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        }
-    ],
-    '5': [
-        {
-            x: 0,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 1800
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        }
-    ],
-    '6': [
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 1800
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: 0,
-            rotation: 0
-        }
-    ],
-    '7': [
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 1800
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 0,
-            y: 75,
-            rotation: 0
-        }
-    ],
-    '8': [
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: 0,
-            rotation: 0
-        },
-        {
-            x: 0,
-            y: 75,
-            rotation: 0
-        },
-        {
-            x: 0,
-            y: -75,
-            rotation: 180
-        }
-    ],
-    '9': [
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: 75,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: 75,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: -75,
-            rotation: 180
-        },
-        {
-            x: 110,
-            y: -75,
-            rotation: 180
-        },
-        {
-            x: 0,
-            y: 0,
-            rotation: 0
-        }
-    ],
-    '10': [
-        {
-            x: 110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: -150,
-            rotation: 180
-        },
-        {
-            x: -110,
-            y: 150,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: 75,
-            rotation: 0
-        },
-        {
-            x: 110,
-            y: 75,
-            rotation: 0
-        },
-        {
-            x: -110,
-            y: -75,
-            rotation: 180
-        },
-        {
-            x: 110,
-            y: -75,
-            rotation: 180
-        },
-        {
-            x: 0,
-            y: -75,
-            rotation: 180
-        },
-        {
-            x: 0,
-            y: 75,
-            rotation: 0
-        }
-    ],
-}
-*/
 
 const cardSize: XY = {
     x: 250,
@@ -482,7 +183,7 @@ $(() => {
     M.Collapsible.init($('.collapsible'), {});
     var draw = SVG().addTo('#example-card').size(`${cardSize.x}px`, `${cardSize.y}px`)
 
-    var card = new CardSvg(draw, testSettings, 'heart', '10')
+    var card = new CardSvg(draw, testSettings, 'spade', '0')
     card.drawCard()
 })
 
@@ -539,6 +240,7 @@ class CardSvg {
         this.drawCardBackground()
         this.drawCornerPips()
         this.drawCenterBackground()
+        this.drawCenterPips()
         return this.canvas
     }
 
@@ -571,7 +273,6 @@ class CardSvg {
         }
         var cornerPip: Path | undefined = paths?.pip;
         var cornerCharacter: Text | undefined = paths?.character;
-        var defaultColor = this.settings.defaultColors[this.type]
         if (cornerPipSettings.pip !== undefined && cornerPipSettings.pip.enabled) {
             log.trace(tag.cardClass, 'cornerPipSettings.pip not undefined')
             const pipSettings = cornerPipSettings.pip
@@ -653,7 +354,7 @@ class CardSvg {
         log.trace(tag.cardClass, '-------------------')
         const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
         const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
-        const outlineAdjust = outlineAffectsPosition ?? false ? this.settings.background?.outline?.width ?? 0 : 0
+        const outlineAdjust = outlineAffectsPosition ?? false ? this.settings.background?.outline?.enabled ?? false ? this.settings.background?.outline?.width ?? 0 : 0 : 0
         const xVal = xPad - xCenterAdjust + outlineAdjust
         const yVal = yPad - yCenterAdjust + outlineAdjust
         if (location < CornerPipLocation.TopRight) {
@@ -724,7 +425,7 @@ class CardSvg {
             background.move(paddingX + outlineAdjust, paddingY + outlineAdjust)
             background.fill(settings.color)
             background.stroke({
-                color: outlineSettings.color ?? this.settings.defaultColors.default,
+                color: outlineSettings.color ?? this.defaultColor,
                 width: outlineSettings.width,
                 opacity: outlineSettings.opacity,
                 linecap: outlineSettings.lineCap,
@@ -743,96 +444,64 @@ class CardSvg {
         return this.character.toLowerCase()
     }
 
-    /*
     private drawCenterPips(): Svg {
         if (this.settings.center.pips !== undefined && this.settings.center.pips.enabled) {
             const centerPipSettings = this.settings.center.pips
             const pipLocationSelection = pipLocations[this.settings.center.pips.location]
-            const pipLocationsList = this.getCenterPipName() in Object.keys(pipLocationSelection) ? pipLocationSelection[this.getCenterPipName()] : []
+            const pipLocationsList = pipLocationSelection[this.getCenterPipName()] ?? []
             if (this.centerPips.length != pipLocationsList.length) {
                 this.resetCenterPips()
             }
             if (this.centerPips.length === 0) {
-                for (var centerPipsSettings of this.settings.centerPips) {
-                    this.centerPips.push(this.processCornerPip(centerPipsSettings))
+                //for (var centerPipsSettings of this.settings.centerPips) {
+                for (var pipLocationItem of pipLocationsList) {
+                    this.centerPips.push(this.processCenterPip(
+                        centerPipSettings,
+                        pipLocationItem
+                    ))
                 }
             } else {
-                var replacementPips: CornerPipPath[] = []
-                for (const [index, cornerPip] of this.cornerPips.entries()) {
-                    replacementPips.push(this.processCornerPip(this.settings.cornerPips[index], cornerPip))
+                var replacementPips: Path[] = []
+                for (const [index, centerPip] of this.centerPips.entries()) {
+                    replacementPips.push(this.processCenterPip(
+                        centerPipSettings,
+                        pipLocationsList[index],
+                        centerPip
+                    ))
                 }
-                this.cornerPips = replacementPips
+                this.centerPips = replacementPips
             }
         }
         return this.canvas
     }
 
-    private processCenterPip(scale: Scale, locationScale: number, pip?: Path): CornerPipPath {
-        log.trace(tag.cardClass, 'processCenterPip(3)')
-        log.trace(tag.cardClass, scale)
-        log.trace(tag.cardClass, locationScale)
+    private processCenterPip(centerPipSettings: CenterPipSettings, location: RotatableXY, pip?: Path): Path {
+        log.trace(tag.cardClass, 'processCenterPip(4)')
+        log.trace(tag.cardClass, centerPipSettings)
+        log.trace(tag.cardClass, location)
         log.trace(tag.cardClass, pip)
         log.trace(tag.cardClass, '-------------------')
-        if (cornerPipSettings.pip !== undefined && cornerPipSettings.pip.enabled) {
-            log.trace(tag.cardClass, 'cornerPipSettings.pip not undefined')
-            const pipSettings = cornerPipSettings.pip
-            try {
-                var chosenPath = pipOptions[this.type][this.typeIndex]
-            } catch (e) {
-                log.warn(tag.user, 'Chosen index too far, using 0')
-                chosenPath = pipOptions[this.type][0]
-            }   
-            if (cornerPip === undefined) {
-                log.trace(tag.cardClass, 'cornerPip undefined')
-                cornerPip = this.canvas.path(chosenPath)
-            }
-            cornerPip.fill(pipSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
-            cornerPip.size(pipSettings.width, pipSettings.height)
-            cornerPip = this.positionCornerItem(
-                cornerPip,
-                pipSettings.paddingX,
-                pipSettings.paddingY,
-                cornerPipSettings.location,
-                pipSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
-                pipSettings.centerPadX ?? pipSettings.centerPad,
-                pipSettings.centerPadY ?? pipSettings.centerPad
-            ) as Path
-        } else {
-            cornerPip = undefined
+        try {
+            var chosenPath = pipOptions[this.type][this.typeIndex]
+        } catch (e) {
+            log.warn(tag.user, 'Chosen index too far, using 0')
+            chosenPath = pipOptions[this.type][0]
         }
-        if (cornerPipSettings.character !== undefined && cornerPipSettings.character.enabled) {
-            log.trace(tag.cardClass, 'cornerPipSettings.character not undefined')
-            const characterSettings = cornerPipSettings.character
-            if (cornerCharacter === undefined) {
-                log.trace(tag.cardClass, 'cornerPip undefined')
-                cornerCharacter = this.canvas.text(this.character)
-            }
-            cornerCharacter.build(false)
-            cornerCharacter.plain(this.character)
-            cornerCharacter.font({
-                family: characterSettings.font ?? 'Helvetica',
-                size: characterSettings.fontSize,
-                anchor: 'middle',
-                // leading: '1.5em'
-            })
-            cornerCharacter.fill(characterSettings.color ?? cornerPipSettings.color ?? defaultColor)
-            //cornerCharacter.size(characterSettings.width, characterSettings.height)
-            cornerCharacter = this.positionCornerItem(
-                cornerCharacter,
-                characterSettings.paddingX,
-                characterSettings.paddingY,
-                cornerPipSettings.location,
-                characterSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
-                characterSettings.centerPadX ?? characterSettings.centerPad,
-                characterSettings.centerPadY ?? characterSettings.centerPad
-            ) as Text
-        } else {
-            cornerPip = undefined
+        if (pip === undefined) {
+            log.trace(tag.cardClass, 'pip undefined')
+            pip = this.canvas.path(chosenPath)
         }
-        return {
-            character: cornerCharacter,
-            pip: cornerPip
-        }
+        pip.fill(centerPipSettings.color ?? this.defaultColor)
+        pip.size(centerPipSettings.width, centerPipSettings.height)
+        const zeroX = this.cardSize.x / 2
+        const zeroY = this.cardSize.y / 2
+        const locationXScaled = location.x * centerPipSettings.locationScale
+        const locationYScaled = location.y * centerPipSettings.locationScale
+        const widthAdjust = pip.bbox().w / 2
+        const heightAdjust = pip.bbox().h / 2
+        pip.move(zeroX + locationXScaled - widthAdjust, zeroY + locationYScaled - heightAdjust)
+        pip.rotate(location.rotation ?? 0)
+        return pip
     }
 
     private resetCenterPips(): Svg {
@@ -843,7 +512,6 @@ class CardSvg {
         this.centerPips = []
         return this.canvas
     }
-    */
 
 }
 
