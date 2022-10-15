@@ -4,7 +4,7 @@ console.log('yay')
 
 import $ from "jquery";
 import * as M from 'materialize-css'
-import { SVG, Path, Svg, Rect, Text } from '@svgdotjs/svg.js'
+import { SVG, Path, Svg, Rect, Text, Polygon } from '@svgdotjs/svg.js'
 
 import * as standardPipLocations from './pipLocations/standard.json'
 
@@ -181,10 +181,82 @@ const cardSize: XY = {
 
 $(() => {
     M.Collapsible.init($('.collapsible'), {});
-    var draw = SVG().addTo('#example-card').size(`${cardSize.x}px`, `${cardSize.y}px`)
+    // var draw = SVG().addTo('#example-card').size(`${cardSize.x}px`, `${cardSize.y}px`)
 
-    var card = new CardSvg(draw, testSettings, 'spade', '0')
-    card.drawCard()
+    var test = SVG().addTo('#test').size(`${cardSize.x}px`, `${cardSize.y}px`)
+    test.rect(cardSize.x, cardSize.y).fill('#FFF').move(0, 0)
+    var pip = test.path(pipOptions.club[0])
+    pip.fill('#000')
+    pip.size(50)
+    pip.move(100, 50)
+    var w = pip.bbox().w
+    var h = pip.bbox().h
+
+    // var rect = test.rect(w * 2, h * 2).move(100 - (w + (w / 2)), 50 - (h / 2)).fill({ color: '#FFF' })
+    // rect.rotate(-45, 100 + (w / 2), 50 + (h / 2))
+    
+    // var jagged = createJaggedEdge(test, w * 2, h * 2, w / 10, 6).move(100 - (w + (w / 2)) + (w / 20), 50 - (h / 2)).fill('#FFF')
+    // jagged.rotate(0, 100 + (w / 2), 50 + (h / 2))
+
+    var spiked = createSpikedEdge(test, w * 2, h * 2, w / 10, 6).move(100 - (w + (w / 2) - (w / 20)), 50 - (h / 2)).fill('#FFF')
+    spiked.rotate(45, 100 + (w / 2), 50 + (h / 2))
+    
+    var mask = test.mask()
+
+    mask.add(spiked)
+    
+    pip.maskWith(mask)
+
+    var edge = createSpikedEdge(test, w * 2, h * 2, w / 10, 6).move(100 - (w + (w / 2)), 50 - (h / 2)).fill('#FFF')
+
+    edge.fill('#000')
+    edge.move(100, 150)
+
+    function createJaggedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
+        var points = `0,${height} 0,0 ${width},0`
+        var interval = height / spikes
+        for (var i = 0; i < spikes; i++) {
+            points += ` ${width - spikeDepth},${(i * interval)}`
+            points += ` ${width},${(i * interval) + interval}`
+        }
+        var polygon = canvas.polygon(points)
+        return polygon
+    }
+
+    function createSpikedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
+        var points = `0,${height} 0,0 ${width},0`
+        var halfStep = height / ((spikes * 2) + 1)
+        var wholeStep = halfStep * 2
+        for (var i = 0; i < spikes + 1; i++) {
+            points += ` ${width},${(i * wholeStep)}`
+            points += ` ${width - spikeDepth},${(i * wholeStep) + halfStep}`
+            if (i !== spikes) {
+                points += ` ${width},${((i + 1) * wholeStep)}`
+            }
+        }
+        var polygon = canvas.polygon(points)
+        return polygon
+    }
+
+    var dupePip = pip.clone()
+    test.add(dupePip)
+    dupePip.rotate(180, 100 + (w / 2), 50 + (h / 2))
+
+    var characters = ['A', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+    var suits = {'c': 'club', 's': 'spade', 'h': 'heart', 'd': 'diamond'}
+
+    var cards: CardSvg[] = []
+
+    for (var character of characters) {
+        for (const [suitCharacter, suit] of Object.entries(suits)) {
+            //var draw = SVG().addTo(`#${suitCharacter}${character.toLowerCase()}`).size(`${cardSize.x}px`, `${cardSize.y}px`)
+            var draw = SVG().addTo(`#all`).size(`${cardSize.x}px`, `${cardSize.y}px`)
+            var card = new CardSvg(draw, testSettings, suit as PipType, character)
+            card.drawCard()
+            cards.push(card)
+        }
+    }
+    // var card = new CardSvg(draw, testSettings, 'spade', '0')
 })
 
 class CardSvg {
@@ -218,6 +290,7 @@ class CardSvg {
     }
 
     get defaultColor() {
+        log.trace(tag.cardClass, 'get defaultColor()')
         var defaultColor = this.settings.defaultColors[this.type]
         if (defaultColor === undefined) {
             switch (this.type) {
@@ -233,6 +306,14 @@ class CardSvg {
             defaultColor = defaultColor ?? this.settings.defaultColors.default
         }
         return defaultColor
+    }
+
+    get centerPipName(): string {
+        log.trace(tag.cardClass, 'get centerPipName()')
+        if (this.character.toLowerCase() === 'a') {
+            return '1'
+        }
+        return this.character.toLowerCase()
     }
 
     public drawCard(): Svg {
@@ -312,11 +393,9 @@ class CardSvg {
             cornerCharacter.font({
                 family: characterSettings.font ?? 'Helvetica',
                 size: characterSettings.fontSize,
-                anchor: 'middle',
-                // leading: '1.5em'
+                anchor: 'middle'
             })
             cornerCharacter.fill(characterSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
-            //cornerCharacter.size(characterSettings.width, characterSettings.height)
             cornerCharacter = this.positionCornerItem(
                 cornerCharacter,
                 characterSettings.paddingX,
@@ -381,7 +460,7 @@ class CardSvg {
     }
 
     private drawCardBackground(): Svg {
-        log.trace(tag.cardClass, 'drawBackground()')
+        log.trace(tag.cardClass, 'drawCardBackground()')
         if (this.cardBackground === undefined) {
             this.cardBackground = this.canvas.rect(this.cardSize.x, this.cardSize.y)
         }
@@ -410,7 +489,7 @@ class CardSvg {
     }
 
     private moveBackground(background: Rect, settings: BackgroundSettings | CenterBackgroundSettings): Svg {
-        log.trace(tag.cardClass, 'drawBackground()')
+        log.trace(tag.cardClass, 'moveBackground()')
         const paddingX = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingX ?? 0 : 0
         const paddingY = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingY ?? 0 : 0
         const width = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).width ?? 0 : this.cardSize.x
@@ -437,18 +516,12 @@ class CardSvg {
         return this.canvas
     }
 
-    private getCenterPipName(): string {
-        if (this.character.toLowerCase() === 'a') {
-            return '1'
-        }
-        return this.character.toLowerCase()
-    }
-
     private drawCenterPips(): Svg {
+        log.trace(tag.cardClass, 'drawCenterPips()')
         if (this.settings.center.pips !== undefined && this.settings.center.pips.enabled) {
             const centerPipSettings = this.settings.center.pips
             const pipLocationSelection = pipLocations[this.settings.center.pips.location]
-            const pipLocationsList = pipLocationSelection[this.getCenterPipName()] ?? []
+            const pipLocationsList = pipLocationSelection[this.centerPipName] ?? []
             if (this.centerPips.length != pipLocationsList.length) {
                 this.resetCenterPips()
             }
@@ -476,7 +549,7 @@ class CardSvg {
     }
 
     private processCenterPip(centerPipSettings: CenterPipSettings, location: RotatableXY, pip?: Path): Path {
-        log.trace(tag.cardClass, 'processCenterPip(4)')
+        log.trace(tag.cardClass, 'processCenterPip(3)')
         log.trace(tag.cardClass, centerPipSettings)
         log.trace(tag.cardClass, location)
         log.trace(tag.cardClass, pip)
