@@ -1,12 +1,9 @@
 
 import { Path, Text } from '@svgdotjs/svg.js'
 
-type HexColor = `#${string}`;
+export type HexColor = `#${string}`;
 
-export interface CornerPipSubSettings extends CornerPipSubSettingsBase {
-    width: number
-    height?: number
-}
+export interface CornerPipSubSettings extends CornerPipSubSettingsBase, Scale {}
 
 export interface CornerPipCharacterSettings extends CornerPipSubSettingsBase {
     fontSize: number
@@ -15,8 +12,8 @@ export interface CornerPipCharacterSettings extends CornerPipSubSettingsBase {
 
 export interface CornerPipSubSettingsBase {
     enabled: boolean
-    paddingY: number
-    paddingX: number
+    paddingY?: number
+    paddingX?: number
     centerPad?: boolean
     centerPadX?: boolean
     centerPadY?: boolean
@@ -25,6 +22,7 @@ export interface CornerPipSubSettingsBase {
 }
 
 export type PipType = 'club' | 'spade' | 'heart' | 'diamond'
+export type TypeColor = 'black' | 'red' | 'all'
 export type LineCap = 'butt' | 'round' | 'square'
 
 export enum CornerPipLocation {
@@ -42,6 +40,15 @@ export interface CornerPipSettings {
     pip?: CornerPipSubSettings
     color?: HexColor
 }
+export interface TypedCornerPipSettings {
+    club?: CornerPipSettings
+    spade?: CornerPipSettings
+    heart?: CornerPipSettings
+    diamond?: CornerPipSettings
+    red?: CornerPipSettings
+    black?: CornerPipSettings
+    all: CornerPipSettings
+}
 
 export interface DefaultColors {
     club?: HexColor
@@ -50,7 +57,7 @@ export interface DefaultColors {
     diamond?: HexColor
     red?: HexColor
     black?: HexColor
-    default: HexColor
+    all: HexColor
 }
 
 export interface OutlineSettings {
@@ -68,6 +75,16 @@ export interface BackgroundSettings {
     outline?: OutlineSettings
     color: HexColor
     radius?: number
+}
+
+export interface TypedBackgroundSettings {
+    club?: BackgroundSettings
+    spade?: BackgroundSettings
+    heart?: BackgroundSettings
+    diamond?: BackgroundSettings
+    red?: BackgroundSettings
+    black?: BackgroundSettings
+    all: BackgroundSettings
 }
 
 export interface CenterBackgroundSettings extends BackgroundSettings {
@@ -114,13 +131,22 @@ export interface CenterSettings {
     pips?: CenterPipSettings
     lines?: LineSettings[]
 }
+export interface TypedCenterSettings {
+    club?: CenterSettings
+    spade?: CenterSettings
+    heart?: CenterSettings
+    diamond?: CenterSettings
+    red?: CenterSettings
+    black?: CenterSettings
+    all: CenterSettings
+}
 
 export interface CardSettings {
     outlineAffectsPosition?: boolean
-    background?: BackgroundSettings
+    background?: TypedBackgroundSettings
     defaultColors: DefaultColors
-    center: CenterSettings
-    cornerPips: CornerPipSettings[]
+    center: TypedCenterSettings
+    cornerPips: TypedCornerPipSettings[]
 }
 
 export interface XY {

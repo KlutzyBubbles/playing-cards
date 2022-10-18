@@ -22,9 +22,11 @@ import {
     CenterBackgroundSettings,
     CenterPipLayout,
     CenterPipSettings,
-    Scale,
-    RotatableXY
+    RotatableXY,
+    TypeColor,
+    HexColor
 } from "./types";
+import merge from "ts-deepmerge";
 
 const logger = {
     [LogLevel.ERROR]: (tag, msg, params) => console.error(`[${chalk.red(tag)}]`, msg, ...params),
@@ -41,13 +43,24 @@ log.init({ cardClass: 'card_class', user: 'user' }, (level, tag, msg, params) =>
 var testSettings: CardSettings = {
     outlineAffectsPosition: true,
     background: {
-        enabled: true,
-        outline: {
-            enabled: false,
-            width: 10
+        all: {
+            enabled: true,
+            outline: {
+                enabled: false,
+                width: 10
+            },
+            color: "#FFF",
+            radius: 12,
         },
-        color: "#FFF",
-        radius: 12,
+        heart: {
+            enabled: true,
+            outline: {
+                enabled: true,
+                width: 10
+            },
+            color: "#000",
+            radius: 12,
+        }
     },
     defaultColors: {
         club: '#000',
@@ -56,100 +69,156 @@ var testSettings: CardSettings = {
         diamond: '#F00',
         red: '#F00',
         black: '#000',
-        default: '#000'
+        all: '#000'
     },
     center: {
-        background: {
-            enabled: false,
-            outline: {
-                enabled: true,
-                color: '#00F',
-                width: 2
+        all: {
+            background: {
+                enabled: false,
+                outline: {
+                    enabled: true,
+                    color: '#00F',
+                    width: 2
+                },
+                color: "#FFD47F",
+                width: 150,
+                height: 200,
+                paddingX: 50,
+                paddingY: 75,
+                radius: 5,
             },
-            color: "#FFD47F",
-            width: 150,
-            height: 200,
-            paddingX: 50,
-            paddingY: 75,
-            radius: 5,
+            pips: {
+                enabled: true,
+                width: 50,
+                location: PipLocationName.Standard,
+                locationScale: 1
+            }
         },
-        pips: {
-            enabled: true,
-            width: 50,
-            location: PipLocationName.Standard,
-            locationScale: 1
+        club: {
+            background: {
+                enabled: true,
+                outline: {
+                    enabled: true,
+                    color: '#00F',
+                    width: 2
+                },
+                color: "#FFD47F",
+                width: 150,
+                height: 200,
+                paddingX: 50,
+                paddingY: 75,
+                radius: 5,
+            },
+            pips: {
+                enabled: true,
+                width: 25,
+                location: PipLocationName.Standard,
+                locationScale: 0.5
+            }
         }
     },
     cornerPips: [
         {
-            enabled: true,
-            location: CornerPipLocation.TopLeft,
-            character: {
+            all: {
                 enabled: true,
-                fontSize: 25,
-                paddingY: 10,
-                paddingX: 21.5,
-                centerPadX: true
+                location: CornerPipLocation.TopLeft,
+                character: {
+                    enabled: true,
+                    fontSize: 25,
+                    paddingY: 10,
+                    paddingX: 21.5,
+                    centerPadX: true
+                },
+                pip: {
+                    enabled: true,
+                    width: 23,
+                    height: 30,
+                    paddingY: 50,
+                    paddingX: 10,
+                }
             },
-            pip: {
+            club: {
                 enabled: true,
-                width: 23,
-                height: 30,
-                paddingY: 50,
-                paddingX: 10,
+                location: CornerPipLocation.TopLeft,
+                character: {
+                    enabled: true,
+                    fontSize: 25
+                },
+                pip: {
+                    enabled: true,
+                    height: 25,
+                }
             }
         },
         {
-            enabled: true,
-            location: CornerPipLocation.BottomRight,
-            character: {
+            all: {
                 enabled: true,
-                fontSize: 25,
-                paddingY: 10,
-                paddingX: 21.5,
-                centerPadX: true
+                location: CornerPipLocation.BottomRight,
+                character: {
+                    enabled: true,
+                    fontSize: 25,
+                    paddingY: 10,
+                    paddingX: 21.5,
+                    centerPadX: true
+                },
+                pip: {
+                    enabled: true,
+                    width: 23,
+                    height: 30,
+                    paddingY: 50,
+                    paddingX: 10,
+                }
             },
-            pip: {
+            club: {
                 enabled: true,
-                width: 23,
-                height: 30,
-                paddingY: 50,
-                paddingX: 10,
+                location: CornerPipLocation.BottomRight,
+                character: {
+                    enabled: true,
+                    fontSize: 25
+                },
+                pip: {
+                    enabled: true,
+                    height: 25,
+                }
             }
         },
         {
-            enabled: false,
-            location: CornerPipLocation.TopRight,
-            character: {
-                enabled: true,
-                fontSize: 25,
-                paddingY: 10,
-                paddingX: 22.5,
-                centerPadX: true,
-                color: '#0F0'
-            },
-            pip: {
-                enabled: true,
-                width: 25,
-                paddingY: 50,
-                paddingX: 10,
+            all: {
+                enabled: false,
+                location: CornerPipLocation.TopRight,
+                character: {
+                    enabled: true,
+                    fontSize: 25,
+                    paddingY: 10,
+                    paddingX: 22.5,
+                    centerPadX: true,
+                    color: '#0F0'
+                },
+                pip: {
+                    enabled: true,
+                    width: 25,
+                    paddingY: 50,
+                    paddingX: 10,
+                }
             }
         },
         {
-            enabled: false,
-            location: CornerPipLocation.BottomLeft,
-            character: {
-                enabled: true,
-                fontSize: 25,
-                paddingY: 10,
-                paddingX: 22.5,
-                centerPadX: true
-            },
-            pip: {
-                enabled: true,
-                width: 25,
-                paddingY: 50,
-                paddingX: 10,
+            all: {
+                enabled: false,
+                location: CornerPipLocation.BottomLeft,
+                character: {
+                    enabled: true,
+                    fontSize: 25,
+                    paddingY: 10,
+                    paddingX: 22.5,
+                    centerPadX: true
+                },
+                pip: {
+                    enabled: true,
+                    width: 25,
+                    paddingY: 50,
+                    paddingX: 10,
+                }
             }
         }
     ]
@@ -289,23 +358,22 @@ class CardSvg {
         this.character = character
     }
 
-    get defaultColor() {
+    get defaultColor(): HexColor {
         log.trace(tag.cardClass, 'get defaultColor()')
-        var defaultColor = this.settings.defaultColors[this.type]
-        if (defaultColor === undefined) {
-            switch (this.type) {
-                case 'club':
-                case 'spade':
-                    defaultColor = this.settings.defaultColors['black']
-                case 'heart':
-                case 'diamond':
-                    defaultColor = this.settings.defaultColors['red']
-                default:
-                    defaultColor = this.settings.defaultColors.default
-            }
-            defaultColor = defaultColor ?? this.settings.defaultColors.default
+        return this.settings.defaultColors[this.type] ?? this.settings.defaultColors[this.typeColor] ?? this.settings.defaultColors.all
+    }
+
+    get typeColor(): TypeColor {
+        switch (this.type) {
+            case 'club':
+            case 'spade':
+                return 'black'
+            case 'heart':
+            case 'diamond':
+                return 'red'
+            default:
+                return 'all'
         }
-        return defaultColor
     }
 
     get centerPipName(): string {
@@ -332,12 +400,14 @@ class CardSvg {
         }
         if (this.cornerPips.length === 0) {
             for (var cornerPipSettings of this.settings.cornerPips) {
-                this.cornerPips.push(this.processCornerPip(cornerPipSettings))
+                this.cornerPips.push(this.processCornerPip(merge(cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)))
             }
         } else {
             var replacementPips: CornerPipPath[] = []
             for (const [index, cornerPip] of this.cornerPips.entries()) {
-                replacementPips.push(this.processCornerPip(this.settings.cornerPips[index], cornerPip))
+                const cornerPipSettings = this.settings.cornerPips[index]
+                const cornerPipSettingsMerged = merge(cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)
+                replacementPips.push(this.processCornerPip(cornerPipSettingsMerged, cornerPip))
             }
             this.cornerPips = replacementPips
         }
@@ -371,9 +441,9 @@ class CardSvg {
             cornerPip.size(pipSettings.width, pipSettings.height)
             cornerPip = this.positionCornerItem(
                 cornerPip,
+                cornerPipSettings.location,
                 pipSettings.paddingX,
                 pipSettings.paddingY,
-                cornerPipSettings.location,
                 pipSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
                 pipSettings.centerPadX ?? pipSettings.centerPad,
                 pipSettings.centerPadY ?? pipSettings.centerPad
@@ -398,9 +468,9 @@ class CardSvg {
             cornerCharacter.fill(characterSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
             cornerCharacter = this.positionCornerItem(
                 cornerCharacter,
+                cornerPipSettings.location,
                 characterSettings.paddingX,
                 characterSettings.paddingY,
-                cornerPipSettings.location,
                 characterSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
                 characterSettings.centerPadX ?? characterSettings.centerPad,
                 characterSettings.centerPadY ?? characterSettings.centerPad
@@ -416,9 +486,9 @@ class CardSvg {
 
     private positionCornerItem(
         item: Path | Text,
-        xPad: number,
-        yPad: number,
         location: CornerPipLocation,
+        xPad?: number,
+        yPad?: number,
         outlineAffectsPosition?: boolean,
         centerPadX?: boolean,
         centerPadY?: boolean): Path | Text {
@@ -433,9 +503,10 @@ class CardSvg {
         log.trace(tag.cardClass, '-------------------')
         const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
         const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
-        const outlineAdjust = outlineAffectsPosition ?? false ? this.settings.background?.outline?.enabled ?? false ? this.settings.background?.outline?.width ?? 0 : 0 : 0
-        const xVal = xPad - xCenterAdjust + outlineAdjust
-        const yVal = yPad - yCenterAdjust + outlineAdjust
+        const backgroundSettings = this.settings.background === undefined ? undefined : merge(this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        const outlineAdjust = outlineAffectsPosition ?? false ? backgroundSettings?.outline?.enabled ?? false ? backgroundSettings?.outline?.width ?? 0 : 0 : 0
+        const xVal = (xPad ?? 0) - xCenterAdjust + outlineAdjust
+        const yVal = (yPad ?? 0) - yCenterAdjust + outlineAdjust
         if (location < CornerPipLocation.TopRight) {
             // Top Left - Bottom Right
             item.move(xVal, yVal)
@@ -464,8 +535,9 @@ class CardSvg {
         if (this.cardBackground === undefined) {
             this.cardBackground = this.canvas.rect(this.cardSize.x, this.cardSize.y)
         }
-        if (this.settings.background !== undefined && this.settings.background.enabled) {
-            this.moveBackground(this.cardBackground, this.settings.background)
+        const backgroundSettings = this.settings.background === undefined ? undefined : merge(this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        if (backgroundSettings !== undefined && backgroundSettings.enabled) {
+            this.moveBackground(this.cardBackground, backgroundSettings)
         } else {
             this.cardBackground.remove()
             this.cardBackground = undefined
@@ -475,7 +547,7 @@ class CardSvg {
 
     private drawCenterBackground(): Svg {
         log.trace(tag.cardClass, 'drawBackground()')
-        var centerBackgroundSettings = this.settings.center.background
+        var centerBackgroundSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
         if (this.centerBackground === undefined) {
             this.centerBackground = this.canvas.rect(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0)
         }
@@ -518,15 +590,15 @@ class CardSvg {
 
     private drawCenterPips(): Svg {
         log.trace(tag.cardClass, 'drawCenterPips()')
-        if (this.settings.center.pips !== undefined && this.settings.center.pips.enabled) {
-            const centerPipSettings = this.settings.center.pips
-            const pipLocationSelection = pipLocations[this.settings.center.pips.location]
+        const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        if (centerSettings.pips !== undefined && centerSettings.pips.enabled) {
+            const centerPipSettings = centerSettings.pips
+            const pipLocationSelection = pipLocations[centerSettings.pips.location]
             const pipLocationsList = pipLocationSelection[this.centerPipName] ?? []
             if (this.centerPips.length != pipLocationsList.length) {
                 this.resetCenterPips()
             }
             if (this.centerPips.length === 0) {
-                //for (var centerPipsSettings of this.settings.centerPips) {
                 for (var pipLocationItem of pipLocationsList) {
                     this.centerPips.push(this.processCenterPip(
                         centerPipSettings,
