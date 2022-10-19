@@ -115,6 +115,19 @@ var testSettings: CardSettings = {
                 location: PipLocationName.Standard,
                 locationScale: 0.5
             }
+        },
+        diamond: {
+            pips: {
+                enabled: true,
+                width: 50,
+                location: PipLocationName.Standard,
+                locationScale: 1,
+                outline: {
+                    enabled: true,
+                    color: '#000',
+                    width: 1
+                },
+            }
         }
     },
     cornerPips: [
@@ -147,6 +160,29 @@ var testSettings: CardSettings = {
                 pip: {
                     enabled: true,
                     height: 25,
+                    outline: {
+                        enabled: true,
+                        color: '#00F',
+                        width: 1
+                    },
+                }
+            },
+            black: {
+                enabled: true,
+                location: CornerPipLocation.TopLeft,
+                character: {
+                    enabled: true,
+                    fontSize: 25
+                },
+                pip: {
+                    enabled: true,
+                    height: 25,
+                    color: '#FFF',
+                    outline: {
+                        enabled: true,
+                        color: '#0F0',
+                        width: 1
+                    },
                 }
             }
         },
@@ -439,6 +475,20 @@ class CardSvg {
             }
             cornerPip.fill(pipSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
             cornerPip.size(pipSettings.width, pipSettings.height)
+            if (pipSettings.outline !== undefined && pipSettings.outline.enabled) {
+                const outlineSettings = pipSettings.outline
+                // const outlineAdjust = outlineSettings.width / 2
+                log.error(tag.cardClass, 'GHFICNSJ')
+                log.error(tag.cardClass, outlineSettings.color)
+                cornerPip.stroke({
+                    color: outlineSettings.color ?? this.defaultColor,
+                    width: outlineSettings.width,
+                    opacity: outlineSettings.opacity,
+                    linecap: outlineSettings.lineCap,
+                    dasharray: outlineSettings.dashArray,
+                    dashoffset: outlineSettings.dashOffset
+                })
+            }
             cornerPip = this.positionCornerItem(
                 cornerPip,
                 cornerPipSettings.location,
@@ -638,6 +688,18 @@ class CardSvg {
         }
         pip.fill(centerPipSettings.color ?? this.defaultColor)
         pip.size(centerPipSettings.width, centerPipSettings.height)
+        if (centerPipSettings.outline !== undefined && centerPipSettings.outline.enabled) {
+            const outlineSettings = centerPipSettings.outline
+            // const outlineAdjust = outlineSettings.width / 2
+            pip.stroke({
+                color: outlineSettings.color ?? this.defaultColor,
+                width: outlineSettings.width,
+                opacity: outlineSettings.opacity,
+                linecap: outlineSettings.lineCap,
+                dasharray: outlineSettings.dashArray,
+                dashoffset: outlineSettings.dashOffset
+            })
+        }
         const zeroX = this.cardSize.x / 2
         const zeroY = this.cardSize.y / 2
         const locationXScaled = location.x * centerPipSettings.locationScale

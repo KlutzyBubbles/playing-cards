@@ -19,6 +19,7 @@ export interface CornerPipSubSettingsBase {
     centerPadY?: boolean
     outlineAffectsPosition?: boolean
     color?: HexColor
+    outline?: OutlineSettings
 }
 
 export type PipType = 'club' | 'spade' | 'heart' | 'diamond'
@@ -107,6 +108,7 @@ export interface Scale {
 export interface CenterPipSettings {
     enabled: boolean
     color?: HexColor
+    outline?: OutlineSettings
     width?: number
     height?: number
     location: PipLocationName
