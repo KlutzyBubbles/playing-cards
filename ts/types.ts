@@ -98,6 +98,7 @@ export interface CenterBackgroundSettings extends BackgroundSettings {
 export enum PipLocationName {
     Standard = 0,
     Symmetrical = 1,
+    SymmetricalAlt = 2,
 }
 
 export interface Scale {
@@ -105,8 +106,18 @@ export interface Scale {
     height?: number
 }
 
+export type SymetricalType = 'straight' | 'jagged' | 'spiked'
+
+export interface SymetricalSettings {
+    type: SymetricalType
+    spikeCount?: number
+    spikeDepth?: number
+    angle?: number
+}
+
 export interface CenterPipSettings {
     enabled: boolean
+    symetrical?: SymetricalSettings
     color?: HexColor
     outline?: OutlineSettings
     width?: number
@@ -158,6 +169,7 @@ export interface XY {
 
 export interface RotatableXY extends XY {
     rotation?: number
+    symetrical?: boolean
 }
 
 export interface CenterPipLayout {

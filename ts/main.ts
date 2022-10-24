@@ -7,6 +7,8 @@ import * as M from 'materialize-css'
 import { SVG, Path, Svg, Rect, Text, Polygon } from '@svgdotjs/svg.js'
 
 import * as standardPipLocations from './pipLocations/standard.json'
+import * as symetricalPipLocations from './pipLocations/symetrical.json'
+import * as symetricalAltPipLocations from './pipLocations/symetrical_alt.json'
 
 import { log, LogLevel, tag } from 'missionlog';
 import chalk from 'chalk';
@@ -90,7 +92,7 @@ var testSettings: CardSettings = {
             pips: {
                 enabled: true,
                 width: 50,
-                location: PipLocationName.Standard,
+                location: PipLocationName.Symmetrical,
                 locationScale: 1
             }
         },
@@ -112,7 +114,7 @@ var testSettings: CardSettings = {
             pips: {
                 enabled: true,
                 width: 25,
-                location: PipLocationName.Standard,
+                location: PipLocationName.SymmetricalAlt,
                 locationScale: 0.5
             }
         },
@@ -125,6 +127,19 @@ var testSettings: CardSettings = {
                 outline: {
                     enabled: true,
                     color: '#000',
+                    width: 1
+                },
+            }
+        },
+        spade: {
+            pips: {
+                enabled: true,
+                width: 50,
+                location: PipLocationName.Symmetrical,
+                locationScale: 1,
+                outline: {
+                    enabled: true,
+                    color: '#00F',
                     width: 1
                 },
             }
@@ -276,7 +291,9 @@ const pipOptions = {
 }
 
 const pipLocations: CenterPipLayout[] = [
-    standardPipLocations
+    standardPipLocations,
+    symetricalPipLocations,
+    symetricalAltPipLocations
 ]
 
 const cardSize: XY = {
@@ -290,62 +307,6 @@ $(() => {
 
     var test = SVG().addTo('#test').size(`${cardSize.x}px`, `${cardSize.y}px`)
     test.rect(cardSize.x, cardSize.y).fill('#FFF').move(0, 0)
-    var pip = test.path(pipOptions.club[0])
-    pip.fill('#000')
-    pip.size(50)
-    pip.move(100, 50)
-    var w = pip.bbox().w
-    var h = pip.bbox().h
-
-    // var rect = test.rect(w * 2, h * 2).move(100 - (w + (w / 2)), 50 - (h / 2)).fill({ color: '#FFF' })
-    // rect.rotate(-45, 100 + (w / 2), 50 + (h / 2))
-    
-    // var jagged = createJaggedEdge(test, w * 2, h * 2, w / 10, 6).move(100 - (w + (w / 2)) + (w / 20), 50 - (h / 2)).fill('#FFF')
-    // jagged.rotate(0, 100 + (w / 2), 50 + (h / 2))
-
-    var spiked = createSpikedEdge(test, w * 2, h * 2, w / 10, 6).move(100 - (w + (w / 2) - (w / 20)), 50 - (h / 2)).fill('#FFF')
-    spiked.rotate(45, 100 + (w / 2), 50 + (h / 2))
-    
-    var mask = test.mask()
-
-    mask.add(spiked)
-    
-    pip.maskWith(mask)
-
-    var edge = createSpikedEdge(test, w * 2, h * 2, w / 10, 6).move(100 - (w + (w / 2)), 50 - (h / 2)).fill('#FFF')
-
-    edge.fill('#000')
-    edge.move(100, 150)
-
-    function createJaggedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
-        var points = `0,${height} 0,0 ${width},0`
-        var interval = height / spikes
-        for (var i = 0; i < spikes; i++) {
-            points += ` ${width - spikeDepth},${(i * interval)}`
-            points += ` ${width},${(i * interval) + interval}`
-        }
-        var polygon = canvas.polygon(points)
-        return polygon
-    }
-
-    function createSpikedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
-        var points = `0,${height} 0,0 ${width},0`
-        var halfStep = height / ((spikes * 2) + 1)
-        var wholeStep = halfStep * 2
-        for (var i = 0; i < spikes + 1; i++) {
-            points += ` ${width},${(i * wholeStep)}`
-            points += ` ${width - spikeDepth},${(i * wholeStep) + halfStep}`
-            if (i !== spikes) {
-                points += ` ${width},${((i + 1) * wholeStep)}`
-            }
-        }
-        var polygon = canvas.polygon(points)
-        return polygon
-    }
-
-    var dupePip = pip.clone()
-    test.add(dupePip)
-    dupePip.rotate(180, 100 + (w / 2), 50 + (h / 2))
 
     var characters = ['A', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     var suits = {'c': 'club', 's': 'spade', 'h': 'heart', 'd': 'diamond'}
@@ -377,7 +338,7 @@ class CardSvg {
     private cardBackground: Rect | undefined;
     private centerBackground: Rect | undefined;
     private cornerPips: CornerPipPath[];
-    private centerPips: Path[];
+    private centerPips: (Path | Svg)[];
 
     constructor(canvas: Svg, settings: CardSettings, type: PipType, character: string, typeIndex?: number, cardSize?: XY) {
         log.trace(tag.cardClass, 'constructor()')
@@ -418,6 +379,16 @@ class CardSvg {
             return '1'
         }
         return this.character.toLowerCase()
+    }
+
+    get pipPath(): string {
+        try {
+            var chosenPath = pipOptions[this.type][this.typeIndex]
+        } catch (e) {
+            log.warn(tag.user, 'Chosen index too far, using 0')
+            chosenPath = pipOptions[this.type][0]
+        }
+        return chosenPath
     }
 
     public drawCard(): Svg {
@@ -463,15 +434,9 @@ class CardSvg {
         if (cornerPipSettings.pip !== undefined && cornerPipSettings.pip.enabled) {
             log.trace(tag.cardClass, 'cornerPipSettings.pip not undefined')
             const pipSettings = cornerPipSettings.pip
-            try {
-                var chosenPath = pipOptions[this.type][this.typeIndex]
-            } catch (e) {
-                log.warn(tag.user, 'Chosen index too far, using 0')
-                chosenPath = pipOptions[this.type][0]
-            }
             if (cornerPip === undefined) {
                 log.trace(tag.cardClass, 'cornerPip undefined')
-                cornerPip = this.canvas.path(chosenPath)
+                cornerPip = this.canvas.path(this.pipPath)
             }
             cornerPip.fill(pipSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
             cornerPip.size(pipSettings.width, pipSettings.height)
@@ -656,7 +621,7 @@ class CardSvg {
                     ))
                 }
             } else {
-                var replacementPips: Path[] = []
+                var replacementPips: (Path| Svg)[] = []
                 for (const [index, centerPip] of this.centerPips.entries()) {
                     replacementPips.push(this.processCenterPip(
                         centerPipSettings,
@@ -670,22 +635,7 @@ class CardSvg {
         return this.canvas
     }
 
-    private processCenterPip(centerPipSettings: CenterPipSettings, location: RotatableXY, pip?: Path): Path {
-        log.trace(tag.cardClass, 'processCenterPip(3)')
-        log.trace(tag.cardClass, centerPipSettings)
-        log.trace(tag.cardClass, location)
-        log.trace(tag.cardClass, pip)
-        log.trace(tag.cardClass, '-------------------')
-        try {
-            var chosenPath = pipOptions[this.type][this.typeIndex]
-        } catch (e) {
-            log.warn(tag.user, 'Chosen index too far, using 0')
-            chosenPath = pipOptions[this.type][0]
-        }
-        if (pip === undefined) {
-            log.trace(tag.cardClass, 'pip undefined')
-            pip = this.canvas.path(chosenPath)
-        }
+    private styleCenterPip(pip: Path | Svg, centerPipSettings: CenterPipSettings): Path | Svg {
         pip.fill(centerPipSettings.color ?? this.defaultColor)
         pip.size(centerPipSettings.width, centerPipSettings.height)
         if (centerPipSettings.outline !== undefined && centerPipSettings.outline.enabled) {
@@ -699,6 +649,25 @@ class CardSvg {
                 dasharray: outlineSettings.dashArray,
                 dashoffset: outlineSettings.dashOffset
             })
+        }
+        return pip
+    }
+
+    private processCenterPip(centerPipSettings: CenterPipSettings, location: RotatableXY, pip?: Path | Svg): Path | Svg {
+        log.trace(tag.cardClass, 'processCenterPip(3)')
+        log.trace(tag.cardClass, centerPipSettings)
+        log.trace(tag.cardClass, location)
+        log.trace(tag.cardClass, pip)
+        log.trace(tag.cardClass, '-------------------')
+        if (location.symetrical ?? false) {
+            pip = this.createSymetrical(centerPipSettings)
+        }
+        else {
+            if (pip === undefined) {
+                log.trace(tag.cardClass, 'pip undefined')
+                pip = this.canvas.path(this.pipPath)
+            }
+            pip = this.styleCenterPip(pip, centerPipSettings)
         }
         const zeroX = this.cardSize.x / 2
         const zeroY = this.cardSize.y / 2
@@ -718,6 +687,86 @@ class CardSvg {
         }
         this.centerPips = []
         return this.canvas
+    }
+
+    private createSymetrical(centerPipSettings: CenterPipSettings): Path | Svg {
+        log.trace(tag.cardClass, 'createSymetrical(1)')
+        log.trace(tag.cardClass, centerPipSettings)
+        log.trace(tag.cardClass, '-------------------')
+        var nested = this.canvas.nested()
+        var pip: Path | Svg = nested.path(this.pipPath)
+        pip = this.styleCenterPip(pip, centerPipSettings)
+        pip.move(0, 0)
+        var w = pip.bbox().w
+        var h = pip.bbox().h
+        nested.size(w, h)
+        var symetricalSettings = centerPipSettings.symetrical ?? { type: 'straight' }
+        var spikeDepth = symetricalSettings.spikeDepth ?? w / 10
+        var spikeCount = symetricalSettings.spikeCount ?? 5
+        var splitter = this[`${symetricalSettings.type ?? 'straight'}Edge`](nested, w * 2, h * 2, spikeDepth, spikeCount * 2)
+        splitter.move(-1 * ((w * 1.5) - (spikeDepth / 2)), -1 * (h / 2)).fill('#FFF')
+        splitter.rotate(symetricalSettings.angle ?? 0, w / 2, h / 2)
+        var mask = nested.mask()
+        mask.add(splitter)
+        pip.maskWith(mask)
+        var pipClone = pip.clone()
+        nested.add(pipClone)
+        pipClone.rotate(180, w / 2, h / 2)
+        this.canvas.add(nested)
+        return nested
+    }
+
+    private spikedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
+        log.trace(tag.cardClass, 'spikedEdge(5)')
+        log.trace(tag.cardClass, canvas)
+        log.trace(tag.cardClass, width)
+        log.trace(tag.cardClass, height)
+        log.trace(tag.cardClass, spikeDepth)
+        log.trace(tag.cardClass, spikes)
+        log.trace(tag.cardClass, '-------------------')
+        var points = `0,${height} 0,0 ${width},0`
+        var halfStep = height / ((spikes * 2) + 1)
+        var wholeStep = halfStep * 2
+        for (var i = 0; i < spikes + 1; i++) {
+            points += ` ${width},${(i * wholeStep)}`
+            points += ` ${width - spikeDepth},${(i * wholeStep) + halfStep}`
+            if (i !== spikes) {
+                points += ` ${width},${((i + 1) * wholeStep)}`
+            }
+        }
+        var polygon = canvas.polygon(points)
+        return polygon
+    }
+
+    private jaggedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
+        log.trace(tag.cardClass, 'jaggedEdge(5)')
+        log.trace(tag.cardClass, canvas)
+        log.trace(tag.cardClass, width)
+        log.trace(tag.cardClass, height)
+        log.trace(tag.cardClass, spikeDepth)
+        log.trace(tag.cardClass, spikes)
+        log.trace(tag.cardClass, '-------------------')
+        var points = `0,${height} 0,0 ${width},0`
+        var interval = height / spikes
+        for (var i = 0; i < spikes; i++) {
+            points += ` ${width - spikeDepth},${(i * interval)}`
+            points += ` ${width},${(i * interval) + interval}`
+        }
+        var polygon = canvas.polygon(points)
+        return polygon
+    }
+
+    private straightEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
+        log.trace(tag.cardClass, 'straightEdge(5)')
+        log.trace(tag.cardClass, canvas)
+        log.trace(tag.cardClass, width)
+        log.trace(tag.cardClass, height)
+        log.trace(tag.cardClass, spikeDepth)
+        log.trace(tag.cardClass, spikes)
+        log.trace(tag.cardClass, '-------------------')
+        var points = `0,${height} 0,0 ${width},0 ${width},${height}`
+        var polygon = canvas.polygon(points)
+        return polygon
     }
 
 }
