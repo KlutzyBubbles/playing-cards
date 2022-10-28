@@ -38,7 +38,7 @@ const logger = {
     [LogLevel.DEBUG]: (tag, msg, params) => console.log(`[${chalk.magenta(tag)}]`, msg, ...params),
 } as Record<LogLevel, (tag: string, msg: unknown, params: unknown[]) => void>;
 
-log.init({ cardClass: 'card_class', user: 'user' }, (level, tag, msg, params) => {
+log.init({ cardClass: 'card_class', gridClass: 'grid_class', general: 'general' }, (level, tag, msg, params) => {
     logger[level as keyof typeof logger](tag, msg, params);
 });
 
@@ -301,6 +301,10 @@ const cardSize: XY = {
     y: 350
 }
 
+interface CardStorage {
+    [key: string]: CardSvg
+}
+
 $(() => {
     M.Collapsible.init($('.collapsible'), {});
     // var draw = SVG().addTo('#example-card').size(`${cardSize.x}px`, `${cardSize.y}px`)
@@ -311,7 +315,9 @@ $(() => {
     var characters = ['A', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     var suits = {'c': 'club', 's': 'spade', 'h': 'heart', 'd': 'diamond'}
 
-    var cards: CardSvg[] = []
+    var cards: CardStorage = {}
+
+    var order: string[] = []
 
     for (var character of characters) {
         for (const [suitCharacter, suit] of Object.entries(suits)) {
@@ -319,15 +325,94 @@ $(() => {
             var draw = SVG().addTo(`#all`).size(`${cardSize.x}px`, `${cardSize.y}px`)
             var card = new CardSvg(draw, testSettings, suit as PipType, character)
             card.drawCard()
-            cards.push(card)
+            const value = `${character.toLowerCase()}${suitCharacter}`
+            cards[value] = card
+            order.push(value)
         }
     }
+
+    var all = SVG().addTo('#all')
+
+    var grid = new CardGrid(all, cards, order)
     // var card = new CardSvg(draw, testSettings, 'spade', '0')
 })
 
-class CardSvg {
+class CardGrid {
 
     private canvas: Svg;
+    private cards: CardStorage;
+    private order: string[];
+    private cardSize: XY;
+
+    private _factors: number[] = [];
+
+    constructor(canvas: Svg, cards: CardStorage, order: string[], cardSize?: XY) {
+        log.trace(tag.gridClass, 'constructor()')
+        this.canvas = canvas
+        this.cards = cards
+        this.order = order
+        this.cardSize = cardSize || {
+            x: this.cards[Object.keys(this.cards)[0]].canvas.rbox().w,
+            y: this.cards[Object.keys(this.cards)[0]].canvas.rbox().h
+        }
+        this.setSize()
+        this.drawCards()
+    }
+
+    get factors(): number[] {
+        log.trace(tag.gridClass, 'factors()')
+        if (this._factors === undefined || this._factors.length === 0) {
+            this._factors = getClosestFactors(this.order.length)
+        }
+        return this._factors
+    }
+
+    private setSize() {
+        log.trace(tag.gridClass, 'setSize()')
+        const factors = this.factors
+        const width = this.cardSize.x * factors[0]
+        const height = this.cardSize.y * factors[1]
+        log.trace(tag.gridClass, width)
+        log.trace(tag.gridClass, height)
+        this.canvas.size(`${width}px`, `${height}px`)
+    }
+
+    private drawCards() {
+        log.trace(tag.gridClass, 'drawCards()')
+        var count = 0
+        for (const card of this.order) {
+            const svg = this.cards[card]
+            var x = count % this.factors[0]
+            var y = (count - (x)) / this.factors[0]
+            count++;
+            log.trace(tag.gridClass, {x: x, y: y})
+            var nested = this.canvas.nested()
+            nested.size(this.cardSize.x, this.cardSize.y)
+            nested.move(this.cardSize.x * x, this.cardSize.y * y)
+            nested.svg(svg.canvas.svg())
+        }
+    }
+
+}
+
+function getClosestFactors(input: number): number[] {
+    log.trace(tag.general, 'getClosestFactors(1)')
+    log.trace(tag.general, input)
+    log.trace(tag.general, '-------------------')
+    var max = ~~Math.sqrt(input);
+    // @ts-ignore
+    return Array.from({length: max}, (_, i, a) => [input % (max - i), max - i])
+                // @ts-ignore
+                .sort((a, b) => a[0] - b[0])
+                .slice(0, 1)
+                // @ts-ignore
+                .map(t => [Math.floor(input / t[1]), t[1]])[0];
+
+}
+
+class CardSvg {
+
+    public canvas: Svg;
     private settings: CardSettings;
     private cardSize: XY;
 
@@ -701,8 +786,8 @@ class CardSvg {
         var h = pip.bbox().h
         nested.size(w, h)
         var symetricalSettings = centerPipSettings.symetrical ?? { type: 'straight' }
-        var spikeDepth = symetricalSettings.spikeDepth ?? w / 10
-        var spikeCount = symetricalSettings.spikeCount ?? 5
+        var spikeDepth = symetricalSettings.type === 'straight' ? 0 : symetricalSettings.spikeDepth ?? w / 10
+        var spikeCount = symetricalSettings.type === 'straight' ? 0 : symetricalSettings.spikeCount ?? 5
         var splitter = this[`${symetricalSettings.type ?? 'straight'}Edge`](nested, w * 2, h * 2, spikeDepth, spikeCount * 2)
         splitter.move(-1 * ((w * 1.5) - (spikeDepth / 2)), -1 * (h / 2)).fill('#FFF')
         splitter.rotate(symetricalSettings.angle ?? 0, w / 2, h / 2)
