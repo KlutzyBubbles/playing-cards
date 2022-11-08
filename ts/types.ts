@@ -1,5 +1,6 @@
 
 import { Path, Text } from '@svgdotjs/svg.js'
+import { CardSvg } from './classes/CardSvg';
 
 export type HexColor = `#${string}`;
 
@@ -179,4 +180,8 @@ export interface CenterPipLayout {
 export interface CornerPipPath {
     character?: Text,
     pip?: Path
+}
+
+export interface CardStorage {
+    [key: string]: CardSvg
 }
