@@ -1,4 +1,4 @@
-import { Path, Svg, Rect, Text, Polygon } from '@svgdotjs/svg.js'
+import { Path, Svg, Rect, Text, Polygon, G } from '@svgdotjs/svg.js'
 
 import { log, tag } from 'missionlog';
 import {
@@ -16,8 +16,9 @@ import {
     HexColor
 } from "../types";
 import merge from "ts-deepmerge";
-import { pipLocations, pipOptions } from '../constants';
+import { pipLocations, pipOptions, faceLayouts } from '../constants';
 import { isCenterBackgroundSettings } from '../functions';
+import { runInThisContext } from 'vm';
 
 export class CardSvg {
 
@@ -33,6 +34,7 @@ export class CardSvg {
     private centerBackground: Rect | undefined;
     private cornerPips: CornerPipPath[];
     private centerPips: (Path | Svg)[];
+    private faces: G[];
 
     constructor(canvas: Svg, settings: CardSettings, type: PipType, character: string, typeIndex?: number, cardSize?: XY) {
         log.trace(tag.cardClass, 'constructor()')
@@ -67,7 +69,7 @@ export class CardSvg {
         }
     }
 
-    get centerPipName(): string {
+    get pipName(): string {
         log.trace(tag.cardClass, 'get centerPipName()')
         if (this.character.toLowerCase() === 'a') {
             return '1'
@@ -91,6 +93,7 @@ export class CardSvg {
         this.drawCornerPips()
         this.drawCenterBackground()
         this.drawCenterPips()
+        this.drawFaceCards()
         return this.canvas
     }
 
@@ -303,7 +306,7 @@ export class CardSvg {
         if (centerSettings.pips !== undefined && centerSettings.pips.enabled) {
             const centerPipSettings = centerSettings.pips
             const pipLocationSelection = pipLocations[centerSettings.pips.location]
-            const pipLocationsList = pipLocationSelection[this.centerPipName] ?? []
+            const pipLocationsList = pipLocationSelection[this.pipName] ?? []
             if (this.centerPips.length != pipLocationsList.length) {
                 this.resetCenterPips()
             }
@@ -325,6 +328,28 @@ export class CardSvg {
                 }
                 this.centerPips = replacementPips
             }
+        }
+        return this.canvas
+    }
+
+    private drawFaceCards(): Svg {
+        log.trace(tag.cardClass, 'drawFaceCards()')
+        const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        if (centerSettings.face !== undefined && centerSettings.face.enabled) {
+            const faceSettings = centerSettings.face
+            var group = this.canvas.group()
+            const faceSelection = (faceLayouts[this.pipName] ?? {})[this.type] ?? {}
+            var count = 1
+            for (var color of faceSettings.color ?? []) {
+                if (Object.prototype.hasOwnProperty.call(faceSelection, count)) {
+                    var pathString = faceSelection[count]
+                    var path = group.path(pathString)
+                    path.fill(color)
+                    group.add(path)
+                }
+                count++;
+            }
+            this.canvas.add(group)
         }
         return this.canvas
     }

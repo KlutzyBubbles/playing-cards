@@ -2,9 +2,12 @@ import * as standardPipLocations from './pipLocations/standard.json'
 import * as symetricalPipLocations from './pipLocations/symetrical.json'
 import * as symetricalAltPipLocations from './pipLocations/symetrical_alt.json'
 
+import * as faceLayoutImported from '../json/honorCards.json'
+
 import {
     XY,
-    CenterPipLayout
+    CenterPipLayout,
+    FaceLayout
 } from "./types";
 
 export const pipOptions = {
@@ -27,6 +30,8 @@ export const pipLocations: CenterPipLayout[] = [
     symetricalPipLocations,
     symetricalAltPipLocations
 ]
+
+export const faceLayouts: FaceLayout = faceLayoutImported
 
 export const cardSize: XY = {
     x: 250,

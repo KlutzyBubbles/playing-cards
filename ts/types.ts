@@ -127,6 +127,13 @@ export interface CenterPipSettings {
     locationScale: number
 }
 
+export interface FaceSettings {
+    enabled: boolean
+    color?: HexColor[]
+    width?: number
+    height?: number
+}
+
 export enum Orientation {
     Horizontal = 0,
     Vertical = 1
@@ -143,6 +150,7 @@ export interface LineSettings {
 export interface CenterSettings {
     background?: CenterBackgroundSettings
     pips?: CenterPipSettings
+    face?: FaceSettings
     lines?: LineSettings[]
 }
 export interface TypedCenterSettings {
@@ -175,6 +183,20 @@ export interface RotatableXY extends XY {
 
 export interface CenterPipLayout {
     [key: string]: RotatableXY[]
+}
+
+export interface FaceLayout {
+    [key: string]: FaceSuit
+}
+
+export interface FaceSuit {
+    club?: FaceLayers
+    spade?: FaceLayers
+    diamond?: FaceLayers
+    heart?: FaceLayers
+}
+export interface FaceLayers {
+    [key: string]: string
 }
 
 export interface CornerPipPath {

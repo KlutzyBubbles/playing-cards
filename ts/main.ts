@@ -4,7 +4,7 @@ console.log('yay')
 
 import $ from "jquery";
 import * as M from 'materialize-css'
-import { SVG, Path, Svg, Rect, Text, Polygon } from '@svgdotjs/svg.js'
+import { SVG } from '@svgdotjs/svg.js'
 
 import * as standardPipLocations from './pipLocations/standard.json'
 import * as symetricalPipLocations from './pipLocations/symetrical.json'
@@ -17,18 +17,9 @@ import {
     CornerPipLocation,
     XY,
     PipType,
-    CornerPipPath,
-    CornerPipSettings,
     PipLocationName,
-    BackgroundSettings,
-    CenterBackgroundSettings,
-    CenterPipLayout,
-    CenterPipSettings,
-    RotatableXY,
-    TypeColor,
-    HexColor
+    CenterPipLayout
 } from "./types";
-import merge from "ts-deepmerge";
 import { CardGrid } from "./classes/CardGrid";
 import { CardSvg } from "./classes/CardSvg";
 
@@ -96,6 +87,10 @@ var testSettings: CardSettings = {
                 width: 50,
                 location: PipLocationName.Symmetrical,
                 locationScale: 1
+            },
+            face: {
+                enabled: true,
+                width: 50
             }
         },
         club: {
