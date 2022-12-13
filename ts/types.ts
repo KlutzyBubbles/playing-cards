@@ -132,6 +132,8 @@ export interface FaceSettings {
     color?: HexColor[]
     width?: number
     height?: number
+    paddingX?: number
+    paddingY?: number
 }
 
 export enum Orientation {

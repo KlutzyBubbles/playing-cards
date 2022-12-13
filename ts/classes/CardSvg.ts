@@ -337,11 +337,14 @@ export class CardSvg {
         const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
         if (centerSettings.face !== undefined && centerSettings.face.enabled) {
             const faceSettings = centerSettings.face
+            const paddingX = faceSettings.paddingX ?? 0
+            const paddingY = faceSettings.paddingY ?? 0
             var group = this.canvas.group()
             const faceSelection = (faceLayouts[this.pipName] ?? {})[this.type] ?? {}
             var count = 1
             for (var color of faceSettings.color ?? []) {
                 if (Object.prototype.hasOwnProperty.call(faceSelection, count)) {
+                    log.trace(tag.cardClass, 'new path')
                     var pathString = faceSelection[count]
                     var path = group.path(pathString)
                     path.fill(color)
@@ -349,7 +352,37 @@ export class CardSvg {
                 }
                 count++;
             }
+
+            var rotX = group.bbox().w / 2
+            var rotY = group.bbox().h
+
+            // Add rotate point if exists
+            if (Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
+                log.trace(tag.cardClass, 'rotate path')
+                var pathString = faceSelection.rotate
+                var rotatePath = group.path(pathString)
+                group.add(rotatePath)
+                rotX = rotatePath.bbox().w
+                rotY = rotatePath.bbox().h
+                group.removeElement(rotatePath)
+            }
+            log.trace(tag.cardClass, count)
+            log.trace(tag.cardClass, group)
+            log.trace(tag.cardClass, 'Rotate Values')
+            log.trace(tag.cardClass, group.bbox())
+            log.trace(tag.cardClass, group.rbox())
+            log.trace(tag.cardClass, paddingX)
+            log.trace(tag.cardClass, paddingY)
+            log.trace(tag.cardClass, rotX)
+            log.trace(tag.cardClass, rotY)
+            group.size(faceSettings.width, faceSettings.height)
+            group.move(paddingX, paddingY)
             this.canvas.add(group)
+
+            
+            var faceClone = group.clone()
+            this.canvas.add(faceClone)
+            faceClone.rotate(180, paddingX + rotX, paddingY + rotY)
         }
         return this.canvas
     }

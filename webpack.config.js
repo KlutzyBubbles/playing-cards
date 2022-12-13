@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+  mode: 'development',
   entry: {
     playingcards: [path.join(__dirname, "/ts/main")],
     style: [path.join(__dirname, "/sass/main.scss")],

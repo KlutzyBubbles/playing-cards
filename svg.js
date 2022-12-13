@@ -18,7 +18,7 @@ files.forEach(filename => {
     })
     read.then((data) => {
         const $ = cheerio.load(data, { xml: true })
-        for (var i = 1; i <= 20; i++) {
+        for (var i = 0; i <= 20; i++) {
             var path = $(`path[inkscape\\:label="layer-${i}"]`)
             if (path.length > 0) {
                 if (paths[nameSplit[0]] === undefined) {
@@ -27,7 +27,11 @@ files.forEach(filename => {
                 if (paths[nameSplit[0]][nameSplit[1]] === undefined) {
                     paths[nameSplit[0]][nameSplit[1]] = {}
                 }
-                paths[nameSplit[0]][nameSplit[1]][i] = path[0].attribs.d ?? ''
+                if (i === 0 && path[0].attribs.d !== undefined) {
+                    paths[nameSplit[0]][nameSplit[1]]['rotate'] = path[0].attribs.d
+                } else {
+                    paths[nameSplit[0]][nameSplit[1]][i] = path[0].attribs.d ?? ''
+                }
             }
         }
     })
