@@ -1,4 +1,4 @@
-import { Path, Svg, Rect, Text, Polygon, G } from '@svgdotjs/svg.js'
+import { Path, Svg, Rect, Text, Polygon, G, Box } from '@svgdotjs/svg.js'
 
 import { log, tag } from 'missionlog';
 import {
@@ -339,22 +339,28 @@ export class CardSvg {
             const faceSettings = centerSettings.face
             const paddingX = faceSettings.paddingX ?? 0
             const paddingY = faceSettings.paddingY ?? 0
-            var group = this.canvas.group()
+            var doubleGroup = this.canvas.group()
+            var group = doubleGroup.group()
             const faceSelection = (faceLayouts[this.pipName] ?? {})[this.type] ?? {}
+            log.trace(tag.cardClass, 'faceSelection')
+            log.trace(tag.cardClass, Object.keys(faceSelection).length)
+            log.trace(tag.cardClass, (faceSettings.color ?? []).length)
             var count = 1
             for (var color of faceSettings.color ?? []) {
                 if (Object.prototype.hasOwnProperty.call(faceSelection, count)) {
                     log.trace(tag.cardClass, 'new path')
                     var pathString = faceSelection[count]
                     var path = group.path(pathString)
+                    log.trace(tag.cardClass, `Path Count ${count}`)
+                    log.trace(tag.cardClass, path.bbox())
                     path.fill(color)
                     group.add(path)
                 }
                 count++;
             }
 
-            var rotX = group.bbox().w / 2
-            var rotY = group.bbox().h
+            var rotX = 0
+            var rotY = 0
 
             // Add rotate point if exists
             if (Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
@@ -362,10 +368,40 @@ export class CardSvg {
                 var pathString = faceSelection.rotate
                 var rotatePath = group.path(pathString)
                 group.add(rotatePath)
-                rotX = rotatePath.bbox().w
-                rotY = rotatePath.bbox().h
-                group.removeElement(rotatePath)
+                // rotX = rotatePath.bbox().w
+                // rotY = rotatePath.bbox().h
+                log.trace(tag.cardClass, 'faceSettings')
+                log.trace(tag.cardClass, faceSettings.width)
+                log.trace(tag.cardClass, faceSettings.height)
+                log.trace(tag.cardClass, 'rotatePath before')
+                log.trace(tag.cardClass, rotatePath.bbox().w)
+                log.trace(tag.cardClass, rotatePath.bbox().h)
+                log.trace(tag.cardClass, rotatePath.bbox().x)
+                log.trace(tag.cardClass, rotatePath.bbox().y)
+                this.drawBBox(rotatePath.rbox(this.canvas))
+                log.trace(tag.cardClass, 'rotatePath')
+                log.trace(tag.cardClass, rotatePath.bbox().w)
+                log.trace(tag.cardClass, rotatePath.bbox().h)
+                log.trace(tag.cardClass, rotatePath.bbox().x)
+                log.trace(tag.cardClass, rotatePath.bbox().y)
+                log.trace(tag.cardClass, 'rotatePath rbox')
+                log.trace(tag.cardClass, rotatePath.rbox().w)
+                log.trace(tag.cardClass, rotatePath.rbox().h)
+                log.trace(tag.cardClass, rotatePath.rbox().x)
+                log.trace(tag.cardClass, rotatePath.rbox().y)
+                rotX = rotatePath.rbox(this.canvas).x + (rotatePath.rbox(this.canvas).w / 2)
+                rotY = rotatePath.rbox(this.canvas).y + (rotatePath.rbox(this.canvas).h / 2)
+                // group.removeElement(rotatePath)
             }
+
+            if (!Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
+                rotX = group.bbox().w / 2
+                rotY = group.bbox().h
+            }
+
+            var bbox = group.bbox()
+            this.drawBBox(bbox)
+            this.drawDebug(rotX, rotY, 5, 5)
             log.trace(tag.cardClass, count)
             log.trace(tag.cardClass, group)
             log.trace(tag.cardClass, 'Rotate Values')
@@ -375,18 +411,112 @@ export class CardSvg {
             log.trace(tag.cardClass, paddingY)
             log.trace(tag.cardClass, rotX)
             log.trace(tag.cardClass, rotY)
-            group.size(faceSettings.width, faceSettings.height)
-            group.move(paddingX, paddingY)
-            this.canvas.add(group)
+            log.trace(tag.cardClass, 'rot2')
+            log.trace(tag.cardClass, (group.rbox().w / 2) - rotX)
+            log.trace(tag.cardClass, (group.rbox().h / 2) - rotY)
 
-            
             var faceClone = group.clone()
-            this.canvas.add(faceClone)
-            faceClone.rotate(180, paddingX + rotX, paddingY + rotY)
+            doubleGroup.add(faceClone)
+            // faceClone.center()
+            faceClone.move(Math.abs(((group.rbox().w / 2) - rotX)), Math.abs(((group.rbox().h / 2) - rotY)))
+            faceClone.rotate(180)//, paddingX + rotX, paddingY + rotY)
+            doubleGroup.size(faceSettings.width, faceSettings.height)
+            doubleGroup.move(paddingX, paddingY)
+            this.canvas.add(doubleGroup)
         }
         return this.canvas
     }
+/*
+    private drawFaceCards(): Svg {
+        log.trace(tag.cardClass, 'drawFaceCards()')
+        const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        if (centerSettings.face !== undefined && centerSettings.face.enabled) {
+            const faceSettings = centerSettings.face
+            const paddingX = faceSettings.paddingX ?? 0
+            const paddingY = faceSettings.paddingY ?? 0
+            var group = this.canvas.group()
+            const faceSelection = (faceLayouts[this.pipName] ?? {})[this.type] ?? {}
+            var count = 1
+            for (var color of faceSettings.color ?? []) {
+                if (Object.prototype.hasOwnProperty.call(faceSelection, count)) {
+                    log.trace(tag.cardClass, 'new path')
+                    var pathString = faceSelection[count]
+                    var path = group.path(pathString)
+                    log.trace(tag.cardClass, `Path Count ${count}`)
+                    log.trace(tag.cardClass, path.bbox())
+                    path.fill(color)
+                    group.add(path)
+                }
+                count++;
+            }
 
+            var rotX = 0
+            var rotY = 0
+
+            // Add rotate point if exists
+            if (Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
+                log.trace(tag.cardClass, 'rotate path')
+                var pathString = faceSelection.rotate
+                var rotatePath = group.path(pathString)
+                group.add(rotatePath)
+                // rotX = rotatePath.bbox().w
+                // rotY = rotatePath.bbox().h
+                log.trace(tag.cardClass, 'faceSettings')
+                log.trace(tag.cardClass, faceSettings.width)
+                log.trace(tag.cardClass, faceSettings.height)
+                log.trace(tag.cardClass, 'rotatePath before')
+                log.trace(tag.cardClass, rotatePath.bbox().w)
+                log.trace(tag.cardClass, rotatePath.bbox().h)
+                log.trace(tag.cardClass, rotatePath.bbox().x)
+                log.trace(tag.cardClass, rotatePath.bbox().y)
+                group.size(faceSettings.width, faceSettings.height)
+                group.move(paddingX, paddingY)
+                this.drawBBox(rotatePath.rbox(this.canvas))
+                log.trace(tag.cardClass, 'rotatePath')
+                log.trace(tag.cardClass, rotatePath.bbox().w)
+                log.trace(tag.cardClass, rotatePath.bbox().h)
+                log.trace(tag.cardClass, rotatePath.bbox().x)
+                log.trace(tag.cardClass, rotatePath.bbox().y)
+                log.trace(tag.cardClass, 'rotatePath rbox')
+                log.trace(tag.cardClass, rotatePath.rbox().w)
+                log.trace(tag.cardClass, rotatePath.rbox().h)
+                log.trace(tag.cardClass, rotatePath.rbox().x)
+                log.trace(tag.cardClass, rotatePath.rbox().y)
+                rotX = rotatePath.rbox(this.canvas).x + (rotatePath.rbox(this.canvas).w / 2)
+                rotY = rotatePath.rbox(this.canvas).y + (rotatePath.rbox(this.canvas).h / 2)
+                group.removeElement(rotatePath)
+            } else {
+                group.size(faceSettings.width, faceSettings.height)
+                group.move(paddingX, paddingY)
+            }
+
+            if (!Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
+                rotX = group.bbox().w / 2
+                rotY = group.bbox().h
+            }
+
+            var bbox = group.bbox()
+            this.drawBBox(bbox)
+            this.drawDebug(rotX, rotY, 5, 5)
+            log.trace(tag.cardClass, count)
+            log.trace(tag.cardClass, group)
+            log.trace(tag.cardClass, 'Rotate Values')
+            log.trace(tag.cardClass, group.bbox())
+            log.trace(tag.cardClass, group.rbox())
+            log.trace(tag.cardClass, paddingX)
+            log.trace(tag.cardClass, paddingY)
+            log.trace(tag.cardClass, rotX)
+            log.trace(tag.cardClass, rotY)
+            this.canvas.add(group)
+            var faceClone = group.clone()
+            this.canvas.add(faceClone)
+            // faceClone.center()
+            faceClone.move(Math.abs((group.rbox().w / 2) - rotX), Math.abs((group.rbox().h / 2) - rotY))
+            faceClone.rotate(180)//, paddingX + rotX, paddingY + rotY)
+        }
+        return this.canvas
+    }
+*/
     private styleCenterPip(pip: Path | Svg, centerPipSettings: CenterPipSettings): Path | Svg {
         pip.fill(centerPipSettings.color ?? this.defaultColor)
         pip.size(centerPipSettings.width, centerPipSettings.height)
@@ -519,6 +649,20 @@ export class CardSvg {
         var points = `0,${height} 0,0 ${width},0 ${width},${height}`
         var polygon = canvas.polygon(points)
         return polygon
+    }
+
+    private drawBBox(bbox: Box) {
+        this.drawDebug(bbox.x, bbox.y, bbox.width, bbox.height)
+    }
+
+    private drawDebug(x: number, y: number, width: number, height: number) {
+        var rect = this.canvas.rect(width, height)
+        rect.move(x, y)
+        rect.fill('none')
+        rect.stroke({
+            width: 1,
+            color: '#F00'
+        })
     }
 
 }

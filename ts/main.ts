@@ -97,10 +97,10 @@ var testSettings: CardSettings = {
                     "#888",
                     "#AAA",
                     "#DDD",
-                    "#000",
-                    "#000",
-                    "#000",
-                    "#000"
+                    "#00D",
+                    "#0D0",
+                    "#D00",
+                    "#DD0"
                 ],
                 width: 150,
                 paddingX: 50,

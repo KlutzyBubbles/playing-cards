@@ -39,9 +39,10 @@ files.forEach(filename => {
 })
 
 Promise.all(promises).then(() => {
-    console.log(paths)
+    // console.log(paths)
     fs.mkdir(jsonDirectory, (error) => {
-        if (error) {
+        if (error && error.code !== 'EEXIST') {
+            console.error('error')
             console.error(error)
         } else {
             fs.writeFile(`${jsonDirectory}/honorCards.json`, JSON.stringify(paths), (error) => {
