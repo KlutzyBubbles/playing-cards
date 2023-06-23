@@ -198,7 +198,15 @@ export interface FaceSuit {
     heart?: FaceLayers
 }
 export interface FaceLayers {
-    [key: string]: string
+    [key: string]: FaceLayer
+}
+
+export type FaceLayerType = 'stroke' | 'fill'
+
+export interface FaceLayer {
+    type: string
+    width: number
+    path: string
 }
 
 export interface CornerPipPath {

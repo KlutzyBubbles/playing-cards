@@ -71,7 +71,7 @@ var testSettings: CardSettings = {
                     color: '#00F',
                     width: 2
                 },
-                color: "#FFD47F",
+                color: "#FFF",
                 width: 150,
                 height: 200,
                 paddingX: 50,
@@ -87,24 +87,26 @@ var testSettings: CardSettings = {
             face: {
                 enabled: true,
                 color: [
-                    "#000",
+                    "#FC4",
+                    "#FC4",
+                    "#FC4",
                     "#F00",
-                    "#0F0",
-                    "#00F",
-                    "#FF0",
-                    "#0FF",
-                    "#333",
-                    "#888",
-                    "#AAA",
-                    "#DDD",
-                    "#00D",
-                    "#0D0",
-                    "#D00",
-                    "#DD0"
+                    "#F00",
+                    "#44F",
+                    "#44F",
+                    "#44F",
+                    "#000",
+                    "#000",
+                    "#000",
+                    "#44F",
+                    "#44F",
+                    "#44F",
+                    "#44F"
                 ],
                 width: 150,
+                height: 250,
                 paddingX: 50,
-                paddingY: 75
+                paddingY: 50
             }
         },
         club: {
@@ -115,11 +117,11 @@ var testSettings: CardSettings = {
                     color: '#00F',
                     width: 2
                 },
-                color: "#FFD47F",
+                color: "#FFF",
                 width: 150,
-                height: 200,
+                height: 250,
                 paddingX: 50,
-                paddingY: 75,
+                paddingY: 50,
                 radius: 5,
             },
             pips: {

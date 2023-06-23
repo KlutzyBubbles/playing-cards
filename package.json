@@ -8,6 +8,7 @@
     "build": "webpack",
     "dev": "webpack --watch",
     "test": "node test.js",
+    "ts-test": "ts-node test.ts",
     "svg": "node svg.js",
     "start": "electron main.js",
     "start:build": "npm run build && npm run start",

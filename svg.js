@@ -28,9 +28,26 @@ files.forEach(filename => {
                     paths[nameSplit[0]][nameSplit[1]] = {}
                 }
                 if (i === 0 && path[0].attribs.d !== undefined) {
-                    paths[nameSplit[0]][nameSplit[1]]['rotate'] = path[0].attribs.d
+                    paths[nameSplit[0]][nameSplit[1]]['rotate'] = {
+                        type: 'fill',
+                        width: 0,
+                        path: path[0].attribs.d
+                    }
                 } else {
-                    paths[nameSplit[0]][nameSplit[1]][i] = path[0].attribs.d ?? ''
+                    var strokeWidth = 1
+                    var strokeWidthString = Object.prototype.hasOwnProperty.call(path[0].attribs, 'stroke-width') ? path[0].attribs['stroke-width'] : '1'
+                    try {
+                        strokeWidth = parseFloat(strokeWidthString)
+                    } catch (e) {
+                        console.warn(`Error most likely parsing float: ${strokeWidthString}`)
+                        strokeWidth = 1
+                    }
+                    var pathInfo = {
+                        type: Object.prototype.hasOwnProperty.call(path[0].attribs, 'stroke') ? 'stroke' : 'fill',
+                        width: strokeWidth,
+                        path: path[0].attribs.d ?? ''
+                    }
+                    paths[nameSplit[0]][nameSplit[1]][i] = pathInfo ?? {}
                 }
             }
         }

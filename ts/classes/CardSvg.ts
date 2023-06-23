@@ -104,13 +104,13 @@ export class CardSvg {
         }
         if (this.cornerPips.length === 0) {
             for (var cornerPipSettings of this.settings.cornerPips) {
-                this.cornerPips.push(this.processCornerPip(merge(cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)))
+                this.cornerPips.push(this.processCornerPip(merge.withOptions({ mergeArrays: false }, cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)))
             }
         } else {
             var replacementPips: CornerPipPath[] = []
             for (const [index, cornerPip] of this.cornerPips.entries()) {
                 const cornerPipSettings = this.settings.cornerPips[index]
-                const cornerPipSettingsMerged = merge(cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)
+                const cornerPipSettingsMerged = merge.withOptions({ mergeArrays: false }, cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)
                 replacementPips.push(this.processCornerPip(cornerPipSettingsMerged, cornerPip))
             }
             this.cornerPips = replacementPips
@@ -215,7 +215,7 @@ export class CardSvg {
         log.trace(tag.cardClass, '-------------------')
         const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
         const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
-        const backgroundSettings = this.settings.background === undefined ? undefined : merge(this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
         const outlineAdjust = outlineAffectsPosition ?? false ? backgroundSettings?.outline?.enabled ?? false ? backgroundSettings?.outline?.width ?? 0 : 0 : 0
         const xVal = (xPad ?? 0) - xCenterAdjust + outlineAdjust
         const yVal = (yPad ?? 0) - yCenterAdjust + outlineAdjust
@@ -247,7 +247,7 @@ export class CardSvg {
         if (this.cardBackground === undefined) {
             this.cardBackground = this.canvas.rect(this.cardSize.x, this.cardSize.y)
         }
-        const backgroundSettings = this.settings.background === undefined ? undefined : merge(this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
         if (backgroundSettings !== undefined && backgroundSettings.enabled) {
             this.moveBackground(this.cardBackground, backgroundSettings)
         } else {
@@ -259,7 +259,7 @@ export class CardSvg {
 
     private drawCenterBackground(): Svg {
         log.trace(tag.cardClass, 'drawBackground()')
-        var centerBackgroundSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
         if (this.centerBackground === undefined) {
             this.centerBackground = this.canvas.rect(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0)
         }
@@ -302,7 +302,7 @@ export class CardSvg {
 
     private drawCenterPips(): Svg {
         log.trace(tag.cardClass, 'drawCenterPips()')
-        const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        const centerSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
         if (centerSettings.pips !== undefined && centerSettings.pips.enabled) {
             const centerPipSettings = centerSettings.pips
             const pipLocationSelection = pipLocations[centerSettings.pips.location]
@@ -334,7 +334,7 @@ export class CardSvg {
 
     private drawFaceCards(): Svg {
         log.trace(tag.cardClass, 'drawFaceCards()')
-        const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        const centerSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
         if (centerSettings.face !== undefined && centerSettings.face.enabled) {
             const faceSettings = centerSettings.face
             const paddingX = faceSettings.paddingX ?? 0
@@ -349,14 +349,29 @@ export class CardSvg {
             for (var color of faceSettings.color ?? []) {
                 if (Object.prototype.hasOwnProperty.call(faceSelection, count)) {
                     log.trace(tag.cardClass, 'new path')
-                    var pathString = faceSelection[count]
+                    var pathString = faceSelection[count].path
                     var path = group.path(pathString)
                     log.trace(tag.cardClass, `Path Count ${count}`)
                     log.trace(tag.cardClass, path.bbox())
-                    path.fill(color)
+                    if (faceSelection[count].type === 'fill') {
+                        path.fill({
+                            color: color,
+                            opacity: 1
+                        })
+                    } else {
+                        path.fill({
+                            color: color,
+                            opacity: 0
+                        })
+                        path.stroke({
+                            color: color,
+                            width: faceSelection[count].width
+                        })
+                    }
                     group.add(path)
                 }
                 count++;
+                log.trace(tag.cardClass, `Counting ${count}`)
             }
 
             var rotX = 0
@@ -365,61 +380,65 @@ export class CardSvg {
             // Add rotate point if exists
             if (Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
                 log.trace(tag.cardClass, 'rotate path')
-                var pathString = faceSelection.rotate
+                var pathString = faceSelection.rotate.path
                 var rotatePath = group.path(pathString)
+                rotatePath.fill('none')
                 group.add(rotatePath)
                 // rotX = rotatePath.bbox().w
                 // rotY = rotatePath.bbox().h
-                log.trace(tag.cardClass, 'faceSettings')
-                log.trace(tag.cardClass, faceSettings.width)
-                log.trace(tag.cardClass, faceSettings.height)
-                log.trace(tag.cardClass, 'rotatePath before')
-                log.trace(tag.cardClass, rotatePath.bbox().w)
-                log.trace(tag.cardClass, rotatePath.bbox().h)
-                log.trace(tag.cardClass, rotatePath.bbox().x)
-                log.trace(tag.cardClass, rotatePath.bbox().y)
-                this.drawBBox(rotatePath.rbox(this.canvas))
-                log.trace(tag.cardClass, 'rotatePath')
-                log.trace(tag.cardClass, rotatePath.bbox().w)
-                log.trace(tag.cardClass, rotatePath.bbox().h)
-                log.trace(tag.cardClass, rotatePath.bbox().x)
-                log.trace(tag.cardClass, rotatePath.bbox().y)
-                log.trace(tag.cardClass, 'rotatePath rbox')
-                log.trace(tag.cardClass, rotatePath.rbox().w)
-                log.trace(tag.cardClass, rotatePath.rbox().h)
-                log.trace(tag.cardClass, rotatePath.rbox().x)
-                log.trace(tag.cardClass, rotatePath.rbox().y)
+                //log.trace(tag.cardClass, 'faceSettings')
+                //log.trace(tag.cardClass, faceSettings.width)
+                //log.trace(tag.cardClass, faceSettings.height)
+                //log.trace(tag.cardClass, 'rotatePath before')
+                //log.trace(tag.cardClass, rotatePath.bbox().w)
+                //log.trace(tag.cardClass, rotatePath.bbox().h)
+                //log.trace(tag.cardClass, rotatePath.bbox().x)
+                //log.trace(tag.cardClass, rotatePath.bbox().y)
+                //this.drawBBox(rotatePath.rbox(this.canvas))
+                //log.trace(tag.cardClass, 'rotatePath')
+                //log.trace(tag.cardClass, rotatePath.bbox().w)
+                //log.trace(tag.cardClass, rotatePath.bbox().h)
+                //log.trace(tag.cardClass, rotatePath.bbox().x)
+                //log.trace(tag.cardClass, rotatePath.bbox().y)
+                //log.trace(tag.cardClass, 'rotatePath rbox')
+                //log.trace(tag.cardClass, rotatePath.rbox().w)
+                //log.trace(tag.cardClass, rotatePath.rbox().h)
+                //log.trace(tag.cardClass, rotatePath.rbox().x)
+                //log.trace(tag.cardClass, rotatePath.rbox().y)
+                //log.trace(tag.cardClass, 'rotatePath rbox canvas')
+                //log.trace(tag.cardClass, rotatePath.rbox(this.canvas).w)
+                //log.trace(tag.cardClass, rotatePath.rbox(this.canvas).h)
+                //log.trace(tag.cardClass, rotatePath.rbox(this.canvas).x)
+                //log.trace(tag.cardClass, rotatePath.rbox(this.canvas).y)
                 rotX = rotatePath.rbox(this.canvas).x + (rotatePath.rbox(this.canvas).w / 2)
                 rotY = rotatePath.rbox(this.canvas).y + (rotatePath.rbox(this.canvas).h / 2)
                 // group.removeElement(rotatePath)
-            }
-
-            if (!Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
+            } else {
                 rotX = group.bbox().w / 2
                 rotY = group.bbox().h
             }
 
-            var bbox = group.bbox()
-            this.drawBBox(bbox)
-            this.drawDebug(rotX, rotY, 5, 5)
-            log.trace(tag.cardClass, count)
-            log.trace(tag.cardClass, group)
-            log.trace(tag.cardClass, 'Rotate Values')
-            log.trace(tag.cardClass, group.bbox())
-            log.trace(tag.cardClass, group.rbox())
-            log.trace(tag.cardClass, paddingX)
-            log.trace(tag.cardClass, paddingY)
-            log.trace(tag.cardClass, rotX)
-            log.trace(tag.cardClass, rotY)
-            log.trace(tag.cardClass, 'rot2')
-            log.trace(tag.cardClass, (group.rbox().w / 2) - rotX)
-            log.trace(tag.cardClass, (group.rbox().h / 2) - rotY)
+            //var bbox = group.bbox()
+            //this.drawBBox(bbox)
+            //this.drawDebug(rotX, rotY, 5, 5)
+            //log.trace(tag.cardClass, count)
+            //log.trace(tag.cardClass, group)
+            //log.trace(tag.cardClass, 'Rotate Values')
+            //log.trace(tag.cardClass, group.bbox())
+            //log.trace(tag.cardClass, group.rbox())
+            //log.trace(tag.cardClass, paddingX)
+            //log.trace(tag.cardClass, paddingY)
+            //log.trace(tag.cardClass, rotX)
+            //log.trace(tag.cardClass, rotY)
+            //log.trace(tag.cardClass, 'rot2')
+            //log.trace(tag.cardClass, (group.rbox().w / 2) - rotX)
+            //log.trace(tag.cardClass, (group.rbox().h / 2) - rotY)
 
             var faceClone = group.clone()
             doubleGroup.add(faceClone)
             // faceClone.center()
-            faceClone.move(Math.abs(((group.rbox().w / 2) - rotX)), Math.abs(((group.rbox().h / 2) - rotY)))
-            faceClone.rotate(180)//, paddingX + rotX, paddingY + rotY)
+            //faceClone.move(Math.abs(((group.rbox().w / 2)- paddingX)), Math.abs(((group.rbox().h / 2) - paddingY)))
+            faceClone.rotate(180, rotX, rotY)
             doubleGroup.size(faceSettings.width, faceSettings.height)
             doubleGroup.move(paddingX, paddingY)
             this.canvas.add(doubleGroup)
@@ -429,7 +448,7 @@ export class CardSvg {
 /*
     private drawFaceCards(): Svg {
         log.trace(tag.cardClass, 'drawFaceCards()')
-        const centerSettings = merge(this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        const centerSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
         if (centerSettings.face !== undefined && centerSettings.face.enabled) {
             const faceSettings = centerSettings.face
             const paddingX = faceSettings.paddingX ?? 0
@@ -660,7 +679,7 @@ export class CardSvg {
         rect.move(x, y)
         rect.fill('none')
         rect.stroke({
-            width: 1,
+            width: 0.1,
             color: '#F00'
         })
     }
