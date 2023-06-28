@@ -342,6 +342,9 @@ export class CardSvg {
             var doubleGroup = this.canvas.group()
             var group = doubleGroup.group()
             const faceSelection = (faceLayouts[this.pipName] ?? {})[this.type] ?? {}
+            if (Object.keys(faceSelection).length === 0) {
+                return this.canvas
+            }
             log.trace(tag.cardClass, 'faceSelection')
             log.trace(tag.cardClass, Object.keys(faceSelection).length)
             log.trace(tag.cardClass, (faceSettings.color ?? []).length)
