@@ -1,6 +1,32 @@
 # Playing Cards
 
+## Goal
 
+While i wasnt dissapointed with other card generating options, they either had no customisability, the wrong output or for the wrong framework. So to get everything i wanted while allowing the outputs of other generators this project spawned. The only goal tihs project sacrifices is file size, while they wont be the smallest, they also wont be inefficient with size.
+
+1. Above all else, this should be a static site / page. All libraries should be baked into the site to allow for offline use.
+2. Full customisability, if there is a hardcoded value that affects the look of the cards it must be changable by the user.
+3. Custom card decks, if i want 0-13 or A-10+J-Q-K i should be able to set those
+4. Outputs should allow for atleast
+    - 1 File per card output
+    - 1 File with a sheet of all cards with customisable grid order and size
+
+Future possibilities (things i wanted)
+
+- Outputs for card printing sites
+- Outputs for tabletop simulator
+
+## Other projects i found
+
+The only one i based a lot of this off of is https://www.me.uk/cards
+
+## Licensing
+
+Placeholder for ideas about licensing
+
+as of right now the https://choosealicense.com/licenses/mpl-2.0/ is looking like close to the license i want but still a bit restrictive.
+
+for future me, looking for a license that allows for nearly all use with source code changes being always open source but the images that come out just requiring attribution back to this project modified or not.
 
 ## Honour Card SVG formatting
 
