@@ -42,24 +42,27 @@ Paths are then manually simplified or split into different layers as needed, thi
 
 All these paths are then named `layer-#` with the following being the coloring standard
 
-| #  | Purpose   |
-|----|-----------|
-| 0  | Rotate    |
-| 1  | Yellow    |
-| 2  | Yellow    |
-| 3  | Yellow    |
-| 4  | Red       |
-| 5  | Red       |
-| 6  | Red       |
-| 7  | Blue      |
-| 8  | Blue      |
-| 9  | Blue      |
-| 10 | Black     |
-| 11 | Black     |
-| 12 | Black     |
-| 13 | Blue Trim |
-| 14 | Blue Trim |
-| 15 | Blue Trim |
+| #  | Purpose    |
+|----|------------|
+| 0  | Rotate     |
+| 1  | Yellow     |
+| 2  | Yellow     |
+| 3  | Yellow     |
+| 4  | Red        |
+| 5  | Red        |
+| 6  | Red        |
+| 7  | Blue       |
+| 8  | Blue       |
+| 9  | Blue       |
+| 10 | Black      |
+| 11 | Black      |
+| 12 | Black      |
+| 13 | Suit Color |
+| 14 | Suit Color |
+| 15 | Suit Color |
+| 16 | Blue Trim  |
+| 17 | Blue Trim  |
+| 18 | Blue Trim  |
 
 Layer 0 is optional and defaults to the center of all paths
 
