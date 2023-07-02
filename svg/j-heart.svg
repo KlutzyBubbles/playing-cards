@@ -9,7 +9,7 @@
    version="1.1"
    id="svg89"
    sodipodi:docname="j-heart.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,13 +27,13 @@
      showgrid="false"
      inkscape:zoom="3.0565476"
      inkscape:cx="109.4372"
-     inkscape:cy="169.30867"
+     inkscape:cy="169.63583"
      inkscape:window-width="1278"
      inkscape:window-height="1368"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg89" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs45" />
   <g
@@ -110,6 +110,6 @@
        fill="#ff0000"
        id="path289"
        transform="matrix(0.0464,0,0,0.0464,61.84,-104.32)"
-       style="display:inline" />
+       style="display:none" />
   </g>
 </svg>

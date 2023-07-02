@@ -9,7 +9,7 @@
    version="1.1"
    id="svg93"
    sodipodi:docname="k-diamond.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@
      showgrid="false"
      inkscape:zoom="3.0565476"
      inkscape:cx="120.56086"
-     inkscape:cy="169.63583"
+     inkscape:cy="169.963"
      inkscape:window-width="1278"
      inkscape:window-height="1368"
      inkscape:window-x="0"
@@ -112,9 +112,9 @@
        style="fill:#ff0000;fill-opacity:1"
        inkscape:label="layer-15" />
     <path
-       d="M -80.4 -104.32 C -78.08 -104.32 -61.84 -125.2 -61.84 -127.52 C -61.84 -125.2 -45.6 -104.32 -43.28 -104.32 C -45.6 -104.32 -61.84 -83.44 -61.84 -81.12 C -61.84 -83.44 -78.08 -104.32 -80.4 -104.32 Z"
+       d="m -80.4,-104.32 c 2.32,0 18.56,-20.88 18.56,-23.2 0,2.32 16.24,23.2 18.56,23.2 -2.32,0 -18.56,20.88 -18.56,23.2 0,-2.32 -16.24,-23.2 -18.56,-23.2 z"
        fill="#ff0000"
        id="path919"
-       style="display:inline" />
+       style="display:none" />
   </g>
 </svg>
