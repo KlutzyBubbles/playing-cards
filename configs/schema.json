@@ -1,0 +1,538 @@
+{
+  "$ref": "#/definitions/CardSettings",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "BackgroundSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "outline": {
+          "$ref": "#/definitions/OutlineSettings"
+        },
+        "radius": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled",
+        "color"
+      ],
+      "type": "object"
+    },
+    "CardSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "background": {
+          "$ref": "#/definitions/TypedBackgroundSettings"
+        },
+        "center": {
+          "$ref": "#/definitions/TypedCenterSettings"
+        },
+        "cornerPips": {
+          "items": {
+            "$ref": "#/definitions/TypedCornerPipSettings"
+          },
+          "type": "array"
+        },
+        "defaultColors": {
+          "$ref": "#/definitions/DefaultColors"
+        },
+        "outlineAffectsPosition": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "defaultColors",
+        "center",
+        "cornerPips"
+      ],
+      "type": "object"
+    },
+    "CenterBackgroundSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "height": {
+          "type": "number"
+        },
+        "outline": {
+          "$ref": "#/definitions/OutlineSettings"
+        },
+        "paddingX": {
+          "type": "number"
+        },
+        "paddingY": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "color",
+        "enabled",
+        "height",
+        "width"
+      ],
+      "type": "object"
+    },
+    "CenterPipSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "height": {
+          "type": "number"
+        },
+        "location": {
+          "$ref": "#/definitions/PipLocationName"
+        },
+        "locationScale": {
+          "type": "number"
+        },
+        "outline": {
+          "$ref": "#/definitions/OutlineSettings"
+        },
+        "symetrical": {
+          "$ref": "#/definitions/SymetricalSettings"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled",
+        "location",
+        "locationScale"
+      ],
+      "type": "object"
+    },
+    "CenterSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "background": {
+          "$ref": "#/definitions/CenterBackgroundSettings"
+        },
+        "face": {
+          "$ref": "#/definitions/FaceSettings"
+        },
+        "lines": {
+          "items": {
+            "$ref": "#/definitions/LineSettings"
+          },
+          "type": "array"
+        },
+        "pips": {
+          "$ref": "#/definitions/CenterPipSettings"
+        }
+      },
+      "type": "object"
+    },
+    "CornerPipCharacterSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "centerPad": {
+          "type": "boolean"
+        },
+        "centerPadX": {
+          "type": "boolean"
+        },
+        "centerPadY": {
+          "type": "boolean"
+        },
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "font": {
+          "type": "string"
+        },
+        "fontSize": {
+          "type": "number"
+        },
+        "outline": {
+          "$ref": "#/definitions/OutlineSettings"
+        },
+        "outlineAffectsPosition": {
+          "type": "boolean"
+        },
+        "paddingX": {
+          "type": "number"
+        },
+        "paddingY": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled",
+        "fontSize"
+      ],
+      "type": "object"
+    },
+    "CornerPipLocation": {
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "type": "number"
+    },
+    "CornerPipSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "character": {
+          "$ref": "#/definitions/CornerPipCharacterSettings"
+        },
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "location": {
+          "$ref": "#/definitions/CornerPipLocation"
+        },
+        "outlineAffectsPosition": {
+          "type": "boolean"
+        },
+        "pip": {
+          "$ref": "#/definitions/CornerPipSubSettings"
+        }
+      },
+      "required": [
+        "enabled",
+        "location"
+      ],
+      "type": "object"
+    },
+    "CornerPipSubSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "centerPad": {
+          "type": "boolean"
+        },
+        "centerPadX": {
+          "type": "boolean"
+        },
+        "centerPadY": {
+          "type": "boolean"
+        },
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "height": {
+          "type": "number"
+        },
+        "outline": {
+          "$ref": "#/definitions/OutlineSettings"
+        },
+        "outlineAffectsPosition": {
+          "type": "boolean"
+        },
+        "paddingX": {
+          "type": "number"
+        },
+        "paddingY": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "DefaultColors": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "black": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "club": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "diamond": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "heart": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "red": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "spade": {
+          "$ref": "#/definitions/HexColor"
+        }
+      },
+      "required": [
+        "all"
+      ],
+      "type": "object"
+    },
+    "FaceSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "items": {
+            "$ref": "#/definitions/HexColor"
+          },
+          "type": "array"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "height": {
+          "type": "number"
+        },
+        "paddingX": {
+          "type": "number"
+        },
+        "paddingY": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "type": "object"
+    },
+    "HexColor": {
+      "type": "string"
+    },
+    "LineCap": {
+      "enum": [
+        "butt",
+        "round",
+        "square"
+      ],
+      "type": "string"
+    },
+    "LineSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "length": {
+          "type": "number"
+        },
+        "orientation": {
+          "$ref": "#/definitions/Orientation"
+        },
+        "padding": {
+          "type": "number"
+        },
+        "strokeSize": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "length",
+        "strokeSize"
+      ],
+      "type": "object"
+    },
+    "Orientation": {
+      "enum": [
+        0,
+        1
+      ],
+      "type": "number"
+    },
+    "OutlineSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "dashArray": {
+          "type": "string"
+        },
+        "dashOffset": {
+          "type": "number"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "lineCap": {
+          "$ref": "#/definitions/LineCap"
+        },
+        "opacity": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled",
+        "width"
+      ],
+      "type": "object"
+    },
+    "PipLocationName": {
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "type": "number"
+    },
+    "SymetricalSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "angle": {
+          "type": "number"
+        },
+        "spikeCount": {
+          "type": "number"
+        },
+        "spikeDepth": {
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/SymetricalType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "SymetricalType": {
+      "enum": [
+        "straight",
+        "jagged",
+        "spiked"
+      ],
+      "type": "string"
+    },
+    "TypedBackgroundSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "$ref": "#/definitions/BackgroundSettings"
+        },
+        "black": {
+          "$ref": "#/definitions/BackgroundSettings"
+        },
+        "club": {
+          "$ref": "#/definitions/BackgroundSettings"
+        },
+        "diamond": {
+          "$ref": "#/definitions/BackgroundSettings"
+        },
+        "heart": {
+          "$ref": "#/definitions/BackgroundSettings"
+        },
+        "red": {
+          "$ref": "#/definitions/BackgroundSettings"
+        },
+        "spade": {
+          "$ref": "#/definitions/BackgroundSettings"
+        }
+      },
+      "required": [
+        "all"
+      ],
+      "type": "object"
+    },
+    "TypedCenterSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "black": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "club": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "diamond": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "face": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "heart": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "number": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "red": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "spade": {
+          "$ref": "#/definitions/CenterSettings"
+        }
+      },
+      "required": [
+        "all"
+      ],
+      "type": "object"
+    },
+    "TypedCornerPipSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "$ref": "#/definitions/CornerPipSettings"
+        },
+        "black": {
+          "$ref": "#/definitions/CornerPipSettings"
+        },
+        "club": {
+          "$ref": "#/definitions/CornerPipSettings"
+        },
+        "diamond": {
+          "$ref": "#/definitions/CornerPipSettings"
+        },
+        "heart": {
+          "$ref": "#/definitions/CornerPipSettings"
+        },
+        "red": {
+          "$ref": "#/definitions/CornerPipSettings"
+        },
+        "spade": {
+          "$ref": "#/definitions/CornerPipSettings"
+        }
+      },
+      "required": [
+        "all"
+      ],
+      "type": "object"
+    }
+  }
+}

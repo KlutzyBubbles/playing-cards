@@ -1,4 +1,3 @@
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
 const cheerio = require('cheerio')
 const fs = require('fs');
 
@@ -56,7 +55,6 @@ files.forEach(filename => {
 })
 
 Promise.all(promises).then(() => {
-    // console.log(paths)
     fs.mkdir(jsonDirectory, (error) => {
         if (error && error.code !== 'EEXIST') {
             console.error('error')

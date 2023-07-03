@@ -162,6 +162,8 @@ export interface TypedCenterSettings {
     diamond?: CenterSettings
     red?: CenterSettings
     black?: CenterSettings
+    number?: CenterSettings
+    face?: CenterSettings
     all: CenterSettings
 }
 

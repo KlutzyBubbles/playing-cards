@@ -1,0 +1,260 @@
+{
+    "$schema": "../schema.json",
+    "outlineAffectsPosition": true,
+    "background": {
+        "all": {
+            "enabled": true,
+            "outline": {
+                "enabled": false,
+                "width": 10
+            },
+            "color": "#FFF",
+            "radius": 12
+        },
+        "heart": {
+            "enabled": true,
+            "outline": {
+                "enabled": false,
+                "width": 10
+            },
+            "color": "#FFF",
+            "radius": 12
+        }
+    },
+    "defaultColors": {
+        "club": "#000",
+        "spade": "#000",
+        "heart": "#F00",
+        "diamond": "#F00",
+        "red": "#F00",
+        "black": "#000",
+        "all": "#000"
+    },
+    "center": {
+        "all": {
+            "background": {
+                "enabled": true,
+                "outline": {
+                    "enabled": true,
+                    "color": "#00F",
+                    "width": 2
+                },
+                "color": "#FFF",
+                "width": 150,
+                "height": 250,
+                "paddingX": 50,
+                "paddingY": 50,
+                "radius": 5
+            },
+            "pips": {
+                "enabled": true,
+                "width": 50,
+                "location": 1,
+                "locationScale": 1
+            },
+            "face": {
+                "enabled": true,
+                "color": [
+                    "#FC4",
+                    "#FC4",
+                    "#FC4",
+                    "#F00",
+                    "#F00",
+                    "#F00",
+                    "#44F",
+                    "#44F",
+                    "#44F",
+                    "#000",
+                    "#000",
+                    "#000",
+                    "#F00",
+                    "#F00",
+                    "#F00",
+                    "#44F",
+                    "#44F",
+                    "#44F"
+                ],
+                "width": 150,
+                "height": 250,
+                "paddingX": 50,
+                "paddingY": 50
+            }
+        },
+        "club": {
+            "background": {
+                "enabled": true,
+                "outline": {
+                    "enabled": true,
+                    "color": "#00F",
+                    "width": 2
+                },
+                "color": "#FFF",
+                "width": 150,
+                "height": 250,
+                "paddingX": 50,
+                "paddingY": 50,
+                "radius": 5
+            },
+            "pips": {
+                "enabled": true,
+                "width": 25,
+                "location": 2,
+                "locationScale": 0.5
+            }
+        },
+        "diamond": {
+            "pips": {
+                "enabled": true,
+                "width": 50,
+                "location": 0,
+                "locationScale": 1,
+                "outline": {
+                    "enabled": true,
+                    "color": "#000",
+                    "width": 1
+                }
+            }
+        },
+        "spade": {
+            "pips": {
+                "enabled": true,
+                "width": 50,
+                "location": 1,
+                "locationScale": 1,
+                "outline": {
+                    "enabled": true,
+                    "color": "#00F",
+                    "width": 1
+                }
+            }
+        }
+    },
+    "cornerPips": [
+        {
+            "all": {
+                "enabled": true,
+                "location": 0,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25,
+                    "paddingY": 10,
+                    "paddingX": 21.5,
+                    "centerPadX": true
+                },
+                "pip": {
+                    "enabled": true,
+                    "width": 23,
+                    "height": 30,
+                    "paddingY": 50,
+                    "paddingX": 10
+                }
+            },
+            "club": {
+                "enabled": true,
+                "location": 0,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25
+                },
+                "pip": {
+                    "enabled": true,
+                    "height": 25,
+                    "outline": {
+                        "enabled": true,
+                        "color": "#00F",
+                        "width": 1
+                    }
+                }
+            },
+            "black": {
+                "enabled": true,
+                "location": 0,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25
+                },
+                "pip": {
+                    "enabled": true,
+                    "height": 25,
+                    "color": "#FFF",
+                    "outline": {
+                        "enabled": true,
+                        "color": "#0F0",
+                        "width": 1
+                    }
+                }
+            }
+        },
+        {
+            "all": {
+                "enabled": true,
+                "location": 1,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25,
+                    "paddingY": 10,
+                    "paddingX": 21.5,
+                    "centerPadX": true
+                },
+                "pip": {
+                    "enabled": true,
+                    "width": 23,
+                    "height": 30,
+                    "paddingY": 50,
+                    "paddingX": 10
+                }
+            },
+            "club": {
+                "enabled": true,
+                "location": 1,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25
+                },
+                "pip": {
+                    "enabled": true,
+                    "height": 25
+                }
+            }
+        },
+        {
+            "all": {
+                "enabled": false,
+                "location": 2,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25,
+                    "paddingY": 10,
+                    "paddingX": 22.5,
+                    "centerPadX": true,
+                    "color": "#0F0"
+                },
+                "pip": {
+                    "enabled": true,
+                    "width": 25,
+                    "paddingY": 50,
+                    "paddingX": 10
+                }
+            }
+        },
+        {
+            "all": {
+                "enabled": false,
+                "location": 3,
+                "character": {
+                    "enabled": true,
+                    "fontSize": 25,
+                    "paddingY": 10,
+                    "paddingX": 22.5,
+                    "centerPadX": true
+                },
+                "pip": {
+                    "enabled": true,
+                    "width": 25,
+                    "paddingY": 50,
+                    "paddingX": 10
+                }
+            }
+        }
+    ]
+}
