@@ -1,9 +1,9 @@
 # TODO List
 
 - Move pip svg paths into svg files
-- Add Value/Face settings seperation
+- ~~Add Value/Face settings seperation~~
 - Add Pips to face cards
-- Fix Borders for face card rendering index
+- ~~Fix Borders for face card rendering index~~
 - Split CardSvg to be more readable
 - Create SVG font
 - Add text space in pip (advertising if wanted)
@@ -24,4 +24,4 @@ Future high level things
 
 # Smaller backend changes
 
-- Change typed types to use typeof and keyof to dynamically create them
+- ~~Change typed types to use typeof and keyof to dynamically create them~~
