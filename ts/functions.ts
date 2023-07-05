@@ -1,5 +1,6 @@
+import merge from 'ts-deepmerge';
 import { log, tag } from 'missionlog';
-import { BackgroundSettings, CenterBackgroundSettings } from './types';
+import { BackgroundSettings, CenterBackgroundSettings, CenterSettings, TypedKey, CornerPipSettings, FaceType, PipType, TypeColor } from './types';
 
 export function getClosestFactors(input: number): number[] {
     log.trace(tag.general, 'getClosestFactors(1)')
@@ -18,4 +19,34 @@ export function getClosestFactors(input: number): number[] {
 
 export function isCenterBackgroundSettings(settings: BackgroundSettings | CenterBackgroundSettings) {
     return 'width' in settings
+}
+
+export function lowercaseFirstCharacter(string: string): string {
+    if (string.length === 0) {
+        return string
+    }
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
+export function mergeTypedSettings(object: TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>, typeColor: TypeColor, type: PipType, faceType: FaceType): CornerPipSettings | BackgroundSettings | CenterSettings {
+    var newObject = object.all
+    if (Object.prototype.hasOwnProperty.call(object, faceType)) {
+        newObject = merge.withOptions(
+            { mergeArrays: false },
+            newObject,
+            object[faceType] as TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>)
+    }
+    if (Object.prototype.hasOwnProperty.call(object, typeColor)) {
+        newObject = merge.withOptions(
+            { mergeArrays: false },
+            newObject,
+            object[typeColor] as TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>)
+    }
+    if (Object.prototype.hasOwnProperty.call(object, type)) {
+        newObject = merge.withOptions(
+            { mergeArrays: false },
+            newObject,
+            object[type] as TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>)
+    }
+    return newObject
 }

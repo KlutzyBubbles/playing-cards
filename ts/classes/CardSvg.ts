@@ -13,12 +13,12 @@ import {
     CenterPipSettings,
     RotatableXY,
     TypeColor,
-    HexColor
+    HexColor,
+    FaceType
 } from "../types";
 import merge from "ts-deepmerge";
 import { pipLocations, pipOptions, faceLayouts } from '../constants';
-import { isCenterBackgroundSettings } from '../functions';
-import { runInThisContext } from 'vm';
+import { isCenterBackgroundSettings, lowercaseFirstCharacter, mergeTypedSettings } from '../functions';
 
 export class CardSvg {
 
@@ -32,7 +32,7 @@ export class CardSvg {
 
     private cardBackground: Rect | undefined;
     private centerBackground: Rect | undefined;
-    private cornerPips: CornerPipPath[];
+    private cornerPips: (CornerPipPath | undefined)[];
     private centerPips: (Path | Svg)[];
     private faces: G[];
 
@@ -87,6 +87,17 @@ export class CardSvg {
         return chosenPath
     }
 
+    get faceType(): FaceType {
+        const values = ['a', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+        const faces = ['j', 'q', 'k']
+        if (values.includes(this.character.toLowerCase())) {
+            return 'value'
+        } else if (faces.includes(this.character.toLowerCase())) {
+            return 'face'
+        }
+        return 'unknown'
+    }
+
     public drawCard(): Svg {
         log.trace(tag.cardClass, 'drawCard()')
         this.drawCardBackground()
@@ -99,28 +110,47 @@ export class CardSvg {
 
     private drawCornerPips(): Svg {
         log.trace(tag.cardClass, 'drawCornerPips()')
-        if (this.cornerPips.length != this.settings.cornerPips.length) {
-            this.resetCornerPips()
+        var pipList: (CornerPipSettings | undefined)[] = []
+        for (const pipLocationName in Object.keys(CornerPipLocation)) {
+            if (typeof CornerPipLocation[pipLocationName] !== "string") {
+                continue;
+            }
+            const settingName = lowercaseFirstCharacter(CornerPipLocation[pipLocationName])
+            if (!Object.prototype.hasOwnProperty.call(this.settings.cornerPips, settingName)) {
+                pipList.push(undefined)
+            } else {
+                pipList.push(mergeTypedSettings(this.settings.cornerPips[settingName], this.typeColor, this.type, this.faceType) as CornerPipSettings)
+            }
         }
+        // if (this.cornerPips.length != cornerPipCount) {
+            this.resetCornerPips()
+        // }
         if (this.cornerPips.length === 0) {
-            for (var cornerPipSettings of this.settings.cornerPips) {
-                this.cornerPips.push(this.processCornerPip(merge.withOptions({ mergeArrays: false }, cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)))
+            for (var [index, cornerPipSettings] of pipList.entries()) {
+                if (cornerPipSettings !== undefined) {
+                    this.cornerPips.push(this.processCornerPip(cornerPipSettings, index))
+                } else {
+                    this.cornerPips.push(undefined)
+                }
             }
         } else {
-            var replacementPips: CornerPipPath[] = []
-            for (const [index, cornerPip] of this.cornerPips.entries()) {
-                const cornerPipSettings = this.settings.cornerPips[index]
-                const cornerPipSettingsMerged = merge.withOptions({ mergeArrays: false }, cornerPipSettings.all, cornerPipSettings[this.typeColor] ?? cornerPipSettings.all, cornerPipSettings[this.type] ?? cornerPipSettings.all)
-                replacementPips.push(this.processCornerPip(cornerPipSettingsMerged, cornerPip))
+            var replacementPips: typeof this.cornerPips = []
+            for (const [index, cornerPipSettings] of pipList.entries()) {
+                if (cornerPipSettings !== undefined) {
+                    replacementPips.push(this.processCornerPip(cornerPipSettings, index, this.cornerPips[index]))
+                } else {
+                    replacementPips.push(undefined)
+                }
             }
             this.cornerPips = replacementPips
         }
         return this.canvas
     }
 
-    private processCornerPip(cornerPipSettings: CornerPipSettings, paths?: CornerPipPath): CornerPipPath {
-        log.trace(tag.cardClass, 'processCornerPip(2)')
+    private processCornerPip(cornerPipSettings: CornerPipSettings, location: CornerPipLocation, paths?: CornerPipPath): CornerPipPath {
+        log.trace(tag.cardClass, 'processCornerPip(3)')
         log.trace(tag.cardClass, cornerPipSettings)
+        log.trace(tag.cardClass, location)
         log.trace(tag.cardClass, paths)
         log.trace(tag.cardClass, '-------------------')
         if (!cornerPipSettings.enabled) {
@@ -153,7 +183,7 @@ export class CardSvg {
             }
             cornerPip = this.positionCornerItem(
                 cornerPip,
-                cornerPipSettings.location,
+                location,
                 pipSettings.paddingX,
                 pipSettings.paddingY,
                 pipSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
@@ -180,7 +210,7 @@ export class CardSvg {
             cornerCharacter.fill(characterSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
             cornerCharacter = this.positionCornerItem(
                 cornerCharacter,
-                cornerPipSettings.location,
+                location,
                 characterSettings.paddingX,
                 characterSettings.paddingY,
                 characterSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
@@ -235,8 +265,10 @@ export class CardSvg {
     private resetCornerPips(): Svg {
         log.trace(tag.cardClass, 'resetCornerPips()')
         for (var cornerPip of this.cornerPips) {
-            cornerPip.character?.remove()
-            cornerPip.pip?.remove()
+            if (cornerPip !== undefined) {
+                cornerPip.character?.remove()
+                cornerPip.pip?.remove()
+            }
         }
         this.cornerPips = []
         return this.canvas

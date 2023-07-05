@@ -18,3 +18,9 @@ Future high level things
 - Generated cardback patterns?
 - International cards
 - Pip locations up to 13
+
+
+
+# Smaller backend changes
+
+- Change typed types to use typeof and keyof to dynamically create them

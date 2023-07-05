@@ -25,6 +25,7 @@ export interface CornerPipSubSettingsBase {
 
 export type PipType = 'club' | 'spade' | 'heart' | 'diamond'
 export type TypeColor = 'black' | 'red' | 'all'
+export type FaceType = 'value' | 'face' | 'unknown'
 export type LineCap = 'butt' | 'round' | 'square'
 
 export enum CornerPipLocation {
@@ -36,20 +37,29 @@ export enum CornerPipLocation {
 
 export interface CornerPipSettings {
     enabled: boolean
-    location: CornerPipLocation
     character?: CornerPipCharacterSettings
     outlineAffectsPosition?: boolean
     pip?: CornerPipSubSettings
     color?: HexColor
 }
-export interface TypedCornerPipSettings {
-    club?: CornerPipSettings
-    spade?: CornerPipSettings
-    heart?: CornerPipSettings
-    diamond?: CornerPipSettings
-    red?: CornerPipSettings
-    black?: CornerPipSettings
-    all: CornerPipSettings
+
+export interface CornerPipLocationSettings {
+    topLeft?: TypedKey<CornerPipSettings>
+    bottomRight?: TypedKey<CornerPipSettings>
+    topRight?: TypedKey<CornerPipSettings>
+    bottomLeft?: TypedKey<CornerPipSettings>
+}
+
+export interface TypedKey<T extends CornerPipSettings | BackgroundSettings | CenterSettings> {
+    club?: Partial<T>
+    spade?: Partial<T>
+    heart?: Partial<T>
+    diamond?: Partial<T>
+    red?: Partial<T>
+    black?: Partial<T>
+    value?: Partial<T>
+    face?: Partial<T>
+    all: T
 }
 
 export interface DefaultColors {
@@ -77,16 +87,6 @@ export interface BackgroundSettings {
     outline?: OutlineSettings
     color: HexColor
     radius?: number
-}
-
-export interface TypedBackgroundSettings {
-    club?: BackgroundSettings
-    spade?: BackgroundSettings
-    heart?: BackgroundSettings
-    diamond?: BackgroundSettings
-    red?: BackgroundSettings
-    black?: BackgroundSettings
-    all: BackgroundSettings
 }
 
 export interface CenterBackgroundSettings extends BackgroundSettings {
@@ -155,24 +155,13 @@ export interface CenterSettings {
     face?: FaceSettings
     lines?: LineSettings[]
 }
-export interface TypedCenterSettings {
-    club?: CenterSettings
-    spade?: CenterSettings
-    heart?: CenterSettings
-    diamond?: CenterSettings
-    red?: CenterSettings
-    black?: CenterSettings
-    number?: CenterSettings
-    face?: CenterSettings
-    all: CenterSettings
-}
 
 export interface CardSettings {
     outlineAffectsPosition?: boolean
-    background?: TypedBackgroundSettings
+    background?: TypedKey<BackgroundSettings>
     defaultColors: DefaultColors
-    center: TypedCenterSettings
-    cornerPips: TypedCornerPipSettings[]
+    center: TypedKey<CenterSettings>
+    cornerPips: CornerPipLocationSettings
 }
 
 export interface XY {

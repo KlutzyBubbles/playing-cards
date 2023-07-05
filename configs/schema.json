@@ -28,16 +28,13 @@
       "additionalProperties": false,
       "properties": {
         "background": {
-          "$ref": "#/definitions/TypedBackgroundSettings"
+          "$ref": "#/definitions/TypedKey%3CBackgroundSettings%3E"
         },
         "center": {
-          "$ref": "#/definitions/TypedCenterSettings"
+          "$ref": "#/definitions/TypedKey%3CCenterSettings%3E"
         },
         "cornerPips": {
-          "items": {
-            "$ref": "#/definitions/TypedCornerPipSettings"
-          },
-          "type": "array"
+          "$ref": "#/definitions/CornerPipLocationSettings"
         },
         "defaultColors": {
           "$ref": "#/definitions/DefaultColors"
@@ -188,14 +185,23 @@
       ],
       "type": "object"
     },
-    "CornerPipLocation": {
-      "enum": [
-        0,
-        1,
-        2,
-        3
-      ],
-      "type": "number"
+    "CornerPipLocationSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "bottomLeft": {
+          "$ref": "#/definitions/TypedKey%3CCornerPipSettings%3E"
+        },
+        "bottomRight": {
+          "$ref": "#/definitions/TypedKey%3CCornerPipSettings%3E"
+        },
+        "topLeft": {
+          "$ref": "#/definitions/TypedKey%3CCornerPipSettings%3E"
+        },
+        "topRight": {
+          "$ref": "#/definitions/TypedKey%3CCornerPipSettings%3E"
+        }
+      },
+      "type": "object"
     },
     "CornerPipSettings": {
       "additionalProperties": false,
@@ -209,9 +215,6 @@
         "enabled": {
           "type": "boolean"
         },
-        "location": {
-          "$ref": "#/definitions/CornerPipLocation"
-        },
         "outlineAffectsPosition": {
           "type": "boolean"
         },
@@ -220,8 +223,7 @@
         }
       },
       "required": [
-        "enabled",
-        "location"
+        "enabled"
       ],
       "type": "object"
     },
@@ -438,65 +440,155 @@
       ],
       "type": "string"
     },
-    "TypedBackgroundSettings": {
+    "TypedKey<BackgroundSettings>": {
       "additionalProperties": false,
       "properties": {
         "all": {
           "$ref": "#/definitions/BackgroundSettings"
         },
         "black": {
-          "$ref": "#/definitions/BackgroundSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         },
         "club": {
-          "$ref": "#/definitions/BackgroundSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         },
         "diamond": {
-          "$ref": "#/definitions/BackgroundSettings"
-        },
-        "heart": {
-          "$ref": "#/definitions/BackgroundSettings"
-        },
-        "red": {
-          "$ref": "#/definitions/BackgroundSettings"
-        },
-        "spade": {
-          "$ref": "#/definitions/BackgroundSettings"
-        }
-      },
-      "required": [
-        "all"
-      ],
-      "type": "object"
-    },
-    "TypedCenterSettings": {
-      "additionalProperties": false,
-      "properties": {
-        "all": {
-          "$ref": "#/definitions/CenterSettings"
-        },
-        "black": {
-          "$ref": "#/definitions/CenterSettings"
-        },
-        "club": {
-          "$ref": "#/definitions/CenterSettings"
-        },
-        "diamond": {
-          "$ref": "#/definitions/CenterSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         },
         "face": {
-          "$ref": "#/definitions/CenterSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         },
         "heart": {
-          "$ref": "#/definitions/CenterSettings"
-        },
-        "number": {
-          "$ref": "#/definitions/CenterSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         },
         "red": {
-          "$ref": "#/definitions/CenterSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         },
         "spade": {
-          "$ref": "#/definitions/CenterSettings"
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "value": {
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outline": {
+              "$ref": "#/definitions/OutlineSettings"
+            },
+            "radius": {
+              "type": "number"
+            }
+          },
+          "type": "object"
         }
       },
       "required": [
@@ -504,29 +596,359 @@
       ],
       "type": "object"
     },
-    "TypedCornerPipSettings": {
+    "TypedKey<CenterSettings>": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "$ref": "#/definitions/CenterSettings"
+        },
+        "black": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "club": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "diamond": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "face": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "heart": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "red": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "spade": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        },
+        "value": {
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "$ref": "#/definitions/CenterBackgroundSettings"
+            },
+            "face": {
+              "$ref": "#/definitions/FaceSettings"
+            },
+            "lines": {
+              "items": {
+                "$ref": "#/definitions/LineSettings"
+              },
+              "type": "array"
+            },
+            "pips": {
+              "$ref": "#/definitions/CenterPipSettings"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "all"
+      ],
+      "type": "object"
+    },
+    "TypedKey<CornerPipSettings>": {
       "additionalProperties": false,
       "properties": {
         "all": {
           "$ref": "#/definitions/CornerPipSettings"
         },
         "black": {
-          "$ref": "#/definitions/CornerPipSettings"
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
         },
         "club": {
-          "$ref": "#/definitions/CornerPipSettings"
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
         },
         "diamond": {
-          "$ref": "#/definitions/CornerPipSettings"
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
+        },
+        "face": {
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
         },
         "heart": {
-          "$ref": "#/definitions/CornerPipSettings"
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
         },
         "red": {
-          "$ref": "#/definitions/CornerPipSettings"
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
         },
         "spade": {
-          "$ref": "#/definitions/CornerPipSettings"
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
+        },
+        "value": {
+          "additionalProperties": false,
+          "properties": {
+            "character": {
+              "$ref": "#/definitions/CornerPipCharacterSettings"
+            },
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "outlineAffectsPosition": {
+              "type": "boolean"
+            },
+            "pip": {
+              "$ref": "#/definitions/CornerPipSubSettings"
+            }
+          },
+          "type": "object"
         }
       },
       "required": [
