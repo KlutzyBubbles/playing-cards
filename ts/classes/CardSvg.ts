@@ -14,9 +14,9 @@ import {
     RotatableXY,
     TypeColor,
     HexColor,
-    FaceType
+    FaceType,
+    CenterSettings
 } from "../types";
-import merge from "ts-deepmerge";
 import { pipLocations, pipOptions, faceLayouts } from '../constants';
 import { isCenterBackgroundSettings, lowercaseFirstCharacter, mergeTypedSettings } from '../functions';
 
@@ -251,7 +251,7 @@ export class CardSvg {
         log.trace(tag.cardClass, '-------------------')
         const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
         const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
-        const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        const backgroundSettings = this.settings.background === undefined ? undefined : mergeTypedSettings(this.settings.background, this.typeColor, this.type, this.faceType) as BackgroundSettings
         const outlineAdjust = outlineAffectsPosition ?? false ? backgroundSettings?.outline?.enabled ?? false ? backgroundSettings?.outline?.width ?? 0 : 0 : 0
         const xVal = (xPad ?? 0) - xCenterAdjust + outlineAdjust
         const yVal = (yPad ?? 0) - yCenterAdjust + outlineAdjust
@@ -285,7 +285,7 @@ export class CardSvg {
         if (this.cardBackgroundBorder === undefined) {
             this.cardBackgroundBorder = this.canvas.rect(this.cardSize.x, this.cardSize.y)
         }
-        const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        const backgroundSettings = this.settings.background === undefined ? undefined : mergeTypedSettings(this.settings.background, this.typeColor, this.type, this.faceType) as BackgroundSettings
         if (backgroundSettings !== undefined && backgroundSettings.enabled) {
             this.moveBackgroundBorder(this.cardBackgroundBorder, backgroundSettings)
         } else {
@@ -297,7 +297,7 @@ export class CardSvg {
 
     private drawCardBackground(): Svg {
         log.trace(tag.cardClass, 'drawCardBackground()')
-        const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        const backgroundSettings = this.settings.background === undefined ? undefined : mergeTypedSettings(this.settings.background, this.typeColor, this.type, this.faceType) as BackgroundSettings
         var offset = 0
         if (backgroundSettings !== undefined && backgroundSettings.outline !== undefined && backgroundSettings.outline.enabled) {
             const outlineSettings = backgroundSettings.outline
@@ -317,7 +317,7 @@ export class CardSvg {
 
     private drawCenterBackgroundBorder(): Svg {
         log.trace(tag.cardClass, 'drawCenterBackgroundBorder()')
-        var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        const centerBackgroundSettings = (mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings).background
         if (this.centerBackgroundBorder === undefined) {
             this.centerBackgroundBorder = this.canvas.rect(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0)
         }
@@ -332,7 +332,7 @@ export class CardSvg {
 
     private drawCenterBackgroundClip(): Svg {
         log.trace(tag.cardClass, 'drawCenterBackground()')
-        var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        const centerBackgroundSettings = (mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings).background
         var offset = 0
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.outline !== undefined && centerBackgroundSettings.outline.enabled) {
             const outlineSettings = centerBackgroundSettings.outline
@@ -352,7 +352,7 @@ export class CardSvg {
 
     private drawCenterBackground(): Svg {
         log.trace(tag.cardClass, 'drawCenterBackground()')
-        var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        const centerBackgroundSettings = (mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings).background
         var offset = 0
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.outline !== undefined && centerBackgroundSettings.outline.enabled) {
             const outlineSettings = centerBackgroundSettings.outline
@@ -383,9 +383,6 @@ export class CardSvg {
             log.error(tag.cardClass, `settings.radius ${settings.radius}`)
             log.error(tag.cardClass, `outlineSettings.width ${outlineSettings.width}`)
             log.error(tag.cardClass, `height ${height}`)
-            //const newRadius = (settings.radius ?? 0) * ((width - (outlineSettings.width * 2)) / width)
-            // const newRadius = 12
-            // log.error(tag.cardClass, `newRadius ${newRadius}`)
             backgroundBorder = this.canvas.rect(width - (outlineSettings.width ?? 0), height - (outlineSettings.width ?? 0))
             backgroundBorder.move(paddingX + outlineAdjust, paddingY + outlineAdjust)
             backgroundBorder.fill('none')
@@ -419,7 +416,7 @@ export class CardSvg {
 
     private drawCenterPips(): Svg {
         log.trace(tag.cardClass, 'drawCenterPips()')
-        const centerSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        const centerSettings = mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings
         if (centerSettings.pips !== undefined && centerSettings.pips.enabled) {
             const centerPipSettings = centerSettings.pips
             const pipLocationSelection = pipLocations[centerSettings.pips.location]
@@ -451,7 +448,7 @@ export class CardSvg {
 
     private drawFaceCards(): Svg {
         log.trace(tag.cardClass, 'drawFaceCards()')
-        const centerSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all)
+        const centerSettings = mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings
         if (centerSettings.face !== undefined && centerSettings.face.enabled) {
             const faceSettings = centerSettings.face
             const paddingX = faceSettings.paddingX ?? 0
