@@ -453,7 +453,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -471,7 +495,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -489,7 +537,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -507,7 +579,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -525,7 +621,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -543,7 +663,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -561,7 +705,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -579,7 +747,31 @@
               "type": "boolean"
             },
             "outline": {
-              "$ref": "#/definitions/OutlineSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "dashArray": {
+                  "type": "string"
+                },
+                "dashOffset": {
+                  "type": "number"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "lineCap": {
+                  "$ref": "#/definitions/LineCap"
+                },
+                "opacity": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "radius": {
               "type": "number"
@@ -603,19 +795,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -624,19 +975,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -645,19 +1155,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -666,19 +1335,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -687,19 +1515,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -708,19 +1695,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -729,19 +1875,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -750,19 +2055,178 @@
           "additionalProperties": false,
           "properties": {
             "background": {
-              "$ref": "#/definitions/CenterBackgroundSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "radius": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "face": {
-              "$ref": "#/definitions/FaceSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "items": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "type": "array"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "lines": {
               "items": {
-                "$ref": "#/definitions/LineSettings"
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "#/definitions/HexColor"
+                  },
+                  "length": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "$ref": "#/definitions/Orientation"
+                  },
+                  "padding": {
+                    "type": "number"
+                  },
+                  "strokeSize": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
               },
               "type": "array"
             },
             "pips": {
-              "$ref": "#/definitions/CenterPipSettings"
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "location": {
+                  "$ref": "#/definitions/PipLocationName"
+                },
+                "locationScale": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "symetrical": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "angle": {
+                      "type": "number"
+                    },
+                    "spikeCount": {
+                      "type": "number"
+                    },
+                    "spikeDepth": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "$ref": "#/definitions/SymetricalType"
+                    }
+                  },
+                  "type": "object"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -783,7 +2247,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -795,7 +2319,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -804,7 +2388,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -816,7 +2460,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -825,7 +2529,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -837,7 +2601,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -846,7 +2670,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -858,7 +2742,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -867,7 +2811,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -879,7 +2883,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -888,7 +2952,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -900,7 +3024,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -909,7 +3093,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -921,7 +3165,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"
@@ -930,7 +3234,67 @@
           "additionalProperties": false,
           "properties": {
             "character": {
-              "$ref": "#/definitions/CornerPipCharacterSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "font": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             },
             "color": {
               "$ref": "#/definitions/HexColor"
@@ -942,7 +3306,67 @@
               "type": "boolean"
             },
             "pip": {
-              "$ref": "#/definitions/CornerPipSubSettings"
+              "additionalProperties": false,
+              "properties": {
+                "centerPad": {
+                  "type": "boolean"
+                },
+                "centerPadX": {
+                  "type": "boolean"
+                },
+                "centerPadY": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "$ref": "#/definitions/HexColor"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "outline": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/HexColor"
+                    },
+                    "dashArray": {
+                      "type": "string"
+                    },
+                    "dashOffset": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "lineCap": {
+                      "$ref": "#/definitions/LineCap"
+                    },
+                    "opacity": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlineAffectsPosition": {
+                  "type": "boolean"
+                },
+                "paddingX": {
+                  "type": "number"
+                },
+                "paddingY": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
           },
           "type": "object"

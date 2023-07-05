@@ -19,14 +19,6 @@
     },
     "center": {
         "all": {
-            "background": {
-                "enabled": true,
-                "width": 150,
-                "height": 250,
-                "paddingX": 50,
-                "paddingY": 50,
-                "radius": 5
-            },
             "pips": {
                 "enabled": true,
                 "width": 50,
@@ -55,18 +47,15 @@
                     "#44F",
                     "#44F"
                 ],
-                "width": 150,
-                "height": 250,
-                "paddingX": 50,
-                "paddingY": 50
+                "width": 180,
+                "height": 280,
+                "paddingX": 35,
+                "paddingY": 35
             }
         },
         "club": {
             "pips": {
-                "enabled": true,
-                "width": 60,
-                "location": 0,
-                "locationScale": 1
+                "width": 60
             }
         },
         "face": {
@@ -78,11 +67,10 @@
                     "width": 2
                 },
                 "color": "#FFF",
-                "width": 150,
-                "height": 250,
-                "paddingX": 50,
-                "paddingY": 50,
-                "radius": 5
+                "width": 180,
+                "height": 280,
+                "paddingX": 35,
+                "paddingY": 35
             }
         }
     },
@@ -106,13 +94,7 @@
                 }
             },
             "club": {
-                "enabled": true,
-                "character": {
-                    "enabled": true,
-                    "fontSize": 25
-                },
                 "pip": {
-                    "enabled": true,
                     "height": 25
                 }
             }
@@ -136,13 +118,7 @@
                 }
             },
             "club": {
-                "enabled": true,
-                "character": {
-                    "enabled": true,
-                    "fontSize": 25
-                },
                 "pip": {
-                    "enabled": true,
                     "height": 25
                 }
             }

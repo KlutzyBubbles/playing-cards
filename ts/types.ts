@@ -50,15 +50,19 @@ export interface CornerPipLocationSettings {
     bottomLeft?: TypedKey<CornerPipSettings>
 }
 
+type DeepPartial<T> = T extends object ? {
+    [P in keyof T]?: DeepPartial<T[P]>;
+} : T;
+
 export interface TypedKey<T extends CornerPipSettings | BackgroundSettings | CenterSettings> {
-    club?: Partial<T>
-    spade?: Partial<T>
-    heart?: Partial<T>
-    diamond?: Partial<T>
-    red?: Partial<T>
-    black?: Partial<T>
-    value?: Partial<T>
-    face?: Partial<T>
+    club?: DeepPartial<T>
+    spade?: DeepPartial<T>
+    heart?: DeepPartial<T>
+    diamond?: DeepPartial<T>
+    red?: DeepPartial<T>
+    black?: DeepPartial<T>
+    value?: DeepPartial<T>
+    face?: DeepPartial<T>
     all: T
 }
 
