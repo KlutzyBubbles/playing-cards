@@ -4,10 +4,6 @@
     "background": {
         "all": {
             "enabled": true,
-            "outline": {
-                "enabled": false,
-                "width": 10
-            },
             "color": "#FFF",
             "radius": 12
         }
@@ -25,11 +21,6 @@
         "all": {
             "background": {
                 "enabled": true,
-                "outline": {
-                    "enabled": false,
-                    "width": 2
-                },
-                "color": "#FFF",
                 "width": 150,
                 "height": 250,
                 "paddingX": 50,
@@ -83,7 +74,7 @@
                 "enabled": true,
                 "outline": {
                     "enabled": true,
-                    "color": "#00F",
+                    "color": "#44F",
                     "width": 2
                 },
                 "color": "#FFF",

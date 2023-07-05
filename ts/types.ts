@@ -79,13 +79,13 @@ export interface OutlineSettings {
     lineCap?: LineCap
     dashArray?: string
     dashOffset?: number
-    width: number
+    width?: number
 }
 
 export interface BackgroundSettings {
     enabled: boolean
     outline?: OutlineSettings
-    color: HexColor
+    color?: HexColor
     radius?: number
 }
 

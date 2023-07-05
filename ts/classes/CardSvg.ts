@@ -32,6 +32,9 @@ export class CardSvg {
 
     private cardBackground: Rect | undefined;
     private centerBackground: Rect | undefined;
+    private centerBackgroundClip: Rect | undefined;
+    private cardBackgroundBorder: Rect | undefined;
+    private centerBackgroundBorder: Rect | undefined;
     private cornerPips: (CornerPipPath | undefined)[];
     private centerPips: (Path | Svg)[];
     private faces: G[];
@@ -101,10 +104,13 @@ export class CardSvg {
     public drawCard(): Svg {
         log.trace(tag.cardClass, 'drawCard()')
         this.drawCardBackground()
+        this.drawCardBackgroundBorder()
         this.drawCornerPips()
+        this.drawCenterBackgroundClip()
         this.drawCenterBackground()
-        this.drawCenterPips()
         this.drawFaceCards()
+        this.drawCenterBackgroundBorder()
+        this.drawCenterPips()
         return this.canvas
     }
 
@@ -274,12 +280,32 @@ export class CardSvg {
         return this.canvas
     }
 
-    private drawCardBackground(): Svg {
+    private drawCardBackgroundBorder(): Svg {
         log.trace(tag.cardClass, 'drawCardBackground()')
-        if (this.cardBackground === undefined) {
-            this.cardBackground = this.canvas.rect(this.cardSize.x, this.cardSize.y)
+        if (this.cardBackgroundBorder === undefined) {
+            this.cardBackgroundBorder = this.canvas.rect(this.cardSize.x, this.cardSize.y)
         }
         const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        if (backgroundSettings !== undefined && backgroundSettings.enabled) {
+            this.moveBackgroundBorder(this.cardBackgroundBorder, backgroundSettings)
+        } else {
+            this.cardBackgroundBorder.remove()
+            this.cardBackgroundBorder = undefined
+        }
+        return this.canvas
+    }
+
+    private drawCardBackground(): Svg {
+        log.trace(tag.cardClass, 'drawCardBackground()')
+        const backgroundSettings = this.settings.background === undefined ? undefined : merge.withOptions({ mergeArrays: false }, this.settings.background.all, this.settings.background[this.typeColor] ?? this.settings.background.all, this.settings.background[this.type] ?? this.settings.background.all)
+        var offset = 0
+        if (backgroundSettings !== undefined && backgroundSettings.outline !== undefined && backgroundSettings.outline.enabled) {
+            const outlineSettings = backgroundSettings.outline
+            offset = (outlineSettings.width ?? 0)
+        }
+        if (this.cardBackground === undefined) {
+            this.cardBackground = this.canvas.rect(this.cardSize.x - offset, this.cardSize.y - offset)
+        }
         if (backgroundSettings !== undefined && backgroundSettings.enabled) {
             this.moveBackground(this.cardBackground, backgroundSettings)
         } else {
@@ -289,11 +315,51 @@ export class CardSvg {
         return this.canvas
     }
 
-    private drawCenterBackground(): Svg {
-        log.trace(tag.cardClass, 'drawBackground()')
+    private drawCenterBackgroundBorder(): Svg {
+        log.trace(tag.cardClass, 'drawCenterBackgroundBorder()')
         var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        if (this.centerBackgroundBorder === undefined) {
+            this.centerBackgroundBorder = this.canvas.rect(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0)
+        }
+        if (centerBackgroundSettings !== undefined && centerBackgroundSettings.enabled) {
+            this.moveBackgroundBorder(this.centerBackgroundBorder, centerBackgroundSettings)
+        } else {
+            this.centerBackgroundBorder.remove()
+            this.centerBackgroundBorder = undefined
+        }
+        return this.canvas
+    }
+
+    private drawCenterBackgroundClip(): Svg {
+        log.trace(tag.cardClass, 'drawCenterBackground()')
+        var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        var offset = 0
+        if (centerBackgroundSettings !== undefined && centerBackgroundSettings.outline !== undefined && centerBackgroundSettings.outline.enabled) {
+            const outlineSettings = centerBackgroundSettings.outline
+            offset = (outlineSettings.width ?? 0)
+        }
+        if (this.centerBackgroundClip === undefined) {
+            this.centerBackgroundClip = this.canvas.rect((centerBackgroundSettings?.width ?? 0) - offset, (centerBackgroundSettings?.height ?? 0) - offset)
+        }
+        if (centerBackgroundSettings !== undefined && centerBackgroundSettings.enabled) {
+            this.moveBackground(this.centerBackgroundClip, centerBackgroundSettings)
+        } else {
+            this.centerBackgroundClip.remove()
+            this.centerBackgroundClip = undefined
+        }
+        return this.canvas
+    }
+
+    private drawCenterBackground(): Svg {
+        log.trace(tag.cardClass, 'drawCenterBackground()')
+        var centerBackgroundSettings = merge.withOptions({ mergeArrays: false }, this.settings.center.all, this.settings.center[this.typeColor] ?? this.settings.center.all, this.settings.center[this.type] ?? this.settings.center.all).background
+        var offset = 0
+        if (centerBackgroundSettings !== undefined && centerBackgroundSettings.outline !== undefined && centerBackgroundSettings.outline.enabled) {
+            const outlineSettings = centerBackgroundSettings.outline
+            offset = (outlineSettings.width ?? 0)
+        }
         if (this.centerBackground === undefined) {
-            this.centerBackground = this.canvas.rect(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0)
+            this.centerBackground = this.canvas.rect((centerBackgroundSettings?.width ?? 0) - offset, (centerBackgroundSettings?.height ?? 0) - offset)
         }
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.enabled) {
             this.moveBackground(this.centerBackground, centerBackgroundSettings)
@@ -304,22 +370,26 @@ export class CardSvg {
         return this.canvas
     }
 
-    private moveBackground(background: Rect, settings: BackgroundSettings | CenterBackgroundSettings): Svg {
-        log.trace(tag.cardClass, 'moveBackground()')
+    private moveBackgroundBorder(backgroundBorder: Rect, settings: BackgroundSettings | CenterBackgroundSettings): Svg {
+        log.trace(tag.cardClass, 'colorBackground()')
         const paddingX = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingX ?? 0 : 0
         const paddingY = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingY ?? 0 : 0
         const width = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).width ?? 0 : this.cardSize.x
         const height = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).height ?? 0 : this.cardSize.y
-        background.move(paddingX, paddingY)
-        background.fill(settings.color)
+        backgroundBorder.remove()
         if (settings.outline !== undefined && settings.outline.enabled) {
             const outlineSettings = settings.outline
-            const outlineAdjust = outlineSettings.width / 2
-            background.remove()
-            background = this.canvas.rect(width - outlineSettings.width, height - outlineSettings.width)
-            background.move(paddingX + outlineAdjust, paddingY + outlineAdjust)
-            background.fill(settings.color)
-            background.stroke({
+            const outlineAdjust = (outlineSettings.width ?? 0) / 2
+            log.error(tag.cardClass, `settings.radius ${settings.radius}`)
+            log.error(tag.cardClass, `outlineSettings.width ${outlineSettings.width}`)
+            log.error(tag.cardClass, `height ${height}`)
+            //const newRadius = (settings.radius ?? 0) * ((width - (outlineSettings.width * 2)) / width)
+            // const newRadius = 12
+            // log.error(tag.cardClass, `newRadius ${newRadius}`)
+            backgroundBorder = this.canvas.rect(width - (outlineSettings.width ?? 0), height - (outlineSettings.width ?? 0))
+            backgroundBorder.move(paddingX + outlineAdjust, paddingY + outlineAdjust)
+            backgroundBorder.fill('none')
+            backgroundBorder.stroke({
                 color: outlineSettings.color ?? this.defaultColor,
                 width: outlineSettings.width,
                 opacity: outlineSettings.opacity,
@@ -327,7 +397,22 @@ export class CardSvg {
                 dasharray: outlineSettings.dashArray,
                 dashoffset: outlineSettings.dashOffset
             })
+            backgroundBorder.radius(settings.radius ?? 0)
         }
+        return this.canvas
+    }
+
+    private moveBackground(background: Rect, settings: BackgroundSettings | CenterBackgroundSettings): Svg {
+        log.trace(tag.cardClass, 'moveBackground()')
+        const paddingX = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingX ?? 0 : 0
+        const paddingY = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingY ?? 0 : 0
+        var offset = 0
+        if (settings.outline !== undefined && settings.outline.enabled) {
+            const outlineSettings = settings.outline
+            offset = (outlineSettings.width ?? 0) / 2
+        }
+        background.move(paddingX + offset, paddingY + offset)
+        background.fill(settings.color ?? 'none')
         background.radius(settings.radius ?? 0)
         return this.canvas
     }
@@ -429,9 +514,20 @@ export class CardSvg {
             var faceClone = group.clone()
             doubleGroup.add(faceClone)
             faceClone.rotate(180, rotX, rotY)
-            doubleGroup.size(faceSettings.width, faceSettings.height)
-            doubleGroup.move(paddingX, paddingY)
+
+            var offset = 0
+            if (centerSettings.background !== undefined && centerSettings.background.outline !== undefined && centerSettings.background.outline.enabled) {
+                const outlineSettings = centerSettings.background.outline
+                offset = (outlineSettings.width ?? 0)
+            }
+
+            doubleGroup.size((faceSettings.width ?? 0) - offset, (faceSettings.height ?? 0) - offset)
+            doubleGroup.move(paddingX + (offset / 2), paddingY + (offset / 2))
             this.canvas.add(doubleGroup)
+            if (this.centerBackgroundClip !== undefined) {
+                var clip = doubleGroup.clip().add(this.centerBackgroundClip)
+                doubleGroup.clipWith(clip)
+            }
         }
         return this.canvas
     }
