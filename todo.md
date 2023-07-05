@@ -1,5 +1,6 @@
 # TODO List
 
+- Move pip svg paths into svg files
 - Add Value/Face settings seperation
 - Add Pips to face cards
 - Fix Borders for face card rendering index
