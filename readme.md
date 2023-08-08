@@ -1,11 +1,21 @@
 # Playing Cards
 
+One page application to generate SVG playing card layouts of a variety of sizes, colors among other things.
+
+## This is not finished
+
+This is a personal project that is going slowly, i dont know when it will be done (or if) but i decided to public it incase anyone else needed something similar.
+
+Check package.json for commands for building / running it
+
+I will try keep everything that is being worked on or needs to be worked on in issues on the off chance someone stumbles upon this and wants to help
+
 ## Goal
 
 While i wasnt dissapointed with other card generating options, they either had no customisability, the wrong output or for the wrong framework. So to get everything i wanted while allowing the outputs of other generators this project spawned. The only goal tihs project sacrifices is file size, while they wont be the smallest, they also wont be inefficient with size.
 
 1. Above all else, this should be a static site / page. All libraries should be baked into the site to allow for offline use.
-2. Full customisability, if there is a hardcoded value that affects the look of the cards it must be changable by the user.
+2. Full customisability, if there is a hardcoded value that affects the look of the cards it should be changable by the user.
 3. Custom card decks, if i want 0-13 or A-10+J-Q-K i should be able to set those
 4. Outputs should allow for atleast
     - 1 File per card output
@@ -19,14 +29,6 @@ Future possibilities (things i wanted)
 ## Other projects i found
 
 The only one i based a lot of this off of is https://www.me.uk/cards
-
-## Licensing
-
-Placeholder for ideas about licensing
-
-as of right now the https://choosealicense.com/licenses/mpl-2.0/ is looking like close to the license i want but still a bit restrictive.
-
-for future me, looking for a license that allows for nearly all use with source code changes being always open source but the images that come out just requiring attribution back to this project modified or not.
 
 ## Honour Card SVG formatting
 
