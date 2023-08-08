@@ -2,6 +2,11 @@
 
 One page application to generate SVG playing card layouts of a variety of sizes, colors among other things.
 
+![Regular Example](ProperExample.PNG)
+
+Example with some not so regular options
+![Crazy Example](crazyoptions.PNG)
+
 ## This is not finished
 
 This is a personal project that is going slowly, i dont know when it will be done (or if) but i decided to public it incase anyone else needed something similar.
