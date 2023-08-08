@@ -57,15 +57,6 @@ module.exports = {
           },
         ],
       },
-      // {
-      //   test: /\.svg$/,
-      //   use: {
-      //       loader: 'svg-url-loader',
-      //       // options: {
-      //       //     encoding: 'base64'
-      //       // }
-      //   }
-      // },
       {
         test: /\.(svg|path)$/,
         loader: 'svg-inline-loader'
