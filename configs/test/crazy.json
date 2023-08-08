@@ -129,11 +129,10 @@
             }
         }
     },
-    "cornerPips": [
-        {
+    "cornerPips": {
+        "topLeft": {
             "all": {
                 "enabled": true,
-                "location": 0,
                 "character": {
                     "enabled": true,
                     "fontSize": 25,
@@ -151,7 +150,6 @@
             },
             "club": {
                 "enabled": true,
-                "location": 0,
                 "character": {
                     "enabled": true,
                     "fontSize": 25
@@ -168,7 +166,6 @@
             },
             "black": {
                 "enabled": true,
-                "location": 0,
                 "character": {
                     "enabled": true,
                     "fontSize": 25
@@ -185,10 +182,9 @@
                 }
             }
         },
-        {
+        "bottomRight": {
             "all": {
                 "enabled": true,
-                "location": 1,
                 "character": {
                     "enabled": true,
                     "fontSize": 25,
@@ -206,7 +202,6 @@
             },
             "club": {
                 "enabled": true,
-                "location": 1,
                 "character": {
                     "enabled": true,
                     "fontSize": 25
@@ -217,10 +212,9 @@
                 }
             }
         },
-        {
+        "topRight": {
             "all": {
                 "enabled": false,
-                "location": 2,
                 "character": {
                     "enabled": true,
                     "fontSize": 25,
@@ -237,10 +231,9 @@
                 }
             }
         },
-        {
+        "bottomLeft": {
             "all": {
                 "enabled": false,
-                "location": 3,
                 "character": {
                     "enabled": true,
                     "fontSize": 25,
@@ -256,5 +249,5 @@
                 }
             }
         }
-    ]
+    }
 }
