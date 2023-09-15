@@ -28,6 +28,11 @@ export type TypeColor = 'black' | 'red' | 'all'
 export type FaceType = 'value' | 'face' | 'unknown'
 export type LineCap = 'butt' | 'round' | 'square'
 
+export interface PipCharacterCombo {
+    pip: PipType
+    character: string
+}
+
 export enum CornerPipLocation {
     TopLeft = 0,
     BottomRight = 1,

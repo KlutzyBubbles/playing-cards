@@ -7,12 +7,13 @@ import chalk from 'chalk';
 import {
     CardSettings,
     XY,
-    PipType
+    PipType,
+    PipCharacterCombo
 } from "./types";
 import { CardGrid } from "./classes/CardGrid";
 import { CardSvg } from "./classes/CardSvg";
 
-import * as standardConfig from '../configs/standard.json'
+import * as standardConfig from '../configs/test/crazy.json'
 
 const logger = {
     [LogLevel.ERROR]: (tag, msg, params) => console.error(`[${chalk.red(tag)}]`, msg, ...params),
@@ -40,28 +41,43 @@ interface CardStorage {
 $(() => {
     M.Collapsible.init($('.collapsible'), {});
     var characters = ['A', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    // var characters = ['J', 'Q', 'K']
+    //// var characters = ['J', 'Q', 'K']
     var suits = {'c': 'club', 's': 'spade', 'h': 'heart', 'd': 'diamond'}
-    //var suits = {'d': 'diamond', 'c': 'club'}
-
-    var cards: CardStorage = {}
-
-    var order: string[] = []
-
-    for (var character of characters) {
-        for (const [suitCharacter, suit] of Object.entries(suits)) {
-            var draw = SVG().addTo(`#test`).size(`${cardSize.x}px`, `${cardSize.y}px`)
-            var card = new CardSvg(draw, testSettings, suit as PipType, character)
-            card.drawCard()
-            const value = `${character.toLowerCase()}${suitCharacter}`
-            cards[value] = card
-            order.push(value)
-        }
-    }
+    ////var suits = {'d': 'diamond', 'c': 'club'}
+//
+    //var cards: CardStorage = {}
+//
+    //var order: string[] = []
+//
+    //for (var character of characters) {
+    //    for (const [suitCharacter, suit] of Object.entries(suits)) {
+    //        var draw = SVG().addTo(`#test`).size(`${cardSize.x}px`, `${cardSize.y}px`)
+    //        var card = new CardSvg(draw, testSettings, suit as PipType, character)
+    //        card.drawCard()
+    //        const value = `${character.toLowerCase()}${suitCharacter}`
+    //        cards[value] = card
+    //        order.push(value)
+    //    }
+    //}
 
     var all = SVG().addTo('#all')
 
-    var grid = new CardGrid(all, cards, order)
+    var order: PipCharacterCombo[] = []
+    for (var character of characters) {
+        for (const [_, suit] of Object.entries(suits)) {
+            order.push({
+                pip: suit as PipType,
+                character: character
+            })
+        }
+    }
+
+    //var grid = new CardGrid(all, cards, order)
+    var grid = new CardGrid(all, testSettings, order, cardSize)
+
+    $('#json-form').on('submit', (event) => {
+        event.preventDefault()
+    })
 
     // $('#test').addClass('hide')
 })
