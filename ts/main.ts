@@ -40,44 +40,40 @@ interface CardStorage {
 
 $(() => {
     M.Collapsible.init($('.collapsible'), {});
-    var characters = ['A', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    //// var characters = ['J', 'Q', 'K']
-    var suits = {'c': 'club', 's': 'spade', 'h': 'heart', 'd': 'diamond'}
-    ////var suits = {'d': 'diamond', 'c': 'club'}
-//
-    //var cards: CardStorage = {}
-//
-    //var order: string[] = []
-//
-    //for (var character of characters) {
-    //    for (const [suitCharacter, suit] of Object.entries(suits)) {
-    //        var draw = SVG().addTo(`#test`).size(`${cardSize.x}px`, `${cardSize.y}px`)
-    //        var card = new CardSvg(draw, testSettings, suit as PipType, character)
-    //        card.drawCard()
-    //        const value = `${character.toLowerCase()}${suitCharacter}`
-    //        cards[value] = card
-    //        order.push(value)
-    //    }
-    //}
+    M.Tabs.init($('.tabs'), {});
 
+    $('#json-config').val(JSON.stringify(testSettings, null, 4))
+    M.textareaAutoResize($('#json-config'));
+
+    M.FormSelect.init($('select'), {});
+    
     var all = SVG().addTo('#all')
+    var grid = new CardGrid(all, undefined, [], cardSize)
 
-    var order: PipCharacterCombo[] = []
-    for (var character of characters) {
-        for (const [_, suit] of Object.entries(suits)) {
-            order.push({
-                pip: suit as PipType,
-                character: character
-            })
-        }
-    }
-
-    //var grid = new CardGrid(all, cards, order)
-    var grid = new CardGrid(all, testSettings, order, cardSize)
-
-    $('#json-form').on('submit', (event) => {
+    $('#json-config-submit').on('click', (event) => {
         event.preventDefault()
+        log.trace(tag.general, 'json-config-submit')
+        log.trace(tag.general, $('#character-select').val())
+        log.trace(tag.general, $('#suit-select').val())
+        
+        var order: PipCharacterCombo[] = []
+        for (const character of <string[]>$('#character-select').val()) {
+            for (const suit of <string[]>$('#suit-select').val()) {
+                order.push({
+                    pip: suit as PipType,
+                    character: character
+                })
+            }
+        }
+        grid.setOrder(order)
+        try {
+            var settings = <CardSettings>JSON.parse(<string>$('#json-config').val())
+            grid.setSettings(settings)
+            grid.resetCards()
+            grid.redrawCards()
+        } catch (e) {
+            log.error(tag.general, e)
+            M.toast({html: 'Error redrawing cards, check json', classes: 'rounded red white-text'});
+        }
     })
-
-    // $('#test').addClass('hide')
 })

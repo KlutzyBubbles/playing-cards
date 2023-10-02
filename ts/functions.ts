@@ -2,7 +2,7 @@ import merge from 'ts-deepmerge';
 import { log, tag } from 'missionlog';
 import { BackgroundSettings, CenterBackgroundSettings, CenterSettings, TypedKey, CornerPipSettings, FaceType, PipType, TypeColor } from './types';
 
-export function getClosestFactors(input: number): number[] {
+export function getClosestFactors(input: number): number[] | undefined {
     log.trace(tag.general, 'getClosestFactors(1)')
     log.trace(tag.general, input)
     log.trace(tag.general, '-------------------')
