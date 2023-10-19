@@ -27,6 +27,7 @@ export type PipType = 'club' | 'spade' | 'heart' | 'diamond'
 export type TypeColor = 'black' | 'red' | 'all'
 export type FaceType = 'value' | 'face' | 'unknown'
 export type LineCap = 'butt' | 'round' | 'square'
+export type ImageFormat = 'svg' | 'png' | 'jpeg'
 
 export interface PipCharacterCombo {
     pip: PipType

@@ -51,11 +51,18 @@ export function mergeTypedSettings(object: TypedKey<CornerPipSettings> | TypedKe
     return newObject
 }
 
-export function generateString(length) {
-    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+export function generateString(length, startWithCharacter = false) {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const numbers ='0123456789';
+    const all = `${characters}${numbers}`;
     let result = '';
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    let calcLength = length
+    if (startWithCharacter === true) {
+        result = characters.charAt(Math.floor(Math.random() * characters.length))
+        calcLength -= 1
+    }
+    for (let i = 0; i < calcLength; i++) {
+        result += all.charAt(Math.floor(Math.random() * all.length));
     }
     return result;
 }

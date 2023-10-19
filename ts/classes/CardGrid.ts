@@ -4,6 +4,7 @@ import { log, tag } from 'missionlog';
 import {
     CardSettings,
     CardStorage,
+    ImageFormat,
     PipCharacterCombo,
     XY
 } from "../types";
@@ -22,7 +23,7 @@ export class CardGrid {
 
     private _factors: number[] = [];
 
-    constructor(canvas: Svg, settings: CardSettings | undefined, order: PipCharacterCombo[], cardSize?: XY) {
+    constructor(canvas: Svg, settings: CardSettings | undefined, order: PipCharacterCombo[], cardSize?: XY, factors?: number[]) {
         log.trace(tag.gridClass, 'constructor()')
         this.canvas = canvas
         this.cards = {}
@@ -32,12 +33,14 @@ export class CardGrid {
             x: this.cards[Object.keys(this.cards)[0]].canvas.rbox().w,
             y: this.cards[Object.keys(this.cards)[0]].canvas.rbox().h
         } : cardSizeConstant)
-        this.setSize()
+        this._factors = factors || []
+        this.setSize(factors)
     }
 
     get factors(): number[] {
         log.trace(tag.gridClass, 'factors()')
         if (this._factors === undefined || this._factors.length === 0) {
+            log.trace(tag.gridClass, 'factors empty')
             this._factors = getClosestFactors(this.order.length) || [0, 0]
         }
         return this._factors
@@ -49,11 +52,11 @@ export class CardGrid {
         return this._factors
     }
 
-    private generateCards() {
+    private generateCards(): string | undefined {
         log.trace(tag.gridClass, 'generateCards()')
         if (this.settings === undefined)
             return
-        var containerId = generateString(20)
+        var containerId = generateString(20, true)
         log.trace(tag.gridClass, `ContainerID: ${containerId}`)
         $(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
         for (var combo of this.order) {
@@ -67,32 +70,32 @@ export class CardGrid {
         return containerId
     }
 
-    private setSize() {
+    private setSize(factors?: number[]): void {
         log.trace(tag.gridClass, 'setSize()')
-        const factors = this.regenFactors()
-        const width = this.cardSize.x * factors[0]
-        const height = this.cardSize.y * factors[1]
+        const internalFactors = factors || this.regenFactors()
+        const width = this.cardSize.x * internalFactors[0]
+        const height = this.cardSize.y * internalFactors[1]
         log.trace(tag.gridClass, width)
         log.trace(tag.gridClass, height)
         this.canvas.size(`${width}px`, `${height}px`)
     }
 
-    public setSettings(settings: CardSettings) {
+    public setSettings(settings: CardSettings): void {
         this.settings = settings
     }
 
-    public setOrder(order: PipCharacterCombo[]) {
+    public setOrder(order: PipCharacterCombo[], factors?: number[]): void {
         this.order = order
-        this.setSize()
+        this.setSize(factors)
     }
 
-    public resetCards() {
+    public resetCards(): void {
         log.trace(tag.gridClass, 'resetCards()')
         this.canvas.clear()
         this.cards = {}
     }
 
-    public redrawCards() {
+    public redrawCards(): void {
         log.trace(tag.gridClass, 'drawCards()')
         if (this.settings === undefined)
             return
@@ -111,6 +114,14 @@ export class CardGrid {
             nested.svg(svg.canvas.svg())
         }
         $(`#${this.containerId}`).hide()
+    }
+
+    public export(format: ImageFormat): string | undefined {
+        if (format === 'svg') {
+            return this.canvas.svg()
+        }
+        log.error(tag.gridClass, `Unfinished format supplied: ${format}`)
+        return undefined
     }
 
 }
