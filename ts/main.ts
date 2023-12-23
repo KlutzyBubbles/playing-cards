@@ -31,8 +31,8 @@ log.init({ cardClass: 'card_class', gridClass: 'grid_class', general: 'general' 
 var testSettings: CardSettings = standardConfig as CardSettings
 
 const cardSize: XY = {
-    x: 250,
-    y: 350
+    x: 1000,
+    y: 1400
 }
 
 interface CardStorage {
@@ -95,12 +95,41 @@ async function svgToCanvas(svgText) {
         throw new Error('ctx null')
     }
     log.trace(tag.general, svgText)
+    var widthMatch = /<svg.+?(?=width=)width="(\d*)/gm
+    var heightMatch = /<svg.+?(?=height=)height="(\d*)/gm
 
-    var v = await Canvg.from(ctx, svgText);
+    var widths = [...svgText.matchAll(widthMatch)]
+    var heights = [...svgText.matchAll(heightMatch)]
+
+    var canvasWidth = widths[0][1]
+    var canvasHeight = heights[0][1]
+
+    var cardWidth = widths[1][1]
+    var cardHeight = heights[1][1]
+
+    const targetCardWidth = 1000
+    var ratio = targetCardWidth / cardWidth
+    var targetCanvasWidth = canvasWidth * ratio
+    var targetCanvasHeight = canvasHeight * ratio
+
+    //log.trace(tag.general, [...svgText.matchAll(widthMatch)])
+    //log.trace(tag.general, [...svgText.matchAll(heightMatch)])
+
+    //var width = parseInt(svgText.match(widthMatch)[1])
+    //var height = parseInt(svgText.match(heightMatch)[1])
+
+
+
+    var v = await Canvg.from(ctx, svgText);//, { scaleWidth: 5000, scaleHeight: 5000 });
     log.trace(tag.general, v)
 
+    // v.resize(5000, 5000, 'xMidYMid slice')
+
+    // Render only first frame?
+    v.render()
+
     // Start SVG rendering with animations and mouse handling.
-    v.start();
+    // v.start();
     return canvas
 }
 

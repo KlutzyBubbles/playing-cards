@@ -1,40 +1,12 @@
-function getClosestFactors(input) {
-    // var testNumber = Math.sqrt(input)
-    // log.trace(tag.general, testNumber)
-    // while (input % testNumber !== 0) {
-    //     testNumber--;
-    // }
-    // return [testNumber, input / testNumber]
-    var a = 1, b = input, i = 0
-    while (a < b) {
-        i++;
-        if (input % i === 0) {
-            a = i
-            b = Math.floor(input / a)
-        }
-    }
-    return [b, a]
-
+var diff = {
+    x: -1,
+    y: 1
 }
 
-function getReasonableDimensions(input){
-    var k = 1
-    var max = ~~Math.sqrt(input);
-    return Array.from({length: max}, (_,i,a) => [input%(max-i),max-i])
-                .sort((a,b) => a[0] - b[0])
-                .slice(0,k)
-                .map(t => [Math.floor(input/t[1]), t[1]])[0];
-}
+var corner = diff.x > 0 ? (diff.y > 0 ? 1 : 4) : (diff.y > 0 ? 2 : 3);
+//int corner = flag2 ? (flag3 ? 1 : 4) : (flag3 ? 2 : 3);
+//float f = (yDiff) / (xDiff);
+var num = 180 * (corner - ((corner > 2) ? 2 : 1));
 
-console.log(getClosestFactors(25))
-console.log(getClosestFactors(10))
-console.log(getClosestFactors(12))
-console.log(getClosestFactors(54))
-console.log(getClosestFactors(63))
-
-console.log('split ------------------')
-console.log(getReasonableDimensions(25))
-console.log(getReasonableDimensions(10))
-console.log(getReasonableDimensions(12))
-console.log(getReasonableDimensions(54))
-console.log(getReasonableDimensions(63))
+console.log(corner)
+console.log(num)
