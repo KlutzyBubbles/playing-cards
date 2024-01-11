@@ -13,6 +13,7 @@ import {
 import { CardGrid } from "./classes/CardGrid";
 import { CardSvg } from "./classes/CardSvg";
 import { Canvg } from 'canvg';
+import { cardSize as cardSizeBase } from './constants';
 
 import * as standardConfig from '../configs/test/crazy.json'
 
@@ -30,10 +31,12 @@ log.init({ cardClass: 'card_class', gridClass: 'grid_class', general: 'general' 
 
 var testSettings: CardSettings = standardConfig as CardSettings
 
-const cardSize: XY = {
+var cardSize: XY = {
     x: 1000,
     y: 1400
 }
+
+// cardSize = cardSizeBase
 
 interface CardStorage {
     [key: string]: CardSvg

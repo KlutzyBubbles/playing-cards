@@ -119,13 +119,27 @@ export class CardSvg {
         this.drawCenterPips()
         return this.canvas
     }
-    //...this.scaled(
 
-    private scaled(width?: number, height?: number): [(number | undefined), (number | undefined)] {
-        return [
-            width === undefined ? undefined : width * (this.scale.width ?? 1),
-            height === undefined ? undefined : height * (this.scale.height ?? 1)
-        ]
+    private scaled(width: number, height: number): { width: number, height: number };
+    private scaled(width: number, height: number | undefined): { width: number, height: number | undefined };
+    private scaled(width: number | undefined, height: number): { width: number | undefined, height: number };
+    private scaled(width: number | undefined, height: number | undefined): { width: number | undefined, height: number | undefined };
+
+    private scaled(width?: number, height?: number): { width: number | undefined, height: number | undefined } {
+        return {
+            width: width === undefined ? undefined : width * (this.scale.width ?? 1),
+            height: height === undefined ? undefined : height * (this.scale.height ?? 1)
+        }
+    }
+
+    private scaleSingle(item: number): number;
+    private scaleSingle(item: number | undefined): number | undefined;
+
+    private scaleSingle(item?: number): number | undefined {
+        if (item === undefined) {
+            return undefined;
+        }
+        return item === undefined ? undefined : item * ((this.scale.width ?? 1) > (this.scale.height ?? 1) ? (this.scale.height ?? 1) : (this.scale.width ?? 1))
     }
 
     private drawCornerPips(): Svg {
@@ -186,7 +200,8 @@ export class CardSvg {
                 cornerPip = this.canvas.path(this.pipPath)
             }
             cornerPip.fill(pipSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
-            cornerPip.size(...this.scaled(pipSettings.width, pipSettings.height))
+            var cornerPipSize = this.scaled(pipSettings.width, pipSettings.height);
+            cornerPip.size(cornerPipSize.width, cornerPipSize.height)
             if (pipSettings.outline !== undefined && pipSettings.outline.enabled) {
                 const outlineSettings = pipSettings.outline
                 // const outlineAdjust = outlineSettings.width / 2
@@ -201,11 +216,14 @@ export class CardSvg {
                     dashoffset: outlineSettings.dashOffset
                 })
             }
+            // const cornerPadding = this.scaled(pipSettings.paddingX, pipSettings.paddingY)
             cornerPip = this.positionCornerItem(
                 cornerPip,
                 location,
                 pipSettings.paddingX,
                 pipSettings.paddingY,
+                // cornerPadding.width,
+                // cornerPadding.height,
                 pipSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
                 pipSettings.centerPadX ?? pipSettings.centerPad,
                 pipSettings.centerPadY ?? pipSettings.centerPad
@@ -224,15 +242,18 @@ export class CardSvg {
             cornerCharacter.plain(this.character)
             cornerCharacter.font({
                 family: characterSettings.font ?? 'Helvetica',
-                size: characterSettings.fontSize,
+                size: this.scaleSingle(characterSettings.fontSize),
                 anchor: 'middle'
             })
             cornerCharacter.fill(characterSettings.color ?? cornerPipSettings.color ?? this.defaultColor)
+            // const cornerPadding = this.scaled(characterSettings.paddingX, characterSettings.paddingY)
             cornerCharacter = this.positionCornerItem(
                 cornerCharacter,
                 location,
                 characterSettings.paddingX,
                 characterSettings.paddingY,
+                // cornerPadding.width,
+                // cornerPadding.height,
                 characterSettings.outlineAffectsPosition ?? cornerPipSettings.outlineAffectsPosition ?? this.settings.outlineAffectsPosition,
                 characterSettings.centerPadX ?? characterSettings.centerPad,
                 characterSettings.centerPadY ?? characterSettings.centerPad
@@ -263,12 +284,22 @@ export class CardSvg {
         log.trace(tag.cardClass, centerPadX)
         log.trace(tag.cardClass, centerPadY)
         log.trace(tag.cardClass, '-------------------')
-        const xCenterAdjust = centerPadX ?? false ? (item.bbox().w / 2) : 0
-        const yCenterAdjust = centerPadY ?? false ? (item.bbox().h / 2) : 0
+        const xCenterAdjust = centerPadX ?? false ? item.bbox().w / 2 : 0
+        const yCenterAdjust = centerPadY ?? false ? item.bbox().h / 2 : 0
+        log.trace(tag.cardClass, xCenterAdjust)
+        log.trace(tag.cardClass, yCenterAdjust)
         const backgroundSettings = this.settings.background === undefined ? undefined : mergeTypedSettings(this.settings.background, this.typeColor, this.type, this.faceType) as BackgroundSettings
-        const outlineAdjust = outlineAffectsPosition ?? false ? backgroundSettings?.outline?.enabled ?? false ? backgroundSettings?.outline?.width ?? 0 : 0 : 0
-        const xVal = (xPad ?? 0) - xCenterAdjust + outlineAdjust
-        const yVal = (yPad ?? 0) - yCenterAdjust + outlineAdjust
+        const outlineAdjust = outlineAffectsPosition ?? false ? backgroundSettings?.outline?.enabled ?? false ? this.scaleSingle(backgroundSettings?.outline?.width) ?? 0 : 0 : 0
+        const paddingScaled = this.scaled(xPad, yPad)
+        log.trace(tag.cardClass, paddingScaled.width)
+        log.trace(tag.cardClass, paddingScaled.height)
+        //const valScaled = this.scaled((paddingScaled.width ?? 0) - xCenterAdjust + outlineAdjust, (paddingScaled.height ?? 0) - yCenterAdjust + outlineAdjust);
+        const xVal = (paddingScaled.width ?? 0) - xCenterAdjust + outlineAdjust
+        const yVal = (paddingScaled.height ?? 0) - yCenterAdjust + outlineAdjust
+        // const xVal = valScaled.width
+        // const yVal = valScaled.height
+        log.trace(tag.cardClass, xVal)
+        log.trace(tag.cardClass, yVal)
         if (location < CornerPipLocation.TopRight) {
             // Top Left - Bottom Right
             item.move(xVal, yVal)
@@ -315,7 +346,7 @@ export class CardSvg {
         var offset = 0
         if (backgroundSettings !== undefined && backgroundSettings.outline !== undefined && backgroundSettings.outline.enabled) {
             const outlineSettings = backgroundSettings.outline
-            offset = (this.scaled(outlineSettings.width)[0] ?? 0)
+            offset = (this.scaled(outlineSettings.width, undefined).width ?? 0)
         }
         if (this.cardBackground === undefined) {
             this.cardBackground = this.canvas.rect(this.cardSize.x - offset, this.cardSize.y - offset)
@@ -333,7 +364,8 @@ export class CardSvg {
         log.trace(tag.cardClass, 'drawCenterBackgroundBorder()')
         const centerBackgroundSettings = (mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings).background
         if (this.centerBackgroundBorder === undefined) {
-            this.centerBackgroundBorder = this.canvas.rect(...this.scaled(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0))
+            var backgroundBorderScaled = this.scaled(centerBackgroundSettings?.width ?? 0, centerBackgroundSettings?.height ?? 0)
+            this.centerBackgroundBorder = this.canvas.rect(backgroundBorderScaled.width, backgroundBorderScaled.height)
         }
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.enabled) {
             this.moveBackgroundBorder(this.centerBackgroundBorder, centerBackgroundSettings)
@@ -350,10 +382,12 @@ export class CardSvg {
         var offset = 0
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.outline !== undefined && centerBackgroundSettings.outline.enabled) {
             const outlineSettings = centerBackgroundSettings.outline
-            offset = (outlineSettings.width ?? 0)
+            const outlineWidthScaled = this.scaleSingle(outlineSettings.width) ?? 0
+            offset = outlineWidthScaled
         }
         if (this.centerBackgroundClip === undefined) {
-            this.centerBackgroundClip = this.canvas.rect(...this.scaled((centerBackgroundSettings?.width ?? 0) - offset, (centerBackgroundSettings?.height ?? 0) - offset))
+            var backgroundClipScaled = this.scaled((centerBackgroundSettings?.width ?? 0) - offset, (centerBackgroundSettings?.height ?? 0) - offset)
+            this.centerBackgroundClip = this.canvas.rect(backgroundClipScaled.width, backgroundClipScaled.height)
         }
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.enabled) {
             this.moveBackground(this.centerBackgroundClip, centerBackgroundSettings)
@@ -370,10 +404,12 @@ export class CardSvg {
         var offset = 0
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.outline !== undefined && centerBackgroundSettings.outline.enabled) {
             const outlineSettings = centerBackgroundSettings.outline
-            offset = (outlineSettings.width ?? 0)
+            const outlineWidthScaled = this.scaleSingle(outlineSettings.width) ?? 0
+            offset = outlineWidthScaled
         }
         if (this.centerBackground === undefined) {
-            this.centerBackground = this.canvas.rect(...this.scaled((centerBackgroundSettings?.width ?? 0) - offset, (centerBackgroundSettings?.height ?? 0) - offset))
+            var backgroundScaled = this.scaled((centerBackgroundSettings?.width ?? 0) - offset, (centerBackgroundSettings?.height ?? 0) - offset)
+            this.centerBackground = this.canvas.rect(backgroundScaled.width, backgroundScaled.height)
         }
         if (centerBackgroundSettings !== undefined && centerBackgroundSettings.enabled) {
             this.moveBackground(this.centerBackground, centerBackgroundSettings)
@@ -386,20 +422,25 @@ export class CardSvg {
 
     private moveBackgroundBorder(backgroundBorder: Rect, settings: BackgroundSettings | CenterBackgroundSettings): Svg {
         log.trace(tag.cardClass, 'colorBackground()')
-        const paddingX = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingX ?? 0 : 0
-        const paddingY = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingY ?? 0 : 0
-        const width = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).width ?? 0 : this.cardSize.x
-        const height = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).height ?? 0 : this.cardSize.y
+        const padding = isCenterBackgroundSettings(settings) ? { width: (settings as CenterBackgroundSettings).paddingX, height: (settings as CenterBackgroundSettings).paddingY } : { width: 0, height: 0 }
+        const paddingX = padding.width ?? 0
+        const paddingY = padding.height ?? 0
+        const size = isCenterBackgroundSettings(settings) ? { width: (settings as CenterBackgroundSettings).width, height: (settings as CenterBackgroundSettings).height } : { width: 0, height: 0 }
+        const width = size.width ?? 0
+        const height = size.height ?? 0
         backgroundBorder.remove()
         if (settings.outline !== undefined && settings.outline.enabled) {
             const outlineSettings = settings.outline
+            // const outlineWidthScaled = this.scaleSingle(outlineSettings.width) ?? 0
             const outlineAdjust = (outlineSettings.width ?? 0) / 2
             log.error(tag.cardClass, `settings.radius ${settings.radius}`)
-            log.error(tag.cardClass, `outlineSettings.width ${outlineSettings.width}`)
+            log.error(tag.cardClass, `outlineSettings.width ${outlineSettings.width ?? 0}`)
             log.error(tag.cardClass, `height ${height}`)
-            backgroundBorder = this.canvas.rect(...this.scaled(width - (outlineSettings.width ?? 0), height - (outlineSettings.width ?? 0)))
+            var backgroundBorderScaled = this.scaled(width - (outlineSettings.width ?? 0), height - (outlineSettings.width ?? 0))
+            backgroundBorder = this.canvas.rect(backgroundBorderScaled.width, backgroundBorderScaled.height)
             //@ts-ignore
-            backgroundBorder.move(...this.scaled(paddingX + outlineAdjust, paddingY + outlineAdjust))
+            const backgroundBorderMoveScaled = this.scaled(paddingX + outlineAdjust, paddingY + outlineAdjust)
+            backgroundBorder.move(backgroundBorderMoveScaled.width, backgroundBorderMoveScaled.height)
             backgroundBorder.fill('none')
             backgroundBorder.stroke({
                 color: outlineSettings.color ?? this.defaultColor,
@@ -416,15 +457,18 @@ export class CardSvg {
 
     private moveBackground(background: Rect, settings: BackgroundSettings | CenterBackgroundSettings): Svg {
         log.trace(tag.cardClass, 'moveBackground()')
-        const paddingX = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingX ?? 0 : 0
-        const paddingY = isCenterBackgroundSettings(settings) ? (settings as CenterBackgroundSettings).paddingY ?? 0 : 0
+        const padding = isCenterBackgroundSettings(settings) ? this.scaled((settings as CenterBackgroundSettings).paddingX, (settings as CenterBackgroundSettings).paddingY) : { width: 0, height: 0 }
+        const paddingX = padding.width ?? 0
+        const paddingY = padding.height ?? 0
         var offset = 0
         if (settings.outline !== undefined && settings.outline.enabled) {
             const outlineSettings = settings.outline
-            offset = (outlineSettings.width ?? 0) / 2
+            const outlineWidthScaled = this.scaleSingle(outlineSettings.width) ?? 0
+            offset = outlineWidthScaled / 2
         }
         //@ts-ignore
-        background.move(...this.scaled(paddingX + offset, paddingY + offset))
+        // const backgroundScaled = this.scaled(paddingX + offset, paddingY + offset)
+        background.move(paddingX + offset, paddingY + offset)
         background.fill(settings.color ?? 'none')
         background.radius(settings.radius ?? 0)
         return this.canvas
@@ -467,8 +511,9 @@ export class CardSvg {
         const centerSettings = mergeTypedSettings(this.settings.center, this.typeColor, this.type, this.faceType) as CenterSettings
         if (centerSettings.face !== undefined && centerSettings.face.enabled) {
             const faceSettings = centerSettings.face
-            const paddingX = faceSettings.paddingX ?? 0
-            const paddingY = faceSettings.paddingY ?? 0
+            const padding = this.scaled(faceSettings.paddingX, faceSettings.paddingY)
+            const paddingX = padding.width ?? 0
+            const paddingY = padding.height ?? 0
             var doubleGroup = this.canvas.group()
             var group = doubleGroup.group()
             const faceSelection = (faceLayouts[this.pipName] ?? {})[this.type] ?? {}
@@ -531,12 +576,14 @@ export class CardSvg {
             var offset = 0
             if (centerSettings.background !== undefined && centerSettings.background.outline !== undefined && centerSettings.background.outline.enabled) {
                 const outlineSettings = centerSettings.background.outline
-                offset = (outlineSettings.width ?? 0)
+                const outlineWidthScaled = this.scaleSingle(outlineSettings.width) ?? 0
+                offset = outlineWidthScaled
             }
 
-            doubleGroup.size(...this.scaled((faceSettings.width ?? 0) - offset, (faceSettings.height ?? 0) - offset))
+            var doubleGroupScaled = this.scaled((faceSettings.width ?? 0) - offset, (faceSettings.height ?? 0) - offset)
+            doubleGroup.size(doubleGroupScaled.width, doubleGroupScaled.height)
             //@ts-ignore
-            doubleGroup.move(...this.scaled(paddingX + (offset / 2), paddingY + (offset / 2)))
+            doubleGroup.move(paddingX + (offset / 2), paddingY + (offset / 2))
             this.canvas.add(doubleGroup)
             if (this.centerBackgroundClip !== undefined) {
                 var clip = doubleGroup.clip().add(this.centerBackgroundClip)
@@ -548,13 +595,15 @@ export class CardSvg {
 
     private styleCenterPip(pip: Path | Svg, centerPipSettings: CenterPipSettings): Path | Svg {
         pip.fill(centerPipSettings.color ?? this.defaultColor)
-        pip.size(...this.scaled(centerPipSettings.width, centerPipSettings.height))
+        var pipScaled = this.scaled(centerPipSettings.width, centerPipSettings.height)
+        pip.size(pipScaled.width, pipScaled.height)
         if (centerPipSettings.outline !== undefined && centerPipSettings.outline.enabled) {
             const outlineSettings = centerPipSettings.outline
+            const outlineWidthScaled = this.scaleSingle(outlineSettings.width)
             // const outlineAdjust = outlineSettings.width / 2
             pip.stroke({
                 color: outlineSettings.color ?? this.defaultColor,
-                width: outlineSettings.width,
+                width: outlineWidthScaled,
                 opacity: outlineSettings.opacity,
                 linecap: outlineSettings.lineCap,
                 dasharray: outlineSettings.dashArray,
@@ -582,8 +631,9 @@ export class CardSvg {
         }
         const zeroX = this.cardSize.x / 2
         const zeroY = this.cardSize.y / 2
-        const locationXScaled = location.x * centerPipSettings.locationScale
-        const locationYScaled = location.y * centerPipSettings.locationScale
+        const locationsScaled = this.scaled(location.x * centerPipSettings.locationScale, location.y * centerPipSettings.locationScale)
+        const locationXScaled = locationsScaled.width
+        const locationYScaled = locationsScaled.height
         const widthAdjust = pip.bbox().w / 2
         const heightAdjust = pip.bbox().h / 2
         pip.move(zeroX + locationXScaled - widthAdjust, zeroY + locationYScaled - heightAdjust)
