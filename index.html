@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Playing Cards</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+	<script defer src="playingcards.js"></script></head>
+	<body class="green darken-4 container">
+        <div class="row" id="json-form">
+            <!--
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">Top Left Pip</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header">Top Right Pip</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header">Bottom Left Pip</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header">Bottom Right Pip</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+            </ul>
+            -->
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Cards Config</span>
+            </div>
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                <li class="tab"><a class="active"href="#json-config-container">JSON Config</a></li>
+                <li class="tab"><a href="#cards-config">Cards</a></li>
+                </ul>
+            </div>
+            <div class="card-content grey lighten-4">
+                <div id="json-config-container">
+                    <div class="row" id="json-input">
+                        <form class="col s12" id="json-form">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea id="json-config" class="materialize-textarea"></textarea>
+                                    <label for="json-config" class="active">JSON Config</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="corner-pips-config">Corner pip placeholder</div>
+                <div id="cards-config">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select multiple id="character-select">
+                                <option value="A" selected>A</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3" selected>3</option>
+                                <option value="4" selected>4</option>
+                                <option value="5" selected>5</option>
+                                <option value="6" selected>6</option>
+                                <option value="7" selected>7</option>
+                                <option value="8" selected>8</option>
+                                <option value="9" selected>9</option>
+                                <option value="10" selected>10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="J" selected>J</option>
+                                <option value="Q" selected>Q</option>
+                                <option value="K" selected>K</option>
+                            </select>
+                            <label>Characters</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <select multiple id="suit-select">
+                                <option value="club" selected>Clubs</option>
+                                <option value="diamond" selected>Diamonds</option>
+                                <option value="spade" selected>Spades</option>
+                                <option value="heart" selected>Hearts</option>
+                            </select>
+                            <label>Suits</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-action">
+                <a id="json-config-submit" class="btn waves-effect waves-light" href="#">Update Cards
+                    <i class="material-icons right">update</i></a>
+                <a id="cards-download" class="btn waves-effect waves-light" href="#">Download SVG
+                    <i class="material-icons right">download</i></a>
+            </div>
+        </div>
+        <div id="test" class="row left-align"></div>
+        <div id="all" class="row left-align"></div>
+        <!--
+        <div id="ca" class="left-align"></div>
+        <div id="c0" class="left-align"></div>
+        <div id="c1" class="left-align"></div>
+        <div id="c2" class="left-align"></div>
+        <div id="c3" class="left-align"></div>
+        <div id="c4" class="left-align"></div>
+        <div id="c5" class="left-align"></div>
+        <div id="c6" class="left-align"></div>
+        <div id="c7" class="left-align"></div>
+        <div id="c8" class="left-align"></div>
+        <div id="c9" class="left-align"></div>
+        <div id="c10"class="left-align"></div>
+        <div id="cj" class="left-align"></div>
+        <div id="cq" class="left-align"></div>
+        <div id="ck" class="left-align"></div>
+        
+        <div id="sa" class="left-align"></div>
+        <div id="s0" class="left-align"></div>
+        <div id="s1" class="left-align"></div>
+        <div id="s2" class="left-align"></div>
+        <div id="s3" class="left-align"></div>
+        <div id="s4" class="left-align"></div>
+        <div id="s5" class="left-align"></div>
+        <div id="s6" class="left-align"></div>
+        <div id="s7" class="left-align"></div>
+        <div id="s8" class="left-align"></div>
+        <div id="s9" class="left-align"></div>
+        <div id="s10"class="left-align"></div>
+        <div id="sj" class="left-align"></div>
+        <div id="sq" class="left-align"></div>
+        <div id="sk" class="left-align"></div>
+        
+        <div id="ha" class="left-align"></div>
+        <div id="h0" class="left-align"></div>
+        <div id="h1" class="left-align"></div>
+        <div id="h2" class="left-align"></div>
+        <div id="h3" class="left-align"></div>
+        <div id="h4" class="left-align"></div>
+        <div id="h5" class="left-align"></div>
+        <div id="h6" class="left-align"></div>
+        <div id="h7" class="left-align"></div>
+        <div id="h8" class="left-align"></div>
+        <div id="h9" class="left-align"></div>
+        <div id="h10"class="left-align"></div>
+        <div id="hj" class="left-align"></div>
+        <div id="hq" class="left-align"></div>
+        <div id="hk" class="left-align"></div>
+        
+        <div id="da" class="left-align"></div>
+        <div id="d0" class="left-align"></div>
+        <div id="d1" class="left-align"></div>
+        <div id="d2" class="left-align"></div>
+        <div id="d3" class="left-align"></div>
+        <div id="d4" class="left-align"></div>
+        <div id="d5" class="left-align"></div>
+        <div id="d6" class="left-align"></div>
+        <div id="d7" class="left-align"></div>
+        <div id="d8" class="left-align"></div>
+        <div id="d9" class="left-align"></div>
+        <div id="d10"class="left-align"></div>
+        <div id="dj" class="left-align"></div>
+        <div id="dq" class="left-align"></div>
+        <div id="dk" class="left-align"></div>
+        -->
+	</body>
+</html>
