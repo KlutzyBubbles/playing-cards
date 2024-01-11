@@ -1,6 +1,6 @@
 {
   "name": "playing-cards",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "scripts": {
     "scss": "sass sass/main.scss:css/main.css --verbose --trace",
