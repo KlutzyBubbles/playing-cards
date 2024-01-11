@@ -139,11 +139,15 @@ export interface CenterPipSettings {
 
 export interface FaceSettings {
     enabled: boolean
-    color?: HexColor[]
+    color?: FaceColorSettings
     width?: number
     height?: number
     paddingX?: number
     paddingY?: number
+}
+
+export interface FaceColorSettings {
+    [key: number]: HexColor
 }
 
 export enum Orientation {

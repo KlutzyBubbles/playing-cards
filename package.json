@@ -9,7 +9,7 @@
     "dev": "webpack --watch",
     "test": "node test.js",
     "ts-test": "ts-node test.ts",
-    "svg": "node svg.js",
+    "svg": "node svg.cjs",
     "start": "electron main.js",
     "start:build": "npm run build && npm run start",
     "lint": "ts-standard",

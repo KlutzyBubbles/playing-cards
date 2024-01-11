@@ -9,7 +9,8 @@
 - Add text space in pip (advertising if wanted)
 - Add special pip styling (for main/ace pip)
 - Add cardback
-- Change face colors from array to object (easier for settings merging)
+- Add hidden card (for tabletop simulator support)
+- ~~Change face colors from array to object (easier for settings merging)~~
 
 Future high level things
 

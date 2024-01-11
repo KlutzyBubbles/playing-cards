@@ -36,7 +36,7 @@ var cardSize: XY = {
     y: 1400
 }
 
-// cardSize = cardSizeBase
+cardSize = cardSizeBase
 
 interface CardStorage {
     [key: string]: CardSvg

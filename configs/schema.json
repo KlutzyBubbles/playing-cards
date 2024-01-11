@@ -297,14 +297,17 @@
       ],
       "type": "object"
     },
+    "FaceColorSettings": {
+      "additionalProperties": {
+        "$ref": "#/definitions/HexColor"
+      },
+      "type": "object"
+    },
     "FaceSettings": {
       "additionalProperties": false,
       "properties": {
         "color": {
-          "items": {
-            "$ref": "#/definitions/HexColor"
-          },
-          "type": "array"
+          "$ref": "#/definitions/FaceColorSettings"
         },
         "enabled": {
           "type": "boolean"
@@ -852,10 +855,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1032,10 +1035,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1212,10 +1215,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1392,10 +1395,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1572,10 +1575,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1752,10 +1755,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -1932,10 +1935,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"
@@ -2112,10 +2115,10 @@
               "additionalProperties": false,
               "properties": {
                 "color": {
-                  "items": {
+                  "additionalProperties": {
                     "$ref": "#/definitions/HexColor"
                   },
-                  "type": "array"
+                  "type": "object"
                 },
                 "enabled": {
                   "type": "boolean"

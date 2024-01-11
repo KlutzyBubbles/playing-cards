@@ -519,34 +519,45 @@ export class CardSvg {
             }
             log.trace(tag.cardClass, 'faceSelection')
             log.trace(tag.cardClass, Object.keys(faceSelection).length)
-            log.trace(tag.cardClass, (faceSettings.color ?? []).length)
-            var count = 1
-            for (var color of faceSettings.color ?? []) {
-                if (Object.prototype.hasOwnProperty.call(faceSelection, count)) {
-                    log.trace(tag.cardClass, 'new path')
-                    var pathString = faceSelection[count].path
-                    var path = group.path(pathString)
-                    log.trace(tag.cardClass, `Path Count ${count}`)
-                    log.trace(tag.cardClass, path.bbox())
-                    if (faceSelection[count].type === 'fill') {
-                        path.fill({
-                            color: color,
-                            opacity: 1
-                        })
-                    } else {
-                        path.fill({
-                            color: color,
-                            opacity: 0
-                        })
-                        path.stroke({
-                            color: color,
-                            width: faceSelection[count].width
-                        })
+            log.trace(tag.cardClass, Object.keys((faceSettings.color ?? {})).length)
+            // var count = 1
+            if (faceSettings.color !== undefined) {
+                for (var colorNumber of Object.keys(faceSettings.color)) {
+                    log.trace(tag.cardClass, `Setting colorNumber ${colorNumber}`)
+                    var actualColorNumber = colorNumber;
+                    try {
+                        actualColorNumber = `${parseInt(colorNumber) + 1}`;
                     }
-                    group.add(path)
+                    catch {
+                        log.error(tag.cardClass, `Cannot parse in for color number ${colorNumber}`)
+                    }
+                    if (Object.prototype.hasOwnProperty.call(faceSelection, actualColorNumber)) {
+                        log.trace(tag.cardClass, 'new path')
+                        var pathString = faceSelection[actualColorNumber].path
+                        var path = group.path(pathString)
+                        log.trace(tag.cardClass, `Path Count ${actualColorNumber}`)
+                        log.trace(tag.cardClass, path.bbox())
+                        const color = faceSettings.color[colorNumber]
+                        if (faceSelection[actualColorNumber].type === 'fill') {
+                            path.fill({
+                                color: color,
+                                opacity: 1
+                            })
+                        } else {
+                            path.fill({
+                                color: color,
+                                opacity: 0
+                            })
+                            path.stroke({
+                                color: color,
+                                width: faceSelection[actualColorNumber].width
+                            })
+                        }
+                        group.add(path)
+                    }
+                    // count++;
+                    // log.trace(tag.cardClass, `Counting ${count}`)
                 }
-                count++;
-                log.trace(tag.cardClass, `Counting ${count}`)
             }
 
             var rotX = 0
