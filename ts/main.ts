@@ -1,5 +1,5 @@
 import $ from "jquery";
-import * as M from 'materialize-css'
+import M from '@materializecss/materialize'
 import { SVG } from '@svgdotjs/svg.js'
 
 import { log, LogLevel, tag } from 'missionlog';
@@ -232,13 +232,13 @@ var callback = function (filename, blob) {
 };
 
 $(() => {
-    M.Collapsible.init($('.collapsible'), {});
-    M.Tabs.init($('.tabs'), {});
+    M.Collapsible.init($('.collapsible')[0], {});
+    M.Tabs.init($('.tabs')[0], {});
 
     $('#json-config').val(JSON.stringify(testSettings, null, 4))
-    M.textareaAutoResize($('#json-config'));
+    M.Forms.textareaAutoResize($('#json-config')[0] as HTMLTextAreaElement);
 
-    M.FormSelect.init($('select'), {});
+    M.FormSelect.init($('select')[0] as HTMLSelectElement, {});
 
     var all = SVG().addTo('#all')
     var grid = new CardGrid(all, undefined, [], cardSize, [10, 6])
@@ -267,7 +267,7 @@ $(() => {
             grid.redrawCards()
         } catch (e) {
             log.error(tag.general, e)
-            M.toast({ html: 'Error redrawing cards, check json', classes: 'rounded red white-text' });
+            new M.Toast({ text: 'Error redrawing cards, check json', classes: 'rounded red white-text' });
             return
         }
         drawn = true
@@ -300,10 +300,10 @@ $(() => {
             }).catch((e) => {
                 log.error(tag.general, 'svgToPng catch')
                 log.error(tag.general, e)
-                M.toast({ html: 'Unknown error', classes: 'rounded red white-text' });
+                new M.Toast({ text: 'Unknown error', classes: 'rounded red white-text' });
             })
         } else {
-            M.toast({ html: 'Make sure cards are drawn first', classes: 'rounded red white-text' });
+            new M.Toast({ text: 'Make sure cards are drawn first', classes: 'rounded red white-text' });
         }
     })
 })
