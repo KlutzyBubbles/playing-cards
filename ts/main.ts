@@ -1,5 +1,5 @@
 import $ from "jquery";
-import M from '@materializecss/materialize'
+import * as M from '@materializecss/materialize'
 import { SVG } from '@svgdotjs/svg.js'
 
 import { log, LogLevel, tag } from 'missionlog';
@@ -16,6 +16,7 @@ import { Canvg } from 'canvg';
 import { cardSize as cardSizeBase } from './constants';
 
 import * as standardConfig from '../configs/test/crazy.json'
+import bootstrap from "bootstrap";
 
 const logger = {
     [LogLevel.ERROR]: (tag, msg, params) => console.error(`[${chalk.red(tag)}]`, msg, ...params),
@@ -232,13 +233,34 @@ var callback = function (filename, blob) {
 };
 
 $(() => {
-    M.Collapsible.init($('.collapsible')[0], {});
-    M.Tabs.init($('.tabs')[0], {});
 
+    const triggerTabList = document.querySelectorAll('#config-tabs button')
+        triggerTabList.forEach(triggerEl => {
+        const tabTrigger = new bootstrap.Tab(triggerEl)
+
+        triggerEl.addEventListener('click', event => {
+            event.preventDefault()
+            tabTrigger.show()
+        })
+    })
+    /*
+    var collapsible = $('.collapsible')
+    if (collapsible !== undefined && collapsible !== null && collapsible.length > 0) {
+        M.Collapsible.init(collapsible[0], {});
+    }
+    var tabs = $('.tabs')
+    if (tabs !== undefined && tabs !== null && tabs.length > 0) {
+        console.log(M);
+        console.log(M.Tabs);
+        M.Tabs.init(tabs[0], {});
+    }
+*/
     $('#json-config').val(JSON.stringify(testSettings, null, 4))
+    /*
     M.Forms.textareaAutoResize($('#json-config')[0] as HTMLTextAreaElement);
 
     M.FormSelect.init($('select')[0] as HTMLSelectElement, {});
+    */
 
     var all = SVG().addTo('#all')
     var grid = new CardGrid(all, undefined, [], cardSize, [10, 6])

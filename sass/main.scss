@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+/*
 @import "~@materializecss/materialize/sass/components/tokens.module";
 @import "~@materializecss/materialize/sass/components/colors.module";
 @import "~@materializecss/materialize/sass/components/typography.module";
@@ -45,3 +45,6 @@
 @import "~@materializecss/materialize/sass/components/timepicker";
 
 @import "./custom.scss";
+*/
+
+@import "bootstrap/scss/bootstrap";
