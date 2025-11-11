@@ -116,7 +116,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       chunks: ["playingcards"],
       template: "./html/cards.html",
-      inject: "header",
+      inject: "head",
       filename: "cards.html",
     }),
   ],

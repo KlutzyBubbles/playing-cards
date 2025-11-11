@@ -17,6 +17,8 @@ import { cardSize as cardSizeBase } from './constants';
 
 import * as standardConfig from '../configs/test/crazy.json'
 import bootstrap from "bootstrap";
+// import { init } from "./configEditor";
+import { ToastFunctions as Toast } from './toasts';
 
 const logger = {
     [LogLevel.ERROR]: (tag, msg, params) => console.error(`[${chalk.red(tag)}]`, msg, ...params),
@@ -255,6 +257,7 @@ $(() => {
         M.Tabs.init(tabs[0], {});
     }
 */
+    // init();
     $('#json-config').val(JSON.stringify(testSettings, null, 4))
     /*
     M.Forms.textareaAutoResize($('#json-config')[0] as HTMLTextAreaElement);
@@ -287,9 +290,11 @@ $(() => {
             grid.setSettings(settings)
             grid.resetCards()
             grid.redrawCards()
+            Toast.info('Test');
         } catch (e) {
             log.error(tag.general, e)
-            new M.Toast({ text: 'Error redrawing cards, check json', classes: 'rounded red white-text' });
+            Toast.danger('Error', 'Error redrawing cards, check json');
+            // new M.Toast({ text: 'Error redrawing cards, check json', classes: 'rounded red white-text' });
             return
         }
         drawn = true
@@ -322,10 +327,12 @@ $(() => {
             }).catch((e) => {
                 log.error(tag.general, 'svgToPng catch')
                 log.error(tag.general, e)
-                new M.Toast({ text: 'Unknown error', classes: 'rounded red white-text' });
+                Toast.danger('Error', 'Unknown error');
+                //new M.Toast({ text: 'Unknown error', classes: 'rounded red white-text' });
             })
         } else {
-            new M.Toast({ text: 'Make sure cards are drawn first', classes: 'rounded red white-text' });
+            Toast.danger('Error', 'Make sure cards are drawn first');
+            //new M.Toast({ text: 'Make sure cards are drawn first', classes: 'rounded red white-text' });
         }
     })
 })

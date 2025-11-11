@@ -33,11 +33,23 @@
                         </ul>
                         <div class="tab-content" id="config-tabs-content">
                             <div class="tab-pane fade show active" id="json-config-container">
+                                <!--
                                 <form class="col s12" id="json-form">
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <label for="json-config" class="form-label">JSON Config</label>
-                                            <textarea id="json-config" class="form-control"></textarea>
+                                            <div id="json-config"></div>
+                                            <div id="json-config-alt"></div>
+                                            <!--<textarea id="json-config" class="form-control"></textarea>--
+                                        </div>
+                                    </div>
+                                </form>-->
+                                <form class="col s12" id="json-form">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <textarea id="json-config" class="materialize-textarea"></textarea>
+                                            <label for="json-config" class="active">JSON Config</label>
+                                            <div id="json-config-alt"></div>
                                         </div>
                                     </div>
                                 </form>
@@ -85,9 +97,54 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 px-0">
+                <div class="card">
+                    <div class="card-header">
+                        Preview
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="form-label">Characters</label>
+                                <select id="preview-character-select" class="form-control form-select" aria-label="Select character">
+                                    <option value="A" selected>A</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="J">J</option>
+                                    <option value="Q">Q</option>
+                                    <option value="K">K</option>
+                                </select>
+                            </div>
+                            <div class="input-field col s12">
+                                <label class="form-label">Suits</label>
+                                <select id="preview-suit-select" class="form-control form-select" aria-label="Select suit">
+                                    <option value="club" selected>Clubs</option>
+                                    <option value="diamond">Diamonds</option>
+                                    <option value="spade">Spades</option>
+                                    <option value="heart">Hearts</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="preview" class="row left-align"></div>
+                    </div>
+                </div>
+            </div>
           </div>
         
-        <div id="test" class="row left-align"></div>
+          <div id="test" class="row left-align"></div>
         <div id="all" class="row left-align"></div>
+        <div class="content-toast"></div>
 	</body>
 </html>
