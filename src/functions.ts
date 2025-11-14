@@ -1,6 +1,15 @@
-import merge from 'ts-deepmerge';
+import { merge } from 'ts-deepmerge';
 import { log, tag } from 'missionlog';
-import { BackgroundSettings, CenterBackgroundSettings, CenterSettings, TypedKey, CornerPipSettings, FaceType, PipType, TypeColor } from './types';
+import type {
+    BackgroundSettings,
+    CenterBackgroundSettings,
+    CenterSettings,
+    TypedKey,
+    CornerPipSettings,
+    FaceType,
+    Suit,
+    TypeColor
+} from './types';
 
 export function getClosestFactors(input: number): number[] | undefined {
     log.trace(tag.general, 'getClosestFactors(1)')
@@ -28,30 +37,30 @@ export function lowercaseFirstCharacter(string: string): string {
     return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
-export function mergeTypedSettings(object: TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>, typeColor: TypeColor, type: PipType, faceType: FaceType): CornerPipSettings | BackgroundSettings | CenterSettings {
+export function mergeTypedSettings<T extends object>(object: TypedKey<T>, typeColor: TypeColor, type: Suit, faceType: FaceType): CornerPipSettings | BackgroundSettings | CenterSettings {
     var newObject = object.all
     if (Object.prototype.hasOwnProperty.call(object, faceType)) {
         newObject = merge.withOptions(
             { mergeArrays: false },
             newObject,
-            object[faceType] as TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>)
+            object[faceType as keyof typeof object] as T) as T
     }
     if (Object.prototype.hasOwnProperty.call(object, typeColor)) {
         newObject = merge.withOptions(
             { mergeArrays: false },
             newObject,
-            object[typeColor] as TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>)
+            object[typeColor] as T) as T
     }
     if (Object.prototype.hasOwnProperty.call(object, type)) {
         newObject = merge.withOptions(
             { mergeArrays: false },
             newObject,
-            object[type] as TypedKey<CornerPipSettings> | TypedKey<BackgroundSettings> | TypedKey<CenterSettings>)
+            object[type] as T) as T
     }
     return newObject
 }
 
-export function generateString(length, startWithCharacter = false) {
+export function generateString(length: number, startWithCharacter: boolean = false): string {
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     const numbers ='0123456789';
     const all = `${characters}${numbers}`;

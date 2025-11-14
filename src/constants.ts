@@ -1,10 +1,10 @@
-import * as standardPipLocations from './pipLocations/standard.json'
-import * as symetricalPipLocations from './pipLocations/symetrical.json'
-import * as symetricalAltPipLocations from './pipLocations/symetrical_alt.json'
+import standardPipLocations from './pipLocations/standard.json'
+import symetricalPipLocations from './pipLocations/symetrical.json'
+import symetricalAltPipLocations from './pipLocations/symetrical_alt.json'
 
-import * as faceLayoutImported from '../json/honorCards.json'
+import faceLayoutImported from '../json/honorCards.json'
 
-import {
+import type {
     XY,
     CenterPipLayout,
     FaceLayout

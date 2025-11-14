@@ -1,11 +1,9 @@
-import { Path, Svg, Rect, Text, Polygon, G, Box } from '@svgdotjs/svg.js'
+import { Path, Svg, Rect, Text, Polygon } from '@svgdotjs/svg.js'
 
 import { log, tag } from 'missionlog';
-import {
+import type {
     CardSettings,
-    CornerPipLocation,
     XY,
-    PipType,
     CornerPipPath,
     CornerPipSettings,
     BackgroundSettings,
@@ -16,10 +14,16 @@ import {
     HexColor,
     FaceType,
     CenterSettings,
-    Scale
+    Scale,
+    CornerPipLocation,
+    Suit,
+    Character
 } from "../types";
+import {
+    CornerPipLocationEnum, CornerPipLocations
+} from '../types';
 import { pipLocations, pipOptions, faceLayouts, cardSize as cardSizeBase } from '../constants';
-import { isCenterBackgroundSettings, lowercaseFirstCharacter, mergeTypedSettings } from '../functions';
+import { isCenterBackgroundSettings, mergeTypedSettings } from '../functions';
 
 export class CardSvg {
 
@@ -28,20 +32,20 @@ export class CardSvg {
     private cardSize: XY;
     private scale: Scale;
 
-    private type: PipType;
+    private type: Suit;
     private typeIndex: number;
-    private character: string;
+    private character: Character;
 
     private cardBackground: Rect | undefined;
     private centerBackground: Rect | undefined;
     private centerBackgroundClip: Rect | undefined;
     private cardBackgroundBorder: Rect | undefined;
     private centerBackgroundBorder: Rect | undefined;
-    private cornerPips: (CornerPipPath | undefined)[];
+    private cornerPips: (Partial<Record<CornerPipLocation, CornerPipPath>> | undefined);
     private centerPips: (Path | Svg)[];
-    private faces: G[];
+    // private faces: G[];
 
-    constructor(canvas: Svg, settings: CardSettings, type: PipType, character: string, typeIndex?: number, cardSize?: XY) {
+    constructor(canvas: Svg, settings: CardSettings, type: Suit, character: Character, typeIndex?: number, cardSize?: XY) {
         log.trace(tag.cardClass, 'constructor()')
         this.canvas = canvas
         this.settings = settings
@@ -53,7 +57,7 @@ export class CardSvg {
             width: this.cardSize.x / cardSizeBase.x,
             height: this.cardSize.y / cardSizeBase.y
         }
-        this.cornerPips = []
+        this.cornerPips = {}
         this.centerPips = []
         this.type = type
         this.typeIndex = typeIndex ?? 0
@@ -144,36 +148,41 @@ export class CardSvg {
 
     private drawCornerPips(): Svg {
         log.trace(tag.cardClass, 'drawCornerPips()')
-        var pipList: (CornerPipSettings | undefined)[] = []
-        for (const pipLocationName in Object.keys(CornerPipLocation)) {
-            if (typeof CornerPipLocation[pipLocationName] !== "string") {
-                continue;
-            }
-            const settingName = lowercaseFirstCharacter(CornerPipLocation[pipLocationName])
-            if (!Object.prototype.hasOwnProperty.call(this.settings.cornerPips, settingName)) {
-                pipList.push(undefined)
-            } else {
-                pipList.push(mergeTypedSettings(this.settings.cornerPips[settingName], this.typeColor, this.type, this.faceType) as CornerPipSettings)
+        var pipList: Record<CornerPipLocation, (CornerPipSettings | undefined)> = {
+            [CornerPipLocationEnum.TopLeft]: undefined,
+            [CornerPipLocationEnum.BottomRight]: undefined,
+            [CornerPipLocationEnum.TopRight]: undefined,
+            [CornerPipLocationEnum.BottomLeft]: undefined
+        }
+        for (const pipLocationName of CornerPipLocations) {
+            const cornerPipSettings = this.settings.cornerPips[pipLocationName];
+            if (cornerPipSettings !== undefined) {
+                pipList[pipLocationName] = mergeTypedSettings(cornerPipSettings, this.typeColor, this.type, this.faceType) as CornerPipSettings;
             }
         }
         // if (this.cornerPips.length != cornerPipCount) {
             this.resetCornerPips()
         // }
-        if (this.cornerPips.length === 0) {
-            for (var [index, cornerPipSettings] of pipList.entries()) {
+        if (this.cornerPips === undefined) {
+            this.cornerPips = {};
+        }
+        if (Object.keys(this.cornerPips).length === 0) {
+            for (var [key, cornerPipSettings] of Object.entries(pipList)) {
                 if (cornerPipSettings !== undefined) {
-                    this.cornerPips.push(this.processCornerPip(cornerPipSettings, index))
+                    this.cornerPips[key as keyof typeof pipList] = this.processCornerPip(cornerPipSettings, key as keyof typeof pipList)
                 } else {
-                    this.cornerPips.push(undefined)
+                    this.cornerPips[key as keyof typeof pipList] = undefined
+                    delete this.cornerPips[key as keyof typeof pipList];
                 }
             }
         } else {
-            var replacementPips: typeof this.cornerPips = []
-            for (const [index, cornerPipSettings] of pipList.entries()) {
+            var replacementPips: typeof this.cornerPips = {}
+            for (const [key, cornerPipSettings] of Object.entries(pipList)) {
                 if (cornerPipSettings !== undefined) {
-                    replacementPips.push(this.processCornerPip(cornerPipSettings, index, this.cornerPips[index]))
+                    replacementPips[key as keyof typeof pipList] = (this.processCornerPip(cornerPipSettings, key as keyof typeof pipList, this.cornerPips[key as keyof typeof pipList]))
                 } else {
-                    replacementPips.push(undefined)
+                    replacementPips[key as keyof typeof pipList] = undefined
+                    delete replacementPips[key as keyof typeof pipList];
                 }
             }
             this.cornerPips = replacementPips
@@ -205,8 +214,8 @@ export class CardSvg {
             if (pipSettings.outline !== undefined && pipSettings.outline.enabled) {
                 const outlineSettings = pipSettings.outline
                 // const outlineAdjust = outlineSettings.width / 2
-                log.error(tag.cardClass, 'GHFICNSJ')
-                log.error(tag.cardClass, outlineSettings.color)
+                // log.error(tag.cardClass, 'GHFICNSJ')
+                // log.error(tag.cardClass, outlineSettings.color)
                 cornerPip.stroke({
                     color: outlineSettings.color ?? this.defaultColor,
                     width: this.scaleSingle(outlineSettings.width),
@@ -297,14 +306,14 @@ export class CardSvg {
         const yVal = (paddingScaled.height ?? 0) - yCenterAdjust + outlineAdjust
         log.trace(tag.cardClass, xVal)
         log.trace(tag.cardClass, yVal)
-        if (location < CornerPipLocation.TopRight) {
+        if (location < CornerPipLocationEnum.TopRight) {
             // Top Left - Bottom Right
             item.move(xVal, yVal)
         } else {
             // Top Right - Bottom Left
             item.move(this.canvas.rbox().w - item.bbox().w - xVal, yVal)
         }
-        if (location == CornerPipLocation.BottomLeft || location == CornerPipLocation.BottomRight) {
+        if (location == CornerPipLocationEnum.BottomLeft || location == CornerPipLocationEnum.BottomRight) {
             item.rotate(180, this.cardSize.x / 2, this.cardSize.y / 2)
         }
         return item
@@ -312,13 +321,13 @@ export class CardSvg {
 
     private resetCornerPips(): Svg {
         log.trace(tag.cardClass, 'resetCornerPips()')
-        for (var cornerPip of this.cornerPips) {
+        for (var cornerPip of Object.values(this.cornerPips ?? {})) {
             if (cornerPip !== undefined) {
                 cornerPip.character?.remove()
                 cornerPip.pip?.remove()
             }
         }
-        this.cornerPips = []
+        this.cornerPips = {}
         return this.canvas
     }
 
@@ -477,7 +486,9 @@ export class CardSvg {
         if (centerSettings.pips !== undefined && centerSettings.pips.enabled) {
             const centerPipSettings = centerSettings.pips
             const pipLocationSelection = pipLocations[centerSettings.pips.location]
+            // log.warn(tag.cardClass, 'pipLocationSelection', pipLocations, centerSettings.pips.location, pipLocationSelection);
             const pipLocationsList = pipLocationSelection[this.pipName] ?? []
+            // log.warn(tag.cardClass, 'pipLocationsList', pipLocationSelection, this.pipName, typeof this.pipName, pipLocationsList);
             if (this.centerPips.length != pipLocationsList.length) {
                 this.resetCenterPips()
             }
@@ -490,7 +501,9 @@ export class CardSvg {
                 }
             } else {
                 var replacementPips: (Path| Svg)[] = []
-                for (const [index, centerPip] of this.centerPips.entries()) {
+                for (let index = 0; index < this.centerPips.length; index++) {
+                // for (const [index, centerPip] of this.centerPips.entries()) {
+                    const centerPip = this.centerPips[index];
                     replacementPips.push(this.processCenterPip(
                         centerPipSettings,
                         pipLocationsList[index],
@@ -522,11 +535,13 @@ export class CardSvg {
             log.trace(tag.cardClass, Object.keys((faceSettings.color ?? {})).length)
             // var count = 1
             if (faceSettings.color !== undefined) {
-                for (var colorNumber of Object.keys(faceSettings.color)) {
-                    log.trace(tag.cardClass, `Setting colorNumber ${colorNumber}`)
-                    var actualColorNumber = colorNumber;
+                for (var colorNumberStr of Object.keys(faceSettings.color)) {
+                    log.trace(tag.cardClass, `Setting colorNumber ${colorNumberStr}`)
+                    var actualColorNumber = colorNumberStr;
+                    let colorNumber = NaN;
                     try {
-                        actualColorNumber = `${parseInt(colorNumber) + 1}`;
+                        colorNumber = parseInt(`${colorNumberStr}`);
+                        actualColorNumber = `${colorNumber + 1}`;
                     }
                     catch {
                         log.error(tag.cardClass, `Cannot parse in for color number ${colorNumber}`)
@@ -741,6 +756,7 @@ export class CardSvg {
         return polygon
     }
 
+    /*
     private drawBBox(bbox: Box) {
         this.drawDebug(bbox.x, bbox.y, bbox.width, bbox.height)
     }
@@ -754,5 +770,6 @@ export class CardSvg {
             color: '#F00'
         })
     }
+    */
 
 }

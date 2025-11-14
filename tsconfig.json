@@ -1,18 +1,7 @@
 {
-    "compilerOptions": {
-        "declaration": false,
-        "jsx": "react",
-        "moduleResolution": "node",
-        "noImplicitAny": false,
-        "noLib": false,
-        "removeComments": true,
-        "sourceMap": true,
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "target": "es6",
-        "module": "es2022",
-        "strictNullChecks": true
-    },
-    "include": ["ts/index.d.ts"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

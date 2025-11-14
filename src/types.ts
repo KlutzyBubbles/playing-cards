@@ -23,23 +23,92 @@ export interface CornerPipSubSettingsBase {
     outline?: OutlineSettings
 }
 
-export type PipType = 'club' | 'spade' | 'heart' | 'diamond'
+// export type PipType = 'club' | 'spade' | 'heart' | 'diamond'
 export type TypeColor = 'black' | 'red' | 'all'
 export type FaceType = 'value' | 'face' | 'unknown'
 export type LineCap = 'butt' | 'round' | 'square'
 export type ImageFormat = 'svg' | 'png' | 'jpeg'
 
 export interface PipCharacterCombo {
-    pip: PipType
-    character: string
+    pip: Suit
+    character: Character
 }
 
-export enum CornerPipLocation {
-    TopLeft = 0,
-    BottomRight = 1,
-    TopRight = 2,
-    BottomLeft = 3
+export enum CornerPipLocationEnum {
+    TopLeft = 'topLeft',
+    BottomRight = 'bottomRight',
+    TopRight = 'topRight',
+    BottomLeft = 'bottomLeft'
 }
+
+export const CornerPipLocations = [
+    CornerPipLocationEnum.TopLeft,
+    CornerPipLocationEnum.BottomRight,
+    CornerPipLocationEnum.TopRight,
+    CornerPipLocationEnum.BottomLeft
+] as const satisfies `${CornerPipLocationEnum}`[]
+
+export type CornerPipLocation = typeof CornerPipLocations[number];
+
+export enum CharacterEnum {
+    ACE = "A",
+    ZERO = "0",
+    ONE = "1",
+    TWO = "2",
+    THREE = "3",
+    FOUR = "4",
+    FIVE = "5",
+    SIX = "6",
+    SEVEN = "7",
+    EIGHT = "8",
+    NINE = "9",
+    TEN = "10",
+    ELEVEN = "11",
+    TWELVE = "12",
+    THIRTEEN = "13",
+    JACK = "J",
+    QUEEN = "Q",
+    KING = "K",
+}
+
+export const Characters = [
+    CharacterEnum.ACE,
+    CharacterEnum.ZERO,
+    CharacterEnum.ONE,
+    CharacterEnum.TWO,
+    CharacterEnum.THREE,
+    CharacterEnum.FOUR,
+    CharacterEnum.FIVE,
+    CharacterEnum.SIX,
+    CharacterEnum.SEVEN,
+    CharacterEnum.EIGHT,
+    CharacterEnum.NINE,
+    CharacterEnum.TEN,
+    CharacterEnum.ELEVEN,
+    CharacterEnum.TWELVE,
+    CharacterEnum.THIRTEEN,
+    CharacterEnum.JACK,
+    CharacterEnum.QUEEN,
+    CharacterEnum.KING,
+] as const satisfies `${CharacterEnum}`[]
+
+export type Character = typeof Characters[number];
+
+export enum SuitEnum {
+    CLUB = "club",
+    DIAMOND = "diamond",
+    SPADE = "spade",
+    HEART = "heart"
+}
+
+export const Suits = [
+    SuitEnum.CLUB,
+    SuitEnum.DIAMOND,
+    SuitEnum.SPADE,
+    SuitEnum.HEART,
+] as const satisfies `${SuitEnum}`[]
+
+export type Suit = typeof Suits[number];
 
 export interface CornerPipSettings {
     enabled: boolean

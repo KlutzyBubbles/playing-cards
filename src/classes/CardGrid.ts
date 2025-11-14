@@ -1,7 +1,7 @@
 import { Svg, SVG } from '@svgdotjs/svg.js'
-import $ from "jquery";
+// import $ from "jquery";
 import { log, tag } from 'missionlog';
-import {
+import type {
     CardSettings,
     CardStorage,
     ImageFormat,
@@ -14,12 +14,12 @@ import { CardSvg } from './CardSvg';
 
 export class CardGrid {
 
-    private canvas: Svg;
+    public canvas: Svg;
     private cards: CardStorage;
     private order: PipCharacterCombo[];
     private settings: CardSettings | undefined;
     private cardSize: XY;
-    private containerId: string;
+    // private containerId: string;
 
     private _factors: number[] = [];
 
@@ -58,15 +58,16 @@ export class CardGrid {
             return
         var containerId = generateString(20, true)
         log.trace(tag.gridClass, `ContainerID: ${containerId}`)
-        $(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
+        //$(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
         for (var combo of this.order) {
-            var draw = SVG().addTo(`#${containerId}`).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
-            var card = new CardSvg(draw, this.settings, combo.pip, combo.character)
+            // var draw = SVG().addTo(`#${containerId}`).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
+            var draw = SVG().addTo(this.canvas).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)// .addTo(`#${containerId}`)
+            var card = new CardSvg(draw, this.settings, combo.pip, combo.character, undefined, this.cardSize)
             card.drawCard()
             const value = `${combo.character.toLowerCase()}:${combo.pip}`
             this.cards[value] = card
         }
-        this.containerId = containerId
+        //this.containerId = containerId
         return containerId
     }
 
@@ -104,6 +105,7 @@ export class CardGrid {
         var count = 0
         for (const combo of this.order) {
             const svg = this.cards[`${combo.character.toLowerCase()}:${combo.pip}`]
+            // console.log('svg', svg);
             var x = count % this.factors[0]
             var y = (count - (x)) / this.factors[0]
             count++;
@@ -111,9 +113,10 @@ export class CardGrid {
             var nested = this.canvas.nested()
             nested.size(this.cardSize.x, this.cardSize.y)
             nested.move(this.cardSize.x * x, this.cardSize.y * y)
-            nested.svg(svg.canvas.svg())
+            svg.canvas.addTo(nested);
+            //nested.svg(svg.canvas.svg())
         }
-        $(`#${this.containerId}`).hide()
+        //$(`#${this.containerId}`).hide()
     }
 
     public export(format: ImageFormat): string | undefined {

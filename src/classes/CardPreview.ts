@@ -1,7 +1,7 @@
 import { Svg, SVG } from '@svgdotjs/svg.js'
-import $ from "jquery";
+// import $ from "jquery";
 import { log, tag } from 'missionlog';
-import {
+import type {
     CardSettings,
     ImageFormat,
     PipCharacterCombo,
@@ -18,7 +18,7 @@ export class CardPreview {
     private combo: PipCharacterCombo;
     private settings: CardSettings | undefined;
     private cardSize: XY;
-    private containerId: string;
+    // private containerId: string;
 
     constructor(canvas: Svg, settings: CardSettings | undefined, combo: PipCharacterCombo, cardSize?: XY, factors?: number[]) {
         log.trace(tag.gridClass, 'constructor()')
@@ -36,12 +36,12 @@ export class CardPreview {
             return
         var containerId = generateString(20, true)
         log.trace(tag.gridClass, `ContainerID: ${containerId}`)
-        $(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
+        // $(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
         var draw = SVG().addTo(`#${containerId}`).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
         var card = new CardSvg(draw, this.settings, this.combo.pip, this.combo.character)
         card.drawCard()
         this.card = card
-        this.containerId = containerId
+        // this.containerId = containerId
         return containerId
     }
 
@@ -88,7 +88,7 @@ export class CardPreview {
         nested.size(this.cardSize.x, this.cardSize.y)
         nested.move(this.cardSize.x * x, this.cardSize.y * y)
         nested.svg(svg.canvas.svg())
-        $(`#${this.containerId}`).hide()
+        // $(`#${this.containerId}`).hide()
     }
 
     public export(format: ImageFormat): string | undefined {
