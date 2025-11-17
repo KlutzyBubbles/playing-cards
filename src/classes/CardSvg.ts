@@ -580,13 +580,13 @@ export class CardSvg {
 
             // Add rotate point if exists
             if (Object.prototype.hasOwnProperty.call(faceSelection, 'rotate')) {
-                log.trace(tag.cardClass, 'rotate path')
                 var pathString = faceSelection.rotate.path
                 var rotatePath = group.path(pathString)
                 rotatePath.fill('none')
                 group.add(rotatePath)
                 rotX = rotatePath.rbox(this.canvas).x + (rotatePath.rbox(this.canvas).w / 2)
                 rotY = rotatePath.rbox(this.canvas).y + (rotatePath.rbox(this.canvas).h / 2)
+                log.trace(tag.cardClass, 'rotate path', rotX, rotY, rotatePath)
             } else {
                 rotX = group.bbox().w / 2
                 rotY = group.bbox().h
