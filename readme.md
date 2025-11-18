@@ -20,7 +20,7 @@ I will try keep everything that is being worked on or needs to be worked on in i
 While i wasnt dissapointed with other card generating options, they either had no customisability, the wrong output or for the wrong framework. So to get everything i wanted while allowing the outputs of other generators this project spawned. The only goal tihs project sacrifices is file size, while they wont be the smallest, they also wont be inefficient with size.
 
 1. Above all else, this should be a static site / page. All libraries should be baked into the site to allow for offline use.
-2. Full customisability, if there is a hardcoded value that affects the look of the cards it should be changable by the user.
+2. Full customisability, if there is a hardcoded value that affects the look of the cards it should be changable by the user. (Although making a user interface for this is proving difficult, so all options in json, not all in UI)
 3. Custom card decks, if i want 0-13 or A-10+J-Q-K i should be able to set those
 4. Outputs should allow for atleast
     - 1 File per card output

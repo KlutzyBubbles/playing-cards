@@ -3,11 +3,11 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import { AppBar, Toolbar, IconButton, Badge, Button, Card, CardActions, CardContent, CardHeader, Tab, Tabs, Paper, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, type SelectChangeEvent, TextField } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Badge, Button, Card, CardActions, CardContent, CardHeader, Tab, Tabs, Paper, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, type SelectChangeEvent, TextField, Grid, FormControlLabel, Switch } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import UpdateIcon from '@mui/icons-material/Update';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Characters, type Character, CharacterEnum, type Suit, SuitEnum, Suits, type PipCharacterCombo } from './types';
+import { Characters, type Character, CharacterEnum, type Suit, SuitEnum, Suits, type PipCharacterCombo, ImageFormatEnum, ImageFormats, type ImageFormat } from './types';
 import * as standardConfig from '../configs/test/crazy.json';
 import { log, tag } from 'missionlog';
 import { CardSettingsContext } from './providers/CardSettingProvider';
@@ -26,6 +26,7 @@ function Copyright() {
             align="center"
             sx={{
                 color: 'text.secondary',
+                mt: 4
             }}>
             {'Copyright © '}
         <Link color="inherit" href="https://mui.com/">
@@ -154,6 +155,8 @@ export default function App() {
     const [currentTab, setCurrentTab] = React.useState<number>(0);
     const [cardSettingsString, setCardSettingsString] = React.useState<string>(JSON.stringify(cardSettings, undefined, 2));
     const [isJsonValid, setIsJsonValid] = React.useState<boolean>(true);
+    const [isGridOutput, setIsGridOutput] = React.useState<boolean>(true);
+    const [outputFormat, setOutputFormat] = React.useState<ImageFormat>(ImageFormatEnum.PNG);
     // const [jsonChange, setJsonChange] = React.useState<number>(0);
     const [characters, setCharacters] = React.useState<Character[]>([
         CharacterEnum.ACE,
@@ -177,7 +180,8 @@ export default function App() {
         SuitEnum.HEART,
     ]);
     const timeout = React.useRef<number | null>(null);
-    const grid = React.useRef<CardGrid>(null);
+    // const grid = React.useRef<CardGrid>(null);
+    const [grid, setGrid] = React.useState<CardGrid | null>(null);
 
     const SVGWrapperRefElement = React.useRef<HTMLDivElement>(null);
     const SVGContainer = React.useMemo(() => SVG(), []);
@@ -253,6 +257,13 @@ export default function App() {
         );
     };
 
+    const handleOutputFormatChange = (event: SelectChangeEvent<typeof outputFormat>) => {
+        const {
+            target: { value },
+        } = event;
+        setOutputFormat(value);
+    };
+
     const updateCardsClick = () => {
         var order: PipCharacterCombo[] = []
         for (const character of characters) {
@@ -264,6 +275,28 @@ export default function App() {
             }
         }
         // draw();
+        setGrid(() => {
+            let tempGrid = new CardGrid(SVG(), undefined, [], cardSize, [10, 6]);
+            tempGrid.setOrder(order, [10, 6])
+            try {
+                // var settings = <CardSettings>JSON.psarse(<string>$('#json-config').val())
+                SVGContainer.size(tempGrid.canvas.width(), tempGrid.canvas.height())
+                SVGContainer.add(tempGrid.canvas)
+                log.info(tag.general, 'cardSettings', cardSettings);
+                tempGrid.setSettings(cardSettings)
+                tempGrid.resetCards()
+                tempGrid.redrawCards()
+                console.log('test');
+                // Toast.info('Test');
+            } catch (e) {
+                log.error(tag.general, e)
+                // Toast.danger('Error', 'Error redrawing cards, check json');
+                // new M.Toast({ text: 'Error redrawing cards, check json', classes: 'rounded red white-text' });
+                return tempGrid;
+            }
+            return tempGrid;
+        });
+        /*
         grid.current = new CardGrid(SVG(), undefined, [], cardSize, [10, 6])
         grid.current.setOrder(order, [10, 6])
         try {
@@ -282,13 +315,14 @@ export default function App() {
             // new M.Toast({ text: 'Error redrawing cards, check json', classes: 'rounded red white-text' });
             return
         }
+        */
         // drawn = true;
     }
 
     const downloadSVGClick = () => {
         log.trace(tag.general, 'cards-download')
-        const currentGrid = grid.current;
-        if (currentGrid !== null) {
+        //const currentGrid = grid.current;
+        if (grid !== null) {
             /*
             var svg = grid.export()
             download('test.svg', svg)
@@ -304,7 +338,7 @@ export default function App() {
                 log.error(tag.general, e)
                 M.toast({ html: 'Unknown error', classes: 'rounded red white-text' });
             })*/
-            const svgExport = currentGrid.export('svg');
+            const svgExport = grid.export(ImageFormatEnum.SVG);
             if (svgExport === undefined) {
                 log.error(tag.general, 'Unable to export to svg');
                 return;
@@ -355,6 +389,7 @@ export default function App() {
                             <Tab label="JSON Config" {...a11yProps(0)} />
                             <Tab label="Pips" {...a11yProps(1)} />
                             <Tab label="Cards" {...a11yProps(2)} />
+                            <Tab label="Export Settings" {...a11yProps(3)} />
                         </Tabs>
                     </Box>
                     <CustomTabPanel value={currentTab} index={0}>
@@ -373,7 +408,7 @@ export default function App() {
                         <div className="tab-pane fade" id="corner-pips-config">Corner pip placeholder</div>
                     </CustomTabPanel>
                     <CustomTabPanel value={currentTab} index={2}>
-                        <FormControl sx={{ width: 1 }}>
+                        <FormControl sx={{ width: 1, mb: 2 }}>
                             <InputLabel id="character-select-label">Characters</InputLabel>
                             <Select
                                 labelId="character-select-label"
@@ -381,7 +416,7 @@ export default function App() {
                                 multiple
                                 value={characters}
                                 onChange={handleCharacterChange}
-                                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                                input={<OutlinedInput id="character-select" label="Characters" />}
                                 renderValue={(selected) => (
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                         {selected.map((value) => (
@@ -410,7 +445,7 @@ export default function App() {
                                 multiple
                                 value={suits}
                                 onChange={handleSuitChange}
-                                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                                input={<OutlinedInput id="suit-select" label="Suits" />}
                                 renderValue={(selected) => (
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                         {selected.map((value) => (
@@ -432,13 +467,48 @@ export default function App() {
                             </Select>
                         </FormControl>
                     </CustomTabPanel>
+                    <CustomTabPanel value={currentTab} index={3}>
+                        <Grid container spacing={2}>
+                            <Grid size={8}>
+                                <FormControl sx={{ width: 1 }}>
+                                    <InputLabel id="suit-select-label">Output Format</InputLabel>
+                                    <Select
+                                        labelId="output-format-select-label"
+                                        id="output-format-select"
+                                        value={outputFormat}
+                                        onChange={handleOutputFormatChange}
+                                        input={<OutlinedInput id="output-format-select" label="Output Format" />}
+                                        // renderValue={(selected) => (
+                                        //     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        //         {selected.map((value) => (
+                                        //             <Chip key={value} label={value} />
+                                        //         ))}
+                                        //     </Box>
+                                        // )}
+                                    >
+                                    {ImageFormats.map((name) => (
+                                        <MenuItem
+                                            key={name}
+                                            value={name}>
+                                        {name}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={4}>
+                                <FormControlLabel control={<Switch sx={{ m:2 }} defaultChecked onChange={(_, checked) => setIsGridOutput(checked)}/>} label={isGridOutput ? 'Grid' : 'Singles'} />
+                            </Grid>
+                        </Grid>
+                    </CustomTabPanel>
                 </CardContent>
                 <CardActions>
                     <Button size="small" onClick={updateCardsClick}>
                         Update Cards <UpdateIcon />
                     </Button>
-                    <Button size="small" onClick={downloadSVGClick}>
-                        Download SVG <DownloadIcon />
+                    <Typography sx={{ flexGrow: 1 }} />
+                    <Button size="small" onClick={downloadSVGClick} disabled={grid === null}>
+                        Export <DownloadIcon />
                     </Button>
                 </CardActions>
             </Card>

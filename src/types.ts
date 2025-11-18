@@ -27,7 +27,6 @@ export interface CornerPipSubSettingsBase {
 export type TypeColor = 'black' | 'red' | 'all'
 export type FaceType = 'value' | 'face' | 'unknown'
 export type LineCap = 'butt' | 'round' | 'square'
-export type ImageFormat = 'svg' | 'png' | 'jpeg'
 
 export interface PipCharacterCombo {
     pip: Suit
@@ -109,6 +108,20 @@ export const Suits = [
 ] as const satisfies `${SuitEnum}`[]
 
 export type Suit = typeof Suits[number];
+
+export enum ImageFormatEnum {
+    PNG = "png",
+    JPEG = "jpeg",
+    SVG = "svg"
+}
+
+export const ImageFormats = [
+    ImageFormatEnum.PNG,
+    ImageFormatEnum.JPEG,
+    ImageFormatEnum.SVG
+] as const satisfies `${ImageFormatEnum}`[]
+
+export type ImageFormat = typeof ImageFormats[number];
 
 export interface CornerPipSettings {
     enabled: boolean
