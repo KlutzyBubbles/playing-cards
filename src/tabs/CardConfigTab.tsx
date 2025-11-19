@@ -43,15 +43,12 @@ export default function CardConfigTab() {
                         ))}
                     </Box>
                 )}
-                // MenuProps={MenuProps}
             >
             {Characters.map((name) => (
                 <MenuItem
                     key={name}
-                    value={name}
-                    // style={getStyles(name, personName, theme)}
-                >
-                {name}
+                    value={name} >
+                    {name}
                 </MenuItem>
             ))}
             </Select>
@@ -72,15 +69,12 @@ export default function CardConfigTab() {
                         ))}
                     </Box>
                 )}
-                // MenuProps={MenuProps}
             >
             {Suits.map((name) => (
                 <MenuItem
                     key={name}
-                    value={name}
-                    // style={getStyles(name, personName, theme)}
-                >
-                {name}
+                    value={name} >
+                    {name}
                 </MenuItem>
             ))}
             </Select>

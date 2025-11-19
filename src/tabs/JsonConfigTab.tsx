@@ -32,7 +32,6 @@ export default function JsonConfigTab() {
                 log.warn(tag.general, 'Error processing cardSettingsString', e);
                 setIsJsonValid(false);
             }
-            // setJsonChange(jsonChange + 1);
         }, 500);
         timeout.current = timer;
     }, [cardSettingsString])

@@ -12,8 +12,7 @@ import {
     type CenterPipLayout,
     type FaceLayout,
     type CardSettings,
-    type PredefinedSetting,
-    PredefinedSettingEnum
+    type PredefinedSetting
 } from "./types";
 
 export const pipOptions = {
@@ -44,7 +43,8 @@ export const cardSize: XY = {
     y: 350
 }
 
+// For some reason using PredefinedSettingEnum results in errors :/
 export const predefinedSettings: Record<PredefinedSetting, CardSettings> = {
-    [PredefinedSettingEnum.CRAZY]: crazyConfig as CardSettings,
-    [PredefinedSettingEnum.STANDARD]: standardConfig as CardSettings
+    crazy: crazyConfig as CardSettings,
+    standard: standardConfig as CardSettings
 }

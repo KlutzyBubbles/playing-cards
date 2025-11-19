@@ -25,13 +25,7 @@ function dataURLtoBlob(dataurl: string) {
     return new Blob([u8arr], {type:mime});
 }
 
-interface ExportTabProps {
-    // cardGrid?: CardGrid
-}
-
-export default function ExportTab({
-    // cardGrid
-}: ExportTabProps) {
+export default function ExportTab() {
     const { enqueueSnackbar } = useSnackbar();
     const { characters, suits, cardSettings } = React.useContext(CardSettingsContext);
     const [isGridOutput, setIsGridOutput] = React.useState<boolean>(true);
@@ -45,8 +39,6 @@ export default function ExportTab({
     const isExporting = React.useRef<boolean>(false);
     const SVGWrapperRefElement = React.useRef<HTMLDivElement>(null);
     const SVGContainer = React.useMemo(() => SVG(), []);
-
-    // SVGContainer.add(SVG().rect(100, 100).fill("#f06"));
 
     React.useEffect(() => {
         log.info(tag.general, 'SVGwarpper');
@@ -106,8 +98,7 @@ export default function ExportTab({
     };
 
     const exportGrid = async (cardGrid: CardGrid) => {
-        log.trace(tag.general, 'exportGrid')
-        //const currentGrid = grid.current;
+        log.trace(tag.general, 'exportGrid');
         try {
             let allResults = await cardGrid.export(outputFormat, !isGridOutput) ?? [];
             for (let imgData of allResults) {

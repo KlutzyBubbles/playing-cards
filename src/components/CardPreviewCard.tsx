@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     Card,
     CardContent,
+    CardHeader,
     FormControl,
     Grid,
     InputLabel,
@@ -79,6 +80,7 @@ export default function CardPreviewCard() {
     }, [suits, characters]);
 
     return (<Card sx={{ w: 1, mb: 2 }}>
+        <CardHeader title="Card Preview" slotProps={{ title: { variant: 'h6' } }} />
         <CardContent>
             <Grid container spacing={2}>
                 <Grid size={6}>
@@ -94,10 +96,8 @@ export default function CardPreviewCard() {
                         {characters.map((name) => (
                             <MenuItem
                                 key={name}
-                                value={name}
-                                // style={getStyles(name, personName, theme)}
-                            >
-                            {name}
+                                value={name} >
+                                {name}
                             </MenuItem>
                         ))}
                         </Select>
@@ -116,10 +116,8 @@ export default function CardPreviewCard() {
                         {suits.map((name) => (
                             <MenuItem
                                 key={name}
-                                value={name}
-                                // style={getStyles(name, personName, theme)}
-                            >
-                            {name}
+                                value={name} >
+                                {name}
                             </MenuItem>
                         ))}
                         </Select>
