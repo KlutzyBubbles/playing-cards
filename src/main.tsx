@@ -4,6 +4,7 @@ import App from './App.tsx'
 import { CardSettingsProvider } from './providers/CardSettingProvider.tsx';
 import { DEFAULT_TAG, log, LogLevel } from 'missionlog';
 import chalk from 'chalk';
+import { SnackbarProvider } from 'notistack';
 
 const logger = {
     [LogLevel.ERROR]: (tag, msg, params) => console.error(`[${chalk.red(tag)}]`, msg, ...params),
@@ -24,8 +25,10 @@ log.init({
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <CardSettingsProvider>
-            <App />
-        </CardSettingsProvider>
+        <SnackbarProvider maxSnack={5} autoHideDuration={5000}>
+            <CardSettingsProvider>
+                <App />
+            </CardSettingsProvider>
+        </SnackbarProvider>
     </StrictMode>,
 )

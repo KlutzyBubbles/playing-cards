@@ -1,6 +1,6 @@
 import { type FC, type ReactNode, createContext, useState } from 'react';
-import defaultConfig from '../../configs/test/crazy.json'
 import { CharacterEnum, type CardSettings, type Character, SuitEnum, type Suit } from '../types';
+import { predefinedSettings } from '../constants';
 
 const defaultCharacters = [
     CharacterEnum.ACE,
@@ -33,7 +33,7 @@ export const CardSettingsContext = createContext<{
     suits: Suit[],
     setSuits: (suits: Suit[]) => void,
         }>({
-            cardSettings: defaultConfig as CardSettings,
+            cardSettings: predefinedSettings.standard,
             setCardSettings: (cardSettings: CardSettings) => { console.log('DEFAULT STILL RUN', cardSettings); },
             characters: defaultCharacters,
             setCharacters: (characters: Character[]) => { console.log('DEFAULT STILL RUN', characters); },
@@ -48,7 +48,7 @@ interface CardSettingsProviderProps {
 export const CardSettingsProvider: FC<CardSettingsProviderProps> = ({
     children
 }) => {
-    const [cardSettings, setCardSettings] = useState<CardSettings>(defaultConfig as CardSettings);
+    const [cardSettings, setCardSettings] = useState<CardSettings>(predefinedSettings.standard);
     const [characters, setCharacters] = useState<Character[]>(defaultCharacters);
     const [suits, setSuits] = useState<Suit[]>(defaultSuits);
 

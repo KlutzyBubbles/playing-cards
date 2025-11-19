@@ -123,6 +123,18 @@ export const ImageFormats = [
 
 export type ImageFormat = typeof ImageFormats[number];
 
+export enum PredefinedSettingEnum {
+    CRAZY = "crazy",
+    STANDARD = "standard"
+}
+
+export const PredefinedSettings = [
+    PredefinedSettingEnum.CRAZY,
+    PredefinedSettingEnum.STANDARD
+] as const satisfies `${PredefinedSettingEnum}`[]
+
+export type PredefinedSetting = typeof PredefinedSettings[number];
+
 export interface CornerPipSettings {
     enabled: boolean
     character?: CornerPipCharacterSettings

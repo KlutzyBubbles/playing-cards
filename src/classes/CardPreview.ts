@@ -3,24 +3,22 @@ import { Svg, SVG } from '@svgdotjs/svg.js'
 import { log, tag } from 'missionlog';
 import type {
     CardSettings,
-    ImageFormat,
     PipCharacterCombo,
     XY
 } from "../types";
 import { cardSize as cardSizeConstant } from '../constants'
-import { generateString } from "../functions";
 import { CardSvg } from './CardSvg';
 
 export class CardPreview {
 
-    private canvas: Svg;
+    public canvas: Svg;
     private card: CardSvg | undefined;
     private combo: PipCharacterCombo;
     private settings: CardSettings | undefined;
     private cardSize: XY;
     // private containerId: string;
 
-    constructor(canvas: Svg, settings: CardSettings | undefined, combo: PipCharacterCombo, cardSize?: XY, factors?: number[]) {
+    constructor(canvas: Svg, settings: CardSettings | undefined, combo: PipCharacterCombo, cardSize?: XY, _factors?: number[]) {
         log.trace(tag.gridClass, 'constructor()')
         this.canvas = canvas
         this.card = undefined
@@ -30,19 +28,15 @@ export class CardPreview {
         this.setSize()
     }
 
-    private generateCards(): string | undefined {
+    private generateCards(): void {
         log.trace(tag.gridClass, 'generateCards()')
         if (this.settings === undefined)
-            return
-        var containerId = generateString(20, true)
-        log.trace(tag.gridClass, `ContainerID: ${containerId}`)
-        // $(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
-        var draw = SVG().addTo(`#${containerId}`).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
+            return;
+        var draw = SVG().addTo(this.canvas).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
         var card = new CardSvg(draw, this.settings, this.combo.pip, this.combo.character)
         card.drawCard()
         this.card = card
-        // this.containerId = containerId
-        return containerId
+        return;
     }
 
     private setSize(): void {
@@ -89,14 +83,6 @@ export class CardPreview {
         nested.move(this.cardSize.x * x, this.cardSize.y * y)
         nested.svg(svg.canvas.svg())
         // $(`#${this.containerId}`).hide()
-    }
-
-    public export(format: ImageFormat): string | undefined {
-        if (format === 'svg') {
-            return this.canvas.svg()
-        }
-        log.error(tag.gridClass, `Unfinished format supplied: ${format}`)
-        return undefined
     }
 
 }

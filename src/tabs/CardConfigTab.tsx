@@ -28,14 +28,14 @@ export default function CardConfigTab() {
 
     return (<>
         <FormControl sx={{ width: 1, mb: 2 }}>
-            <InputLabel id="character-select-label">Characters</InputLabel>
+            <InputLabel id="characters-select-label">Characters</InputLabel>
             <Select
-                labelId="character-select-label"
-                id="character-select"
+                labelId="characters-select-label"
+                id="characters-select"
                 multiple
                 value={characters}
                 onChange={handleCharacterChange}
-                input={<OutlinedInput id="character-select" label="Characters" />}
+                input={<OutlinedInput id="characters-select" label="Characters" />}
                 renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                         {selected.map((value) => (
@@ -57,14 +57,14 @@ export default function CardConfigTab() {
             </Select>
         </FormControl>
         <FormControl sx={{ width: 1 }}>
-            <InputLabel id="suit-select-label">Suits</InputLabel>
+            <InputLabel id="suits-select-label">Suits</InputLabel>
             <Select
-                labelId="suit-select-label"
-                id="suit-select"
+                labelId="suits-select-label"
+                id="suits-select"
                 multiple
                 value={suits}
                 onChange={handleSuitChange}
-                input={<OutlinedInput id="suit-select" label="Suits" />}
+                input={<OutlinedInput id="suits-select" label="Suits" />}
                 renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                         {selected.map((value) => (

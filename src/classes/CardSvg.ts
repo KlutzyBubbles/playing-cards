@@ -17,13 +17,14 @@ import type {
     Scale,
     CornerPipLocation,
     Suit,
-    Character
+    Character,
+    ImageFormat
 } from "../types";
 import {
-    CornerPipLocationEnum, CornerPipLocations
+    CornerPipLocationEnum, CornerPipLocations, ImageFormatEnum
 } from '../types';
 import { pipLocations, pipOptions, faceLayouts, cardSize as cardSizeBase } from '../constants';
-import { isCenterBackgroundSettings, mergeTypedSettings } from '../functions';
+import { isCenterBackgroundSettings, mergeTypedSettings, svgToCanvas } from '../functions';
 
 export class CardSvg {
 
@@ -111,6 +112,27 @@ export class CardSvg {
         return 'unknown'
     }
 
+    get svgText(): string {
+        const parent = this.canvas.parent();
+        if (parent !== null) {
+            this.canvas.flatten(parent, undefined);
+        }
+        return `<svg width="${this.canvas.width()}px" height="${this.canvas.height()}px">>${this.canvas.defs().svg()}${this.canvas.svg()}</svg>`;
+    }
+
+    public async export(format: ImageFormat): Promise<string | undefined> {
+        if (format === ImageFormatEnum.SVG) {
+            return this.svgText;
+        } else {
+            var canvas = await svgToCanvas(this.svgText);
+            if (format === ImageFormatEnum.PNG) {
+                return canvas.toDataURL('image/png');
+            } else {
+                return canvas.toDataURL('image/jpeg');
+            }
+        }
+    }
+
     public drawCard(): Svg {
         log.trace(tag.cardClass, 'drawCard()')
         this.drawCardBackground()
@@ -191,11 +213,7 @@ export class CardSvg {
     }
 
     private processCornerPip(cornerPipSettings: CornerPipSettings, location: CornerPipLocation, paths?: CornerPipPath): CornerPipPath {
-        log.trace(tag.cardClass, 'processCornerPip(3)')
-        log.trace(tag.cardClass, cornerPipSettings)
-        log.trace(tag.cardClass, location)
-        log.trace(tag.cardClass, paths)
-        log.trace(tag.cardClass, '-------------------')
+        log.trace(tag.cardClass, 'processCornerPip(3)', cornerPipSettings, location, paths);
         if (!cornerPipSettings.enabled) {
             return {}
         }
@@ -640,11 +658,7 @@ export class CardSvg {
     }
 
     private processCenterPip(centerPipSettings: CenterPipSettings, location: RotatableXY, pip?: Path | Svg): Path | Svg {
-        log.trace(tag.cardClass, 'processCenterPip(3)')
-        log.trace(tag.cardClass, centerPipSettings)
-        log.trace(tag.cardClass, location)
-        log.trace(tag.cardClass, pip)
-        log.trace(tag.cardClass, '-------------------')
+        log.trace(tag.cardClass, 'processCenterPip(3)', centerPipSettings, location, pip);
         if (location.symetrical ?? false) {
             pip = this.createSymetrical(centerPipSettings)
         }
@@ -677,9 +691,7 @@ export class CardSvg {
     }
 
     private createSymetrical(centerPipSettings: CenterPipSettings): Path | Svg {
-        log.trace(tag.cardClass, 'createSymetrical(1)')
-        log.trace(tag.cardClass, centerPipSettings)
-        log.trace(tag.cardClass, '-------------------')
+        log.trace(tag.cardClass, 'createSymetrical(1)', centerPipSettings);
         var nested = this.canvas.nested()
         var pip: Path | Svg = nested.path(this.pipPath)
         pip = this.styleCenterPip(pip, centerPipSettings)
@@ -704,13 +716,7 @@ export class CardSvg {
     }
 
     private spikedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
-        log.trace(tag.cardClass, 'spikedEdge(5)')
-        log.trace(tag.cardClass, canvas)
-        log.trace(tag.cardClass, width)
-        log.trace(tag.cardClass, height)
-        log.trace(tag.cardClass, spikeDepth)
-        log.trace(tag.cardClass, spikes)
-        log.trace(tag.cardClass, '-------------------')
+        log.trace(tag.cardClass, 'spikedEdge(5)', canvas, width, height, spikeDepth, spikes);
         var points = `0,${height} 0,0 ${width},0`
         var halfStep = height / ((spikes * 2) + 1)
         var wholeStep = halfStep * 2
@@ -726,13 +732,7 @@ export class CardSvg {
     }
 
     private jaggedEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
-        log.trace(tag.cardClass, 'jaggedEdge(5)')
-        log.trace(tag.cardClass, canvas)
-        log.trace(tag.cardClass, width)
-        log.trace(tag.cardClass, height)
-        log.trace(tag.cardClass, spikeDepth)
-        log.trace(tag.cardClass, spikes)
-        log.trace(tag.cardClass, '-------------------')
+        log.trace(tag.cardClass, 'jaggedEdge(5)', canvas, width, height, spikeDepth, spikes);
         var points = `0,${height} 0,0 ${width},0`
         var interval = height / spikes
         for (var i = 0; i < spikes; i++) {
@@ -744,13 +744,7 @@ export class CardSvg {
     }
 
     private straightEdge(canvas: Svg, width: number, height: number, spikeDepth: number, spikes: number): Polygon {
-        log.trace(tag.cardClass, 'straightEdge(5)')
-        log.trace(tag.cardClass, canvas)
-        log.trace(tag.cardClass, width)
-        log.trace(tag.cardClass, height)
-        log.trace(tag.cardClass, spikeDepth)
-        log.trace(tag.cardClass, spikes)
-        log.trace(tag.cardClass, '-------------------')
+        log.trace(tag.cardClass, 'straightEdge(5)', canvas, width, height, spikeDepth, spikes);
         var points = `0,${height} 0,0 ${width},0 ${width},${height}`
         var polygon = canvas.polygon(points)
         return polygon

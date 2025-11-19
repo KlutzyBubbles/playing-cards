@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { FormControl, FormControlLabel, Grid, InputLabel, MenuItem, OutlinedInput, Select, Switch, type SelectChangeEvent, Button, Typography } from '@mui/material';
 import { log, tag } from 'missionlog';
-import { ImageFormats, type ImageFormat, ImageFormatEnum } from '../types';
-import type { CardGrid } from '../classes/CardGrid';
+import { ImageFormats, type ImageFormat, ImageFormatEnum, type PipCharacterCombo } from '../types';
+import { CardGrid } from '../classes/CardGrid';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Canvg } from 'canvg';
+import { useSnackbar } from 'notistack';
+import { CardSettingsContext } from '../providers/CardSettingProvider';
+import { SVG } from '@svgdotjs/svg.js';
+import { cardSize } from '../constants';
+import NumberField from '../components/NumberField';
 
 function dataURLtoBlob(dataurl: string) {
-    log.trace(tag.general, 'dataURLtoBlob(1)')
-    log.trace(tag.general, dataurl)
+    log.trace(tag.general, 'dataURLtoBlob(1)', dataurl)
     let arr = dataurl.split(',');
     let match = arr[0].match(/:(.*?);/);
     if (match === null) {
@@ -22,84 +25,71 @@ function dataURLtoBlob(dataurl: string) {
     return new Blob([u8arr], {type:mime});
 }
 
-async function downloadCanvas(svgText: string) {
-    log.trace(tag.general, 'downloadCanvas(1)')
-    var link = document.createElement("a");
-    log.trace(tag.general, link)
-    var canvas = await svgToCanvas(svgText)
-    log.trace(tag.general, canvas)
-    var imgData = canvas.toDataURL('image/png');
-    // var strDataURI = imgData.substring(22, imgData.length);
-    var blob = dataURLtoBlob(imgData);
-    var objurl = URL.createObjectURL(blob);
-
-    link.download = "helloWorld.png";
-
-    link.href = objurl;
-
-    link.click();
-}
-
-async function svgToCanvas(svgText: string) {
-    log.trace(tag.general, 'svgToCanvas(1)')
-    const canvas = document.createElement('canvas');
-    log.trace(tag.general, canvas)
-    if (canvas === null) {
-        throw new Error('canvas null')
-    }
-    const ctx = canvas.getContext('2d');
-    log.trace(tag.general, ctx)
-    if (ctx === null) {
-        throw new Error('ctx null')
-    }
-    log.trace(tag.general, svgText)
-    //var widthMatch = /<svg.+?(?=width=)width="(\d*)/gm
-    //var heightMatch = /<svg.+?(?=height=)height="(\d*)/gm
-
-    //var widths = [...svgText.matchAll(widthMatch)]
-    //var heights = [...svgText.matchAll(heightMatch)]
-
-    //var canvasWidth = parseFloat(widths[0][1])
-    //var canvasHeight = parseFloat(heights[0][1])
-
-    //var cardWidth = parseFloat(widths[1][1])
-    //var cardHeight = heights[1][1]
-
-    //const targetCardWidth = 1000
-    //var ratio = targetCardWidth / cardWidth
-    //var targetCanvasWidth = canvasWidth * ratio
-    //var targetCanvasHeight = canvasHeight * ratio
-
-    //log.trace(tag.general, [...svgText.matchAll(widthMatch)])
-    //log.trace(tag.general, [...svgText.matchAll(heightMatch)])
-
-    //var width = parseInt(svgText.match(widthMatch)[1])
-    //var height = parseInt(svgText.match(heightMatch)[1])
-
-
-
-    var v = await Canvg.from(ctx, svgText);//, { scaleWidth: 5000, scaleHeight: 5000 });
-    log.trace(tag.general, v)
-
-    // v.resize(5000, 5000, 'xMidYMid slice')
-
-    // Render only first frame?
-    v.render()
-
-    // Start SVG rendering with animations and mouse handling.
-    // v.start();
-    return canvas
-}
-
 interface ExportTabProps {
-    cardGrid?: CardGrid
+    // cardGrid?: CardGrid
 }
 
 export default function ExportTab({
-    cardGrid
+    // cardGrid
 }: ExportTabProps) {
+    const { enqueueSnackbar } = useSnackbar();
+    const { characters, suits, cardSettings } = React.useContext(CardSettingsContext);
     const [isGridOutput, setIsGridOutput] = React.useState<boolean>(true);
     const [outputFormat, setOutputFormat] = React.useState<ImageFormat>(ImageFormatEnum.PNG);
+    const [gridOptions, setGridOptions] = React.useState<number[]>([]);
+    const [gridWidth, setGridWidth] = React.useState<string>('10');
+    const [cardWidth, setCardWidth] = React.useState<number>(cardSize.x);
+    const [cardHeight, setCardHeight] = React.useState<number>(cardSize.y);
+    const [grid, setGrid] = React.useState<CardGrid | undefined>(undefined);
+
+    const isExporting = React.useRef<boolean>(false);
+    const SVGWrapperRefElement = React.useRef<HTMLDivElement>(null);
+    const SVGContainer = React.useMemo(() => SVG(), []);
+
+    // SVGContainer.add(SVG().rect(100, 100).fill("#f06"));
+
+    React.useEffect(() => {
+        log.info(tag.general, 'SVGwarpper');
+        if (
+            SVGWrapperRefElement &&
+            SVGWrapperRefElement?.current &&
+            SVGWrapperRefElement?.current?.children.length < 1
+        ) {
+            SVGContainer.addTo(SVGWrapperRefElement?.current);
+        }
+    }, [SVGWrapperRefElement, SVGContainer]);
+
+    React.useEffect(() => {
+        const total = characters.length * suits.length;
+        setGridOptions(Array.from({ length: total }, (_, i) => i + 1))
+    }, [characters, suits]);
+
+    React.useEffect(() => {
+        if (gridWidth !== '') {
+            const gridWidthNumber = parseInt(gridWidth);
+            if (!gridOptions.includes(gridWidthNumber)) {
+                if (gridOptions.length < 10) {
+                    if (gridOptions.length === 0) {
+                        setGridWidth('');
+                    } else {
+                        setGridWidth(`${gridOptions[gridOptions.length - 1]}`);
+                    }
+                } else {
+                    setGridWidth('10');
+                }
+            }
+        } else {
+            if (gridOptions.length < 10) {
+                if (gridOptions.length === 0) {
+                    setGridWidth('');
+                } else {
+                    setGridWidth(`${gridOptions[gridOptions.length - 1]}`);
+                }
+            } else {
+                setGridWidth('10');
+            }
+        }
+    }, [gridOptions, gridWidth])
 
     const handleOutputFormatChange = (event: SelectChangeEvent<typeof outputFormat>) => {
         const {
@@ -108,66 +98,116 @@ export default function ExportTab({
         setOutputFormat(value);
     };
 
-    const exportClick = () => {
-        log.trace(tag.general, 'cards-download')
-        //const currentGrid = grid.current;
-        if (cardGrid !== undefined) {
-            /*
-            var svg = grid.export()
-            download('test.svg', svg)
-            *
+    const handleGridWidthChange = (event: SelectChangeEvent<typeof gridWidth>) => {
+        const {
+            target: { value },
+        } = event;
+        setGridWidth(value);
+    };
 
-            svgToPng(grid.export('svg')).then((data) => {
-                log.trace(tag.general, data)
-                // download('test.png', data)
-                // dataURIToBlob(data, 'test.png', callback);
-                downloadCanvas(data)
-            }).catch((e) => {
-                log.error(tag.general, 'svgToPng catch')
-                log.error(tag.general, e)
-                M.toast({ html: 'Unknown error', classes: 'rounded red white-text' });
-            })*/
-            const svgExport = cardGrid.export(ImageFormatEnum.SVG);
-            if (svgExport === undefined) {
-                log.error(tag.general, 'Unable to export to svg');
-                return;
+    const exportGrid = async (cardGrid: CardGrid) => {
+        log.trace(tag.general, 'exportGrid')
+        //const currentGrid = grid.current;
+        try {
+            let allResults = await cardGrid.export(outputFormat, !isGridOutput) ?? [];
+            for (let imgData of allResults) {
+                if (imgData === undefined) {
+                    log.error(tag.general, 'Unable to export to svg');
+                    return;
+                }
+                
+                var link = document.createElement("a");
+                log.trace(tag.general, link)
+                if (outputFormat === ImageFormatEnum.SVG) {
+                    imgData = '<?xml version="1.0" standalone="no"?>\r\n' + imgData;
+                    var url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(imgData);
+                    link.href = url;
+                } else {
+                    var blob = dataURLtoBlob(imgData);
+                    var objurl = URL.createObjectURL(blob);
+                    link.href = objurl;
+                }
+                link.download = `output.${outputFormat}`;
+                link.click();
             }
-            downloadCanvas(svgExport).then((data) => {
-                log.trace(tag.general, data)
-                // download('test.png', data)
-                // dataURIToBlob(data, 'test.png', callback);
-            }).catch((e) => {
-                log.error(tag.general, 'svgToPng catch')
-                log.error(tag.general, e)
-                // Toast.danger('Error', 'Unknown error');
-                //new M.Toast({ text: 'Unknown error', classes: 'rounded red white-text' });
-            })
-        } else {
-            log.error(tag.general, 'Make sure cards are drawn first')
-            // Toast.danger('Error', 'Make sure cards are drawn first');
-            //new M.Toast({ text: 'Make sure cards are drawn first', classes: 'rounded red white-text' });
+            SVGContainer.size(0, 0);
+            SVGContainer.clear();
+            enqueueSnackbar('Exported', { variant: 'success' });
+        } catch (e) {
+            log.error(tag.general, e);
+            enqueueSnackbar('Unknown error', { variant: 'error' });
         }
     }
 
+    const exportClick = async () => {
+        log.trace(tag.general, 'cards-download');
+        if (isExporting.current) {
+            return;
+        }
+        isExporting.current = true;
+        const timeout = setTimeout(() => { isExporting.current = false; }, 30000);
+        var order: PipCharacterCombo[] = []
+        for (const character of characters) {
+            for (const suit of suits) {
+                order.push({
+                    pip: suit,
+                    character: character
+                })
+            }
+        }
+        if (grid === undefined) {
+            setGrid((prevGrid) => {
+                let tempGrid = prevGrid || new CardGrid(SVG(), undefined, []);
+                try {
+                    tempGrid.setCardSize(cardWidth, cardHeight);
+                    tempGrid.setOrder(order);
+                    tempGrid.setFactorWidth(parseInt(gridWidth || '0'));
+                    tempGrid.setSettings(cardSettings);
+                    SVGContainer.size(tempGrid.canvas.width(), tempGrid.canvas.height());
+                    SVGContainer.clear();
+                    SVGContainer.add(tempGrid.canvas);
+                    tempGrid.redrawCards();
+                    exportGrid(tempGrid);
+                } catch (e) {
+                    log.error(tag.general, 'Error rendering grid 1', e);
+                } finally {
+                    clearTimeout(timeout);
+                    isExporting.current = false;
+                    return tempGrid;
+                }
+            });
+        } else {
+            try {
+                grid.setCardSize(cardWidth, cardHeight);
+                grid.setOrder(order);
+                grid.setFactorWidth(parseInt(gridWidth || '0'));
+                grid.setSettings(cardSettings);
+                SVGContainer.size(grid.canvas.width(), grid.canvas.height());
+                SVGContainer.clear();
+                SVGContainer.add(grid.canvas);
+                grid.resetCards();
+                grid.redrawCards();
+                exportGrid(grid);
+            } catch (e) {
+                log.error(tag.general, 'Error rendering grid 2', e);
+            } finally {
+                clearTimeout(timeout);
+                isExporting.current = false;
+            }
+        }
+    };
+
     return (<>
         <Grid container spacing={2}>
-            <Grid size={8}>
+            <Grid size={6}>
                 <FormControl sx={{ width: 1 }}>
-                    <InputLabel id="suit-select-label">Output Format</InputLabel>
+                    <InputLabel id="output-format-select-label">Output Format</InputLabel>
                     <Select
                         labelId="output-format-select-label"
                         id="output-format-select"
                         value={outputFormat}
                         onChange={handleOutputFormatChange}
-                        input={<OutlinedInput id="output-format-select" label="Output Format" />}
-                        // renderValue={(selected) => (
-                        //     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        //         {selected.map((value) => (
-                        //             <Chip key={value} label={value} />
-                        //         ))}
-                        //     </Box>
-                        // )}
-                    >
+                        input={<OutlinedInput id="output-format-select" label="Output Format" />}>
                     {ImageFormats.map((name) => (
                         <MenuItem
                             key={name}
@@ -178,13 +218,62 @@ export default function ExportTab({
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid size={4}>
-                <FormControlLabel control={<Switch sx={{ m:2 }} defaultChecked onChange={(_, checked) => setIsGridOutput(checked)}/>} label={isGridOutput ? 'Grid' : 'Singles'} />
+            <Grid size={3}>
+                <FormControlLabel
+                    control={<Switch sx={{ w: 1, m: 2 }}
+                    defaultChecked
+                    onChange={(_, checked) => setIsGridOutput(checked)}/>}
+                    label={isGridOutput ? 'Grid' : 'Singles'} />
+            </Grid>
+            <Grid size={3}>
+                <FormControl sx={{ width: 1 }}>
+                    <InputLabel id="grid-width-select-label">Grid Width</InputLabel>
+                    <Select
+                        labelId="grid-width-select-label"
+                        id="grid-width-select"
+                        disabled={!isGridOutput}
+                        value={`${gridWidth}`}
+                        onChange={handleGridWidthChange}
+                        input={<OutlinedInput id="grid-width-select" label="Grid Width" />}>
+                    {gridOptions.map((name) => (
+                        <MenuItem
+                            key={name}
+                            value={name}>
+                        {name}
+                        </MenuItem>
+                    ))}
+                    </Select>
+                </FormControl>
             </Grid>
         </Grid>
-        <Typography sx={{ flexGrow: 1 }} />
-        <Button size="small" onClick={exportClick} disabled={cardGrid === undefined}>
+        <Typography variant='h6' sx={{ mb: 2 }}>
+            Card Size
+        </Typography>
+        <Grid container spacing={2}>
+            <Grid size={6}>
+                <FormControl sx={{ width: 1 }}>
+                    <NumberField
+                        label="Width (px)"
+                        value={cardWidth}
+                        onValueChange={(value) => setCardWidth(Math.abs(value ?? 0))}
+                        min={0}
+                        max={10000} />
+                </FormControl>
+            </Grid>
+            <Grid size={6}>
+                <FormControl sx={{ width: 1 }}>
+                    <NumberField
+                        label="Height (px)"
+                        value={cardHeight}
+                        onValueChange={(value) => setCardHeight(Math.abs(value ?? 0))}
+                        min={0}
+                        max={10000} />
+                </FormControl>
+            </Grid>
+        </Grid>
+        <Button sx={{ width: 1, mt: 2 }} variant="contained" size="large" onClick={exportClick}>
             Export <DownloadIcon />
         </Button>
+        <div id="export-preview" className="row left-align" ref={SVGWrapperRefElement}></div>
     </>);
 }

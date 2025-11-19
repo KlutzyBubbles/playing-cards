@@ -1,15 +1,16 @@
 import { Svg, SVG } from '@svgdotjs/svg.js'
 // import $ from "jquery";
 import { log, tag } from 'missionlog';
-import type {
-    CardSettings,
-    CardStorage,
-    ImageFormat,
-    PipCharacterCombo,
-    XY
+import {
+    ImageFormatEnum,
+    type CardSettings,
+    type CardStorage,
+    type ImageFormat,
+    type PipCharacterCombo,
+    type XY
 } from "../types";
 import { cardSize as cardSizeConstant } from '../constants'
-import { generateString, getClosestFactors } from "../functions";
+import { getClosestFactors, svgToCanvas } from "../functions";
 import { CardSvg } from './CardSvg';
 
 export class CardGrid {
@@ -34,7 +35,7 @@ export class CardGrid {
             y: this.cards[Object.keys(this.cards)[0]].canvas.rbox().h
         } : cardSizeConstant)
         this._factors = factors || []
-        this.setSize(factors)
+        this.setSize(this.factors)
     }
 
     get factors(): number[] {
@@ -46,29 +47,37 @@ export class CardGrid {
         return this._factors
     }
 
+    public setFactorWidth(width: number) {
+        if (width <= 0) {
+            this.regenFactors();
+            return;
+        }
+        this._factors = [width, Math.ceil(this.order.length / width)];
+        this.setSize(this.factors)
+    }
+
     private regenFactors(): number[] {
         log.trace(tag.gridClass, 'regenFactors()')
         this._factors = getClosestFactors(this.order.length) || [0, 0]
         return this._factors
     }
 
-    private generateCards(): string | undefined {
+    private generateCards(): void {
         log.trace(tag.gridClass, 'generateCards()')
         if (this.settings === undefined)
             return
-        var containerId = generateString(20, true)
-        log.trace(tag.gridClass, `ContainerID: ${containerId}`)
-        //$(`#${this.canvas.node.parentElement?.getAttribute('id')}`).append(`<div id="${containerId}"></div>`)
         for (var combo of this.order) {
-            // var draw = SVG().addTo(`#${containerId}`).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
-            var draw = SVG().addTo(this.canvas).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)// .addTo(`#${containerId}`)
+            var draw = SVG().addTo(this.canvas).size(`${this.cardSize.x}px`, `${this.cardSize.y}px`)
             var card = new CardSvg(draw, this.settings, combo.pip, combo.character, undefined, this.cardSize)
             card.drawCard()
             const value = `${combo.character.toLowerCase()}:${combo.pip}`
             this.cards[value] = card
         }
-        //this.containerId = containerId
-        return containerId
+        return;
+    }
+
+    public setCardSize(width: number, height: number): void {
+        this.cardSize = { x: width, y: height };
     }
 
     private setSize(factors?: number[]): void {
@@ -119,12 +128,41 @@ export class CardGrid {
         //$(`#${this.containerId}`).hide()
     }
 
-    public export(format: ImageFormat): string | undefined {
-        if (format === 'svg') {
-            return this.canvas.svg()
+    private get svgText(): string {
+        const parent = this.canvas.parent();
+        if (parent !== null) {
+            this.canvas.flatten(parent, undefined);
+            this.setSize(this.factors)
         }
-        log.error(tag.gridClass, `Unfinished format supplied: ${format}`)
-        return undefined
+        return `<svg width="${this.canvas.width()}px" height="${this.canvas.height()}px">>${this.canvas.defs().svg()}${this.canvas.svg()}</svg>`;
+    }
+
+    public async export(format: ImageFormat, individual: boolean = false): Promise<string[] | undefined> {
+        if (individual) {
+            let waitFor: Promise<string | undefined>[] = [];
+            for (const card of Object.values(this.cards)) {
+                waitFor.push(card.export(format));
+            }
+            let results = await Promise.all(waitFor);
+            let output: string[] = [];
+            for (const result of results) {
+                if (result !== undefined) {
+                    output.push(result);
+                }
+            }
+            return output;
+        } else {
+            if (format === ImageFormatEnum.SVG) {
+                return [this.svgText];
+            } else {
+                var canvas = await svgToCanvas(this.svgText);
+                if (format === ImageFormatEnum.PNG) {
+                    return [canvas.toDataURL('image/png')];
+                } else {
+                    return [canvas.toDataURL('image/jpeg')];
+                }
+            }
+        }
     }
 
 }

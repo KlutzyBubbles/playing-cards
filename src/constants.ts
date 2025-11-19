@@ -4,10 +4,16 @@ import symetricalAltPipLocations from './pipLocations/symetrical_alt.json'
 
 import faceLayoutImported from '../json/honorCards.json'
 
-import type {
-    XY,
-    CenterPipLayout,
-    FaceLayout
+import crazyConfig from '../configs/test/crazy.json';
+import standardConfig from '../configs/standard.json';
+
+import {
+    type XY,
+    type CenterPipLayout,
+    type FaceLayout,
+    type CardSettings,
+    type PredefinedSetting,
+    PredefinedSettingEnum
 } from "./types";
 
 export const pipOptions = {
@@ -36,4 +42,9 @@ export const faceLayouts: FaceLayout = faceLayoutImported
 export const cardSize: XY = {
     x: 250,
     y: 350
+}
+
+export const predefinedSettings: Record<PredefinedSetting, CardSettings> = {
+    [PredefinedSettingEnum.CRAZY]: crazyConfig as CardSettings,
+    [PredefinedSettingEnum.STANDARD]: standardConfig as CardSettings
 }
